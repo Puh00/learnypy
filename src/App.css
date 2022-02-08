@@ -50,6 +50,19 @@ html, body{
   background-color: #000000;
   flex-basis: 10%;
   color: white;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap ;
+}
+
+.Control-button{
+  background-color: white;
+  flex-basis: 100%;
+  display: flex;
+}
+
+.Control-button2{
+  flex-basis: 100%;
 }
 
 .Code-box {
