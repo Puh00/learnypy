@@ -47,7 +47,6 @@ html, body{
 
 .Control-panel{
   padding: 5px;
-  background-color: #000000;
   flex-basis: 10%;
   color: white;
   display: flex;
@@ -59,20 +58,20 @@ html, body{
   background-color: white;
   flex-basis: 100%;
   display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
-.Control-button2{
-  flex-basis: 100%;
+.Code-wrapper{
+  padding: 5px;
+  flex-basis: 45%;
+  display: flex;
 }
 
 .Code-box {
-  padding: 5px;
   background-color: #000000;
   display: flex;
-  flex-basis: 45%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  flex-basis: 100%;
   font-family: "Courier New";
   color: white;
 }

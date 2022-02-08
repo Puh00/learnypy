@@ -19,41 +19,45 @@ function Control_panel(props) {
 
 function Control_button (props){
       return(
-        <div className='Control-button'>
-            <button onClick={props.type.on_click} className = 'Control-button2'>
-                {props.type.component}
+            <button onClick={props.type.on_click} className = 'Control-button'>
+                {props.type.icon}
             </button>
-        </div>
       );
     }
 
 const play_button =  {
-    component: <Play_logo />,
-    on_click: () => temp_click()
+    icon: <Play_logo />,
+    on_click: () => {
+        /* Run all code */
+    }
 }
 
 const next_button = {
-    component: <Next_logo />,
-    on_click: () => temp_click()
+    icon: <Next_logo />,
+    on_click: () => {
+        /*Step one line in code*/
+    }
 }
 
 const pause_button = {
-    component: <Pause_logo/>,
-    on_click: () => temp_click()
+    icon: <Pause_logo/>,
+    on_click: () => {
+        /*pause running code*/
+    }
 }
 
 const repeat_button = {
-    component: <Repeat_logo/>,
-    on_click: () => temp_click()
+    icon: <Repeat_logo/>,
+    on_click: () => {
+        /* Restart code */
+    }
 }
 
 const menu_button = {
-    component: <Menu_logo/>,
-    on_click: () => temp_click()
-}
-
-function temp_click(){
-    return;
+    icon: <Menu_logo/>,
+    on_click: () => {
+        /*Drop down menu*/
+    }
 }
 
 export default Control_panel;
