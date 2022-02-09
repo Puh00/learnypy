@@ -13,10 +13,7 @@
     {
       "id": "3",
       "_type": "list",
-      "value": [
-        "1",
-        "2"
-      ]
+      "value": ["1", "2"]
     }
   ],
   "variables": [
