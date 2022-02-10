@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 
 function Code_box(props) {
-    return(
-            <form className='Code-wrapper'>
-            <input type="text" name="name" className='Code-box' />
-            <input type="submit" value="Run" />
-            </form>
-    );
+  return (
+    <form className="Code-wrapper">
+      <input type="text" name="name" className="Code-box" />
+      <input type="submit" value="Run" />
+    </form>
+  );
 }
 
 export default Code_box;
