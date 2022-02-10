@@ -1,6 +1,5 @@
-name: formatter
+name: lint
 
-# Only run action on pushes and pull requests to main
 on:
   push:
     branches:
@@ -11,39 +10,38 @@ on:
 
 jobs:
   build:
-    # If the previous commit contains the msg 'skip ci', then the job will be skipped
     if: "!contains(github.event.head_commit.message, 'skip ci')"
-    name: Prettier
+    name: ESLint & Prettier
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: bahmutov/npm-install@v1
+      - uses: actions/checkout@v2
 
-      # Reformats the entire repository according to Prettier's standard
-      - name: Reformat Code
-        run: npm run format
+      - name: Install modules
+        run: npm install
 
-        # Detects if any files have been changed
+      - name: Run ESLint
+        run: npm run lint:fix
+
       - name: Verify Changed files
-        uses: tj-actions/verify-changed-files@v6
+        uses: tj-actions/verify-changed-files@v7.1
         id: verify_changed_files
         with:
           files: |
+            .(ts)$
+            .(tsx)$
             .(js)$
             .(json)$
             .(md)$
             .(css)$
             .(yml)$
 
-      # Commit stage
       - name: Commit files
-        # If no files have been changed, skip commit stage
         if: steps.verify_changed_files.outputs.files_changed == 'true'
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit -m "Reformat Code" -m "skip ci" -a
-      # Push stage
+          git commit -m "Format Code" -m "skip ci" -a
+
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
