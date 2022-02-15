@@ -50,11 +50,15 @@ const menu_button = new Control_button(<Menu_logo />, () => {
 function Control_panel() {
   return (
     <div className="Control-panel">
-      <play_button.render />
-      <next_button.render />
-      <pause_button.render />
-      <repeat_button.render />
-      <menu_button.render />
+      <div className="Control-panel-left">
+        <play_button.render />
+        <next_button.render />
+        <pause_button.render />
+        <repeat_button.render />
+      </div>
+      <div className="Control-panel-right">
+        <menu_button.render />
+      </div>
     </div>
   );
 }

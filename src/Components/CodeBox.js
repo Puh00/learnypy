@@ -4,8 +4,7 @@ class CodeBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value:
-        "import turtle\nt = turtle.Turtle()\nfor c in ['red', 'green', 'yellow', 'blue']:\n\tt.color(c)\n\tt.forward(75)\n\tt.left(90)"
+      value: "print('Hello World!')"
     };
     // eslint-disable-next-line react/prop-types
     this.runit = props.runit;
@@ -25,9 +24,15 @@ class CodeBox extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className="Form-box">
         <label>
-          <textarea value={this.state.value} onChange={this.handleChange} cols="50" rows="20" />
+          <textarea
+            value={this.state.value}
+            onChange={this.handleChange}
+            cols="68"
+            rows="25"
+            className="Code-box"
+          />
         </label>
         <input type="submit" value="Run" />
       </form>

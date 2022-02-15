@@ -1,3 +1,9 @@
+:root {
+  --background: gray;
+  --components: white;
+  --accent: black;
+}
+
 html,
 body {
   height: 100%;
@@ -12,23 +18,26 @@ body {
   flex-direction: column;
 }
 
-.App-header {
-  background-color: #282c34;
+.App-header, #App-body{
+  background-color: var(--background);
   display: flex;
+}
+.App-header {
   flex-direction: row;
   align-items: stretch;
   justify-content: flex-start;
 }
 
 .Header-style {
-  color: white;
+  color: var(--accent);
+}
+
+.Header-style {
   padding: 5px;
 }
 
 #App-body {
   flex: 2;
-  display: flex;
-  background-color: #282c34;
 }
 
 #Left-body {
@@ -46,21 +55,34 @@ body {
   display: flex;
 }
 
+.Control-button, .Code-box, .Visual-box, #output, .Control-panel{
+  background-color: var(--components);
+}
+
 .Control-panel {
-  padding: 5px;
+  margin: 4px;
   flex-basis: 10%;
-  color: white;
   display: flex;
+  justify-content: space-between;
   flex-direction: row;
   flex-wrap: nowrap;
+  border-radius: 4px;
+}
+
+.Control-panel-left, .Control-panel-right {
+  display: flex;
+  flex-grow: 1;
+}
+
+.Control-panel-right{
+  justify-content: end;
 }
 
 .Control-button {
-  background-color: white;
-  flex-basis: 100%;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  width: 66px
 }
 
 .Code-wrapper {
@@ -69,28 +91,25 @@ body {
   display: flex;
 }
 
-.Code-box {
-  background-color: #000000;
+.Form-box {
   display: flex;
-  flex-basis: 100%;
+  flex-direction: column;
   font-family: "Courier New";
-  color: white;
 }
 
-.Output-box {
-  padding: 50px;
-  background-color: black;
+#output {
+  padding: 4px;
   flex-basis: 45%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  font-family: "Courier New";
-  color: white;
+  border-radius: 4px;
+}
+
+.Code-box{
+  flex-basis: 100%;
+  border-radius: 4px;
 }
 
 .Visual-box {
   padding: 50px;
   flex-basis: 100%;
-  background-color: rgb(56, 56, 85);
+  border-radius: 4px;
 }
