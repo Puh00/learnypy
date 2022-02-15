@@ -47,7 +47,6 @@ const parse = (refs) => {
 
   refs.variables.forEach((_var) => {
     _var.uuid = uuidv4();
-
     const obj = refs.objects.find((obj) => obj.id === _var.ref);
     if (typeof obj === 'undefined') throw new Error('Dangling variable! Memory Leak ALERT!!!!');
 
@@ -61,7 +60,7 @@ const parse = (refs) => {
 
     nodes.push({
       id: obj.uuid,
-      label: obj.value.toString()
+      label: JSON.stringify(obj.value)
     });
 
     obj.vars.forEach((_var) => {
