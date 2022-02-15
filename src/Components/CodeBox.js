@@ -24,17 +24,16 @@ class CodeBox extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} className="Form-box">
+      <form onSubmit={this.handleSubmit} className="Form-box" id="CodeForm">
         <label>
           <textarea
             value={this.state.value}
             onChange={this.handleChange}
-            cols="68"
+            cols="68" //TODO: Sizeing needs to be dynamic to account for different window sizes
             rows="25"
             className="Code-box"
           />
         </label>
-        <input type="submit" value="Run" />
       </form>
     );
   }

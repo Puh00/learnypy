@@ -17,17 +17,27 @@ class Control_button {
   }
 
   render = () => {
-    return (
-      <button onClick={this.on_click} className="Control-button">
-        {this.icon}
-      </button>
-    );
+    //prob. better way to do this instead of if/else?
+    if (this.on_click() == 'submit') {
+      return (
+        <button type="submit" form="CodeForm" className="Control-button">
+          {this.icon}
+        </button>
+      );
+    } else {
+      return (
+        <button onClick={this.on_click} className="Control-button">
+          {this.icon}
+        </button>
+      );
+    }
   };
 }
 
 /*  CREATING BUTTONS */
 const play_button = new Control_button(<Play_logo />, () => {
   /* Run all code */
+  return 'submit';
 });
 
 const next_button = new Control_button(<Next_logo />, () => {
