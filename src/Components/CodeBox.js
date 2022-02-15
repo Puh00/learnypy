@@ -22,6 +22,13 @@ class CodeBox extends React.Component {
     this.runit(this.state.value);
   }
 
+  // //Only submits first line. Use to step through code?
+  // handleLineSubmit(event) {
+  //   let line0 = this.state.value.split('\n')[0];
+  //   event.preventDefault();
+  //   this.runit(line0);
+  // }
+
   render() {
     return (
       <form onSubmit={this.handleSubmit} className="Form-box" id="CodeForm">

@@ -20,7 +20,7 @@ function runit(prog) {
   window.Sk.global.console.log('hej');
   window.Sk.pre = 'output';
   window.Sk.configure({ output: outf, read: builtinRead });
-  (window.Sk.TurtleGraphics || (window.Sk.TurtleGraphics = {})).target = 'mycanvas';
+  (window.Sk.TurtleGraphics || (window.Sk.TurtleGraphics = {})).target = 'mycanvas'; //Remove?
   var myPromise = window.Sk.misceval.asyncToPromise(function () {
     return window.Sk.importMainWithBody('<stdin>', false, prog, true);
   });

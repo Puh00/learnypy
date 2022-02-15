@@ -3,7 +3,17 @@ import { ReactComponent as Play_logo } from './Icons/play.svg';
 import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
 import { ReactComponent as Pause_logo } from './Icons/pause.svg';
 import { ReactComponent as Repeat_logo } from './Icons/repeat.svg';
-import { ReactComponent as Menu_logo } from './Icons/repeat.svg'; /*Find correct logo*/
+import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg'; /*Find correct logo*/
+
+// function dropdown(){
+//   return(
+//     <div className='Dropdown-menu'>
+//       <a class="Dropdown-item" href="#">Action</a>
+//       <a class="Dropdown-item" href="#">Another action</a>
+//       <a class="Dropdown-item" href="#">Something else here</a>
+//     </div>
+//   );
+// }
 
 /* BUTTONS CLASS */
 //This could possibly be moved to create a more general buttons-class
