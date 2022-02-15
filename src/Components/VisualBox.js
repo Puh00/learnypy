@@ -1,7 +1,28 @@
-import React from "react";
+import React from 'react';
 
-function Visual_box(props) {
-  return <div className="Visual-box">Visuals</div>;
+import Graph from 'react-graph-vis';
+import parse from '../util/parser';
+
+function VisualBox({ data }) {
+  const options = {
+    layout: {
+      hierarchical: true
+    },
+    edges: {
+      color: '#000000'
+    },
+    height: '500px'
+  };
+
+  const graph = parse(data);
+
+  console.log(graph);
+
+  return (
+    <div className="Visual-box">
+      <Graph graph={graph} options={options} />
+    </div>
+  );
 }
 
-export default Visual_box;
+export default VisualBox;

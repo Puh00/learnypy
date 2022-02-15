@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 class Button extends Component {
-  text = "klick!";
+  text = 'klick!';
 
   handle() {}
 
