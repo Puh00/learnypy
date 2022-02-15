@@ -1,63 +1,62 @@
-import React, { Component } from "react";
-import { ReactComponent as Play_logo } from "./Icons/play.svg";
-import { ReactComponent as Next_logo } from "./Icons/arrow-right.svg";
-import { ReactComponent as Pause_logo } from "./Icons/pause.svg";
-import { ReactComponent as Repeat_logo } from "./Icons/repeat.svg";
-import { ReactComponent as Menu_logo } from "./Icons/repeat.svg"; /*Find correct logo*/
+import React from 'react';
+import { ReactComponent as Play_logo } from './Icons/play.svg';
+import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
+import { ReactComponent as Pause_logo } from './Icons/pause.svg';
+import { ReactComponent as Repeat_logo } from './Icons/repeat.svg';
+import { ReactComponent as Menu_logo } from './Icons/repeat.svg'; /*Find correct logo*/
 
-function Control_panel(props) {
+/* BUTTONS CLASS */
+//This could possibly be moved to create a more general buttons-class
+class Control_button {
+  icon; //Button icon, svg
+  on_click = () => {}; //Fuction called when button is clicked
+
+  constructor(icon, on_click) {
+    this.icon = icon;
+    this.on_click = on_click;
+  }
+
+  render = () => {
+    return (
+      <button onClick={this.on_click} className="Control-button">
+        {this.icon}
+      </button>
+    );
+  };
+}
+
+/*  CREATING BUTTONS */
+const play_button = new Control_button(<Play_logo />, () => {
+  /* Run all code */
+});
+
+const next_button = new Control_button(<Next_logo />, () => {
+  /*Step one line in code*/
+});
+
+const pause_button = new Control_button(<Pause_logo />, () => {
+  /*pause running code*/
+});
+
+const repeat_button = new Control_button(<Repeat_logo />, () => {
+  /* Restart code */
+});
+
+const menu_button = new Control_button(<Menu_logo />, () => {
+  /*Drop down menu*/
+});
+
+/* CREATING CONTROL PANEL */
+function Control_panel() {
   return (
     <div className="Control-panel">
-      <Control_button type={play_button} />
-      <Control_button type={next_button} />
-      <Control_button type={pause_button} />
-      <Control_button type={repeat_button} />
-      <Control_button type={menu_button} />
+      <play_button.render />
+      <next_button.render />
+      <pause_button.render />
+      <repeat_button.render />
+      <menu_button.render />
     </div>
   );
 }
-
-function Control_button(props) {
-  return (
-    <button onClick={props.type.on_click} className="Control-button">
-      {props.type.icon}
-    </button>
-  );
-}
-
-const play_button = {
-  icon: <Play_logo />,
-  on_click: () => {
-    /* Run all code */
-  },
-};
-
-const next_button = {
-  icon: <Next_logo />,
-  on_click: () => {
-    /*Step one line in code*/
-  },
-};
-
-const pause_button = {
-  icon: <Pause_logo />,
-  on_click: () => {
-    /*pause running code*/
-  },
-};
-
-const repeat_button = {
-  icon: <Repeat_logo />,
-  on_click: () => {
-    /* Restart code */
-  },
-};
-
-const menu_button = {
-  icon: <Menu_logo />,
-  on_click: () => {
-    /*Drop down menu*/
-  },
-};
 
 export default Control_panel;
