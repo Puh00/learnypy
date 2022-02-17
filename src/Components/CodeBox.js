@@ -7,6 +7,7 @@ class CodeBox extends React.Component {
       value:
         "import turtle\nt = turtle.Turtle()\nfor c in ['red', 'green', 'yellow', 'blue']:\n\tt.color(c)\n\tt.forward(75)\n\tt.left(90)"
     };
+
     // eslint-disable-next-line react/prop-types
     this.runit = props.runit;
 
