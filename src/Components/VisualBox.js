@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-function Visual_box(props) {
+function Visual_box() {
   return <div className="Visual-box">Visuals</div>;
 }
 

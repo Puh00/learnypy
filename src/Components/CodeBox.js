@@ -4,8 +4,7 @@ class CodeBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value:
-        "import turtle\nt = turtle.Turtle()\nfor c in ['red', 'green', 'yellow', 'blue']:\n\tt.color(c)\n\tt.forward(75)\n\tt.left(90)"
+      value: "print('Hello World!')"
     };
 
     // eslint-disable-next-line react/prop-types
@@ -24,13 +23,25 @@ class CodeBox extends React.Component {
     this.runit(this.state.value);
   }
 
+  // //Only submits first line. Use to step through code?
+  // handleLineSubmit(event) {
+  //   let line0 = this.state.value.split('\n')[0];
+  //   event.preventDefault();
+  //   this.runit(line0);
+  // }
+
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className="Form-box" id="CodeForm">
         <label>
-          <textarea value={this.state.value} onChange={this.handleChange} cols="50" rows="20" />
+          <textarea
+            value={this.state.value}
+            onChange={this.handleChange}
+            cols="68" //TODO: Sizeing needs to be dynamic to account for different window sizes
+            rows="25"
+            className="Code-box"
+          />
         </label>
-        <input type="submit" value="Run" />
       </form>
     );
   }
