@@ -6,26 +6,6 @@ import { ReactComponent as Repeat_logo } from './Icons/repeat.svg';
 import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg'; /*Find correct logo*/
 import Button from './Button';
 
-// } else if (this.on_click() == 'dropdown') {
-//   return (
-//     <div className="Dropdown">
-//       <button onClick={this.on_click} className="Control-button">
-//         {this.icon}
-//       </button>
-//       <div className="Dropdown-menu">
-//         <a className="Dropdown-item" href="#">
-//           Action
-//         </a>
-//         <a className="Dropdown-item" href="#">
-//           Another action
-//         </a>
-//         <a className="Dropdown-item" href="#">
-//           Something else here
-//         </a>
-//       </div>
-//     </div>
-//   );
-
 /* SPECIALICED BUTTONS CLASS */
 class Control_button extends Button {
   constructor(icon, on_click, tooltip) {
@@ -36,23 +16,14 @@ class Control_button extends Button {
     //prob. better way to do this instead of if/else?
     if (this.on_click() == 'submit') {
       return (
-        <button
-          type="submit"
-          form="CodeForm"
-          className={this.className}
-          data-toggle="tooltip"
-          title={this.tooltip}>
+        <button type="submit" form="CodeForm" className={this.className} title={this.tooltip}>
           {this.icon}
         </button>
       );
     } else {
       //Must be able to return super.render here somehow?
       return (
-        <button
-          onClick={this.on_click}
-          className={this.className}
-          data-toggle="tooltip"
-          title={this.tooltip}>
+        <button onClick={this.on_click} className={this.className} title={this.tooltip}>
           {this.icon}
         </button>
       );
