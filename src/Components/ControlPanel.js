@@ -4,6 +4,7 @@ import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
 import { ReactComponent as Pause_logo } from './Icons/pause.svg';
 import { ReactComponent as Repeat_logo } from './Icons/repeat.svg';
 import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg'; /*Find correct logo*/
+import Button from './Button';
 
 // } else if (this.on_click() == 'dropdown') {
 //   return (
@@ -25,17 +26,10 @@ import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg'; /*
 //     </div>
 //   );
 
-/* BUTTONS CLASS */
-//This could possibly be moved to create a more general buttons-class
-class Control_button {
-  icon; //Button icon, svg
-  on_click = () => {}; //Fuction called when button is clicked
-  tooltip = '';
-
+/* SPECIALICED BUTTONS CLASS */
+class Control_button extends Button {
   constructor(icon, on_click, tooltip) {
-    this.icon = icon;
-    this.on_click = on_click;
-    this.tooltip = tooltip;
+    super(icon, on_click, tooltip, 'Control-button');
   }
 
   render = () => {
@@ -45,17 +39,18 @@ class Control_button {
         <button
           type="submit"
           form="CodeForm"
-          className="Control-button"
+          className={this.className}
           data-toggle="tooltip"
           title={this.tooltip}>
           {this.icon}
         </button>
       );
     } else {
+      //Must be able to return super.render here somehow?
       return (
         <button
           onClick={this.on_click}
-          className="Control-button"
+          className={this.className}
           data-toggle="tooltip"
           title={this.tooltip}>
           {this.icon}
