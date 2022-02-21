@@ -14,9 +14,36 @@ class Control_button extends Button {
 
   render = () => {
     //prob. better way to do this instead of if/else?
-    if (this.on_click() == 'submit') {
+    if (this.on_click() == 'run') {
       return (
-        <button type="submit" form="CodeForm" className={this.className} title={this.tooltip}>
+        <button
+          type="submit"
+          form="CodeForm"
+          name="run"
+          className={this.className}
+          title={this.tooltip}>
+          {this.icon}
+        </button>
+      );
+    } else if (this.on_click() == 'step') {
+      return (
+        <button
+          type="submit"
+          form="CodeForm"
+          name="step"
+          className={this.className}
+          title={this.tooltip}>
+          {this.icon}
+        </button>
+      );
+    } else if (this.on_click() == 'restart') {
+      return (
+        <button
+          type="submit"
+          form="CodeForm"
+          name="restart"
+          className={this.className}
+          title={this.tooltip}>
           {this.icon}
         </button>
       );
@@ -36,7 +63,7 @@ const play_button = new Control_button(
   <Play_logo />,
   () => {
     /* Run all code */
-    return 'submit';
+    return 'run';
   },
   'Run code'
 );
@@ -44,7 +71,7 @@ const play_button = new Control_button(
 const next_button = new Control_button(
   <Next_logo />,
   () => {
-    /*Step one line in code*/
+    return 'step';
   },
   'Run next line'
 );
@@ -60,7 +87,7 @@ const pause_button = new Control_button(
 const repeat_button = new Control_button(
   <Repeat_logo />,
   () => {
-    /* Restart code */
+    return 'restart';
   },
   'Restart'
 );

@@ -1,14 +1,17 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 
 class CodeBox extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       value: "print('Hello World!')"
     };
 
-    // eslint-disable-next-line react/prop-types
     this.runit = props.runit;
+    this.restart = props.restart;
+    this.step = props.step;
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,7 +23,16 @@ class CodeBox extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.runit(this.state.value);
+    if (event.nativeEvent?.submitter.name == 'run') {
+      console.log('run');
+      this.runit(this.state.value);
+    } else if (event.nativeEvent?.submitter.name == 'step') {
+      console.log('step');
+      this.step();
+    } else if (event.nativeEvent?.submitter.name == 'restart') {
+      console.log('restart');
+      this.restart(this.state.value);
+    }
   }
 
   // //Only submits first line. Use to step through code?
