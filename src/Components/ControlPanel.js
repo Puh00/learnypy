@@ -14,47 +14,16 @@ class Control_button extends Button {
 
   render = () => {
     //prob. better way to do this instead of if/else?
-    if (this.on_click() == 'run') {
-      return (
-        <button
-          type="submit"
-          form="CodeForm"
-          name="run"
-          className={this.className}
-          title={this.tooltip}>
-          {this.icon}
-        </button>
-      );
-    } else if (this.on_click() == 'step') {
-      return (
-        <button
-          type="submit"
-          form="CodeForm"
-          name="step"
-          className={this.className}
-          title={this.tooltip}>
-          {this.icon}
-        </button>
-      );
-    } else if (this.on_click() == 'restart') {
-      return (
-        <button
-          type="submit"
-          form="CodeForm"
-          name="restart"
-          className={this.className}
-          title={this.tooltip}>
-          {this.icon}
-        </button>
-      );
-    } else {
-      //Must be able to return super.render here somehow?
-      return (
-        <button onClick={this.on_click} className={this.className} title={this.tooltip}>
-          {this.icon}
-        </button>
-      );
-    }
+    return (
+      <button
+        type="submit"
+        form="CodeForm"
+        name={this.on_click()}
+        className={this.className}
+        title={this.tooltip}>
+        {this.icon}
+      </button>
+    );
   };
 }
 
@@ -80,6 +49,7 @@ const pause_button = new Control_button(
   <Pause_logo />,
   () => {
     /*pause running code*/
+    return 'pause';
   },
   'Pause running code'
 );
