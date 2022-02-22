@@ -6,7 +6,7 @@ class CodeBox extends React.Component {
     super(props);
 
     this.state = {
-      value: "print('Hello World!')"
+      value: 'print(1)\nprint(2)\nprint(3)\nprint(4)\nprint(5)'
     };
 
     this.runit = props.runit;
@@ -34,13 +34,6 @@ class CodeBox extends React.Component {
       this.restart(this.state.value);
     }
   }
-
-  // //Only submits first line. Use to step through code?
-  // handleLineSubmit(event) {
-  //   let line0 = this.state.value.split('\n')[0];
-  //   event.preventDefault();
-  //   this.runit(line0);
-  // }
 
   render() {
     return (

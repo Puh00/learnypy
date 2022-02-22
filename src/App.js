@@ -160,26 +160,38 @@ function outf(text) {
   mypre.innerHTML = mypre.innerHTML + text;
 }
 
+//Run the skulpt program normally without any debugging
+function normal_run(prog) {
+  window.Sk.pre = 'output';
+  window.Sk.configure({ output: outf, read: builtinRead });
+
+  var myPromise = window.Sk.misceval.asyncToPromise(function () {
+    return window.Sk.importMainWithBody('<stdin>', false, prog, true);
+  });
+
+  myPromise.then(
+    function () {
+      console.log('success');
+    },
+    function (err) {
+      console.log(err.toString());
+    }
+  );
+}
+
 function runit(prog) {
+  //If we are in step_mode, disable it
   if (dbg.step_mode === true) {
-    dbg.step_mode = false;
-    dbg.resume.call(dbg);
+    dbg.disable_step_mode();
+    //If the current suspension stack is empty, run the program normaly.
+    //Otherwise, resume the debugging with step_mode disabled
+    if (dbg.get_active_suspension() == null) {
+      normal_run(prog);
+    } else {
+      dbg.resume.call(dbg);
+    }
   } else {
-    window.Sk.global.console.log('hej');
-    window.Sk.pre = 'output';
-    window.Sk.configure({ output: outf, read: builtinRead });
-    (window.Sk.TurtleGraphics || (window.Sk.TurtleGraphics = {})).target = 'mycanvas'; //Remove?
-    var myPromise = window.Sk.misceval.asyncToPromise(function () {
-      return window.Sk.importMainWithBody('<stdin>', false, prog, true);
-    });
-    myPromise.then(
-      function () {
-        console.log('success');
-      },
-      function (err) {
-        console.log(err.toString());
-      }
-    );
+    normal_run(prog);
   }
 }
 
