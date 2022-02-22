@@ -35,25 +35,10 @@ class CodeBox extends React.Component {
     }
   }
 
-  // //Only submits first line. Use to step through code?
-  // handleLineSubmit(event) {
-  //   let line0 = this.state.value.split('\n')[0];
-  //   event.preventDefault();
-  //   this.runit(line0);
-  // }
-
   render() {
     return (
       <form onSubmit={this.handleSubmit} className="Form-box" id="CodeForm">
-        <label>
-          <textarea
-            value={this.state.value}
-            onChange={this.handleChange}
-            cols="68" //TODO: Sizeing needs to be dynamic to account for different window sizes
-            rows="25"
-            className="Code-box"
-          />
-        </label>
+        <textarea value={this.state.value} onChange={this.handleChange} className="Code-box" />
       </form>
     );
   }

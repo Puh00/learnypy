@@ -29,11 +29,8 @@ body {
 }
 
 .Header-style {
+  margin: 12px;
   color: var(--accent);
-}
-
-.Header-style {
-  padding: 5px;
 }
 
 #App-body {
@@ -41,7 +38,7 @@ body {
 }
 
 #Left-body {
-  margin: 10px;
+  margin: 8px 4px 8px 8px;
   flex-basis: 70%;
   display: flex;
   flex-direction: column;
@@ -49,8 +46,9 @@ body {
   justify-content: space-between;
 }
 
+/* top | right | bottom | left */
 #Right-body {
-  margin: 10px;
+  margin: 8px 8px 8px 4px;
   flex-basis: 100%;
   display: flex;
 }
@@ -118,19 +116,16 @@ body {
   display: block;
 } */
 
-.Code-wrapper {
-  padding: 5px;
-  flex-basis: 45%;
-  display: flex;
-}
-
 .Form-box {
   display: flex;
   flex-direction: column;
   font-family: "Courier New";
+  flex-basis: 45%;
+  margin: 4px;
 }
 
 #output {
+  margin: 4px;
   padding: 4px;
   flex-basis: 45%;
   border-radius: 4px;
@@ -142,6 +137,7 @@ body {
 }
 
 .Visual-box {
+  margin: 4px;
   padding: 50px;
   flex-basis: 100%;
   border-radius: 4px;
