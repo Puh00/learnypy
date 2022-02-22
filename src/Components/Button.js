@@ -1,17 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Button extends Component {
-  text = 'klick!';
+/* GENERAL BUTTONS CLASS */
+class Button {
+  icon; //Button icon, svg
+  on_click = () => {}; //Fuction called when button is clicked
+  tooltip = ''; //Tooltip showed on hover
+  className = ''; //Custom styling
 
-  handle() {}
-
-  render() {
-    return (
-      <div className="Button">
-        <Button onClick={this.handle}>Contained</Button>
-      </div>
-    );
+  constructor(icon, on_click, tooltip, className = 'Button') {
+    this.icon = icon;
+    this.on_click = on_click;
+    this.tooltip = tooltip;
+    this.className = className;
   }
+
+  render = () => {
+    return (
+      <button
+        onClick={this.on_click}
+        className={this.className}
+        data-toggle="tooltip"
+        title={this.tooltip}>
+        {this.icon}
+      </button>
+    );
+  };
 }
 
 export default Button;
