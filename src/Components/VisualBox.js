@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import styles from './VisualBox.module.css';
 
 import Graph from 'react-graph-vis';
@@ -22,6 +21,7 @@ const test = {
 };
 
 function VisualBox({ data }) {
+  const canvas = React.createRef(); //vill nå 'canvas' elementet, funkar ej
   const [refs, setRefs] = useState({ nodes: [], edges: [] });
 
   useEffect(() => {
@@ -47,10 +47,13 @@ function VisualBox({ data }) {
     // }
   };
 
+  console.log(canvas.current); //fungerar ej
+  //canvas.title = 'vill här beskriva bilden, dynamiskt vad den visar';
+  //canvas.tabIndex = '0';
   return (
-    <div className={styles['visual-box']}>
+    <div alt="area for visualizing the objects in the code" className={styles['visual-box']}>
       {
-        // temporary for updating the data
+        //g
         <button
           onClick={() => {
             setRefs(test);
@@ -58,7 +61,9 @@ function VisualBox({ data }) {
           Update graph
         </button>
       }
-      <Graph key={Date.now()} graph={refs} options={options} />
+      <Graph key={Date.now()} graph={refs} options={options}>
+        <input ref={canvas} />
+      </Graph>
     </div>
   );
 }

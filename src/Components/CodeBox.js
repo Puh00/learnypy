@@ -38,7 +38,12 @@ class CodeBox extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit} className="Form-box" id="CodeForm">
-        <textarea value={this.state.value} onChange={this.handleChange} className="Code-box" />
+        <textarea
+          value={this.state.value}
+          aria-label="write your code here"
+          onChange={this.handleChange}
+          className="Code-box"
+        />
       </form>
     );
   }
