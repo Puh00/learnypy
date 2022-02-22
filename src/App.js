@@ -8,6 +8,7 @@ import Visual_box from './Components/VisualBox';
 let variables = [];
 let objects = [];
 let dbg = init_debugger();
+let break_points = [3, 4];
 
 function get_line_status(lineno) {
   if (lineno !== 0) {
@@ -111,8 +112,12 @@ function builtinRead(x) {
   return window.Sk.builtinFiles['files'][x];
 }
 
+function outf(text) {
+  var mypre = document.getElementById('output');
+  mypre.innerHTML = mypre.innerHTML + text;
+}
+
 function test_debugger(prog) {
-  //dbg.add_breakpoint("<stdin>.py", 0, 0, false);
   dbg.enable_step_mode();
 
   window.Sk.configure({
@@ -135,63 +140,76 @@ function test_debugger(prog) {
     dbg
   );
   myPromise.then(dbg.success.bind(dbg), dbg.error.bind(dbg));
-  step();
 }
 
-const start = (prog) => {
+//Loop through break_points and add a breakpoint at every line
+const init_break_ponts = () => {
+  for (let break_point of break_points) {
+    dbg.add_breakpoint('<stdin>.py', break_point, 0, false);
+  }
+};
+
+const start = (prog, step_mode) => {
   console.log('Reset status');
   dbg = init_debugger();
+  init_break_ponts();
   variables = [];
   objects = [];
   test_debugger(prog);
+
+  //Determine the mode for the debugging
+  dbg.step_mode = step_mode;
 };
 
 const step = (prog) => {
-  if (dbg.step_mode === false) {
-    start(prog);
+  //If there is a current suspension, enable step_mode
+  //and continue where the program stopped
+  if (dbg.get_active_suspension() != null) {
+    dbg.enable_step_mode();
+    dbg.resume.call(dbg);
+    alt_collect_variables();
+
+    //If step_mode is false, restart the program and
+    //enable step_mode. The only scenario for this is if
+    //the program starts from the beggining
+  } else if (dbg.step_mode == false) {
+    start(prog, true);
+    dbg.enable_step_mode();
+    dbg.resume.call(dbg);
+    alt_collect_variables();
+
+    //Otherwise, just keep stepping
   } else {
     dbg.resume.call(dbg);
     alt_collect_variables();
   }
 };
 
-function outf(text) {
-  var mypre = document.getElementById('output');
-  mypre.innerHTML = mypre.innerHTML + text;
-}
-
-//Run the skulpt program normally without any debugging
-function normal_run(prog) {
-  window.Sk.pre = 'output';
-  window.Sk.configure({ output: outf, read: builtinRead });
-
-  var myPromise = window.Sk.misceval.asyncToPromise(function () {
-    return window.Sk.importMainWithBody('<stdin>', false, prog, true);
-  });
-
-  myPromise.then(
-    function () {
-      console.log('success');
-    },
-    function (err) {
-      console.log(err.toString());
-    }
-  );
-}
-
 function runit(prog) {
-  //If we are in step_mode, disable it
-  if (dbg.step_mode === true) {
+  //If there is a current suspension, disable step_mode
+  //and continue where the program left off
+  if (dbg.get_active_suspension() != null) {
     dbg.disable_step_mode();
-    //If the current suspension stack is empty, run the program normaly.
+    dbg.resume.call(dbg);
+    return;
+  }
+
+  //If we are in step_mode, disable it
+  if (dbg.step_mode == true) {
+    dbg.disable_step_mode();
+    //If the current suspension stack is empty, run the program normally.
     //Otherwise, resume the debugging with step_mode disabled
     if (dbg.get_active_suspension() == null) {
-      normal_run(prog);
+      start(prog, false);
+      dbg.resume.call(dbg);
     } else {
       dbg.resume.call(dbg);
     }
+
+    //Just start the program normally
   } else {
-    normal_run(prog);
+    start(prog, false);
+    dbg.resume.call(dbg);
   }
 }
 
