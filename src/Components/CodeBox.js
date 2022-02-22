@@ -28,7 +28,7 @@ class CodeBox extends React.Component {
       this.runit(this.state.value);
     } else if (event.nativeEvent?.submitter.name == 'step') {
       console.log('step');
-      this.step();
+      this.step(this.state.value);
     } else if (event.nativeEvent?.submitter.name == 'restart') {
       console.log('restart');
       this.restart(this.state.value);

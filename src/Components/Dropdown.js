@@ -22,41 +22,40 @@ import React from 'react';
 //     </div>
 //   );
 
+// eslint-disable-next-line no-unused-vars
 class Dropdown_item {
-    constructor(text, tooltip, action = ()=>{}){
-        this.text = text;
-        this.tooltip = tooltip;
-        this.action = action;
-    }
+  constructor(text, tooltip, action = () => {}) {
+    this.text = text;
+    this.tooltip = tooltip;
+    this.action = action;
+  }
 }
 
-class Dropdown{
-    contents = [];
-    constructor(button, contents = this.contents, className = 'Dropdown'){
-        this.button = button;
-        this.contents = contents;
-        this.className = className;
-    }
+class Dropdown {
+  contents = [];
+  constructor(button, contents = this.contents, className = 'Dropdown') {
+    this.button = button;
+    this.contents = contents;
+    this.className = className;
+  }
 
-    calc_rows() {
-        
-    }
+  calc_rows() {}
 
-    render() {
-        return(
-        <div className="Dropdown-menu">
-            <a className="Dropdown-item" href="#">
-            Action
-            </a>
-            <a className="Dropdown-item" href="#">
-            Another action
-            </a>
-            <a className="Dropdown-item" href="#">
-            Something else here
-            </a>
-        </div>            
-        );
-    }
+  render() {
+    return (
+      <div className="Dropdown-menu">
+        <a className="Dropdown-item" href="#">
+          Action
+        </a>
+        <a className="Dropdown-item" href="#">
+          Another action
+        </a>
+        <a className="Dropdown-item" href="#">
+          Something else here
+        </a>
+      </div>
+    );
+  }
 }
 
 export default Dropdown;

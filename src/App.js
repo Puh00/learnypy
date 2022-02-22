@@ -146,10 +146,13 @@ const start = (prog) => {
   test_debugger(prog);
 };
 
-const step = () => {
-  dbg.resume.call(dbg);
-  //console.log(dbg.get_active_suspension());
-  alt_collect_variables();
+const step = (prog) => {
+  if (dbg.step_mode === false) {
+    start(prog);
+  } else {
+    dbg.resume.call(dbg);
+    alt_collect_variables();
+  }
 };
 
 function outf(text) {
@@ -158,21 +161,26 @@ function outf(text) {
 }
 
 function runit(prog) {
-  window.Sk.global.console.log('hej');
-  window.Sk.pre = 'output';
-  window.Sk.configure({ output: outf, read: builtinRead });
-  (window.Sk.TurtleGraphics || (window.Sk.TurtleGraphics = {})).target = 'mycanvas'; //Remove?
-  var myPromise = window.Sk.misceval.asyncToPromise(function () {
-    return window.Sk.importMainWithBody('<stdin>', false, prog, true);
-  });
-  myPromise.then(
-    function () {
-      console.log('success');
-    },
-    function (err) {
-      console.log(err.toString());
-    }
-  );
+  if (dbg.step_mode === true) {
+    dbg.step_mode = false;
+    dbg.resume.call(dbg);
+  } else {
+    window.Sk.global.console.log('hej');
+    window.Sk.pre = 'output';
+    window.Sk.configure({ output: outf, read: builtinRead });
+    (window.Sk.TurtleGraphics || (window.Sk.TurtleGraphics = {})).target = 'mycanvas'; //Remove?
+    var myPromise = window.Sk.misceval.asyncToPromise(function () {
+      return window.Sk.importMainWithBody('<stdin>', false, prog, true);
+    });
+    myPromise.then(
+      function () {
+        console.log('success');
+      },
+      function (err) {
+        console.log(err.toString());
+      }
+    );
+  }
 }
 
 function App() {
