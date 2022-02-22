@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import CodeBox from './Components/CodeBox';
 import Header from './Components/Header';
 import Control_panel from './Components/ControlPanel';
-import Visual_box from './Components/VisualBox';
+import VisualBox from './Components/VisualBox';
 
 let variables = [];
 let objects = [];
@@ -196,6 +196,9 @@ function runit(prog) {
 }
 
 function App() {
+  // eslint-disable-next-line no-unused-vars
+  const [refs, setRefs] = useState({});
+
   return (
     <div className="App">
       <Header />
@@ -206,7 +209,7 @@ function App() {
           <pre id="output"></pre>
         </div>
         <div id="Right-body">
-          <Visual_box />
+          <VisualBox data={refs} />
         </div>
       </div>
     </div>
