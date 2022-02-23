@@ -13,7 +13,26 @@ const data = {
     {
       id: '3',
       _type: 'list',
-      value: ['1', '2']
+      value: [
+        {
+          ref: '1'
+        },
+        {
+          ref: '2'
+        },
+        {
+          ref: '4'
+        }
+      ]
+    },
+    {
+      id: '4',
+      _type: 'list',
+      value: [
+        {
+          ref: '1'
+        }
+      ]
     }
   ],
   variables: [
@@ -33,10 +52,17 @@ const data = {
       name: 'w',
       ref: '3'
     }
+    /*,
+    {
+      // TODO: if nothing is referencing to '4' then program crash
+      name: 'g',
+      ref: '4'
+    }*/
   ]
 };
 
-import { v4 as uuidv4 } from 'uuid';
+// prettier-ignore
+import {v4 as uuidv4} from 'uuid';
 
 const parse = (refs) => {
   refs = data;
@@ -56,13 +82,23 @@ const parse = (refs) => {
   });
 
   refs.objects.forEach((obj) => {
-    obj.uuid = uuidv4();
+    //obj.uuid = uuidv4();
+    if (obj._type === 'list') {
+      obj.value.forEach((item) => {
+        edges.push({
+          from: obj.id,
+          to: item.ref
+        });
+      });
+    }
 
     nodes.push({
-      id: obj.uuid,
-      label: JSON.stringify(obj.value)
+      id: obj.id,
+      label: obj._type === 'list' ? '[...]' : JSON.stringify(obj.value)
     });
 
+    // TODO: obj.vars is undefined
+    console.log(obj);
     obj.vars.forEach((_var) => {
       nodes.push({
         id: _var.uuid,
@@ -71,10 +107,12 @@ const parse = (refs) => {
 
       edges.push({
         from: _var.uuid,
-        to: obj.uuid
+        to: obj.id
       });
     });
   });
+  console.log(nodes);
+  console.log(edges);
 
   return {
     nodes: nodes,
