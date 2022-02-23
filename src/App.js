@@ -114,6 +114,7 @@ function builtinRead(x) {
 
 function outf(text) {
   var mypre = document.getElementById('output');
+  mypre.setAttribute('aria-label', 'Output from code');
   mypre.innerHTML = mypre.innerHTML + text;
 }
 
@@ -224,7 +225,7 @@ function App() {
         <div id="Left-body">
           <Control_panel />
           <CodeBox runit={runit} restart={start} step={step}></CodeBox>
-          <pre id="output"></pre>
+          <pre id="output" tabIndex={0}></pre>
         </div>
         <div id="Right-body">
           <VisualBox data={refs} />
