@@ -8,8 +8,11 @@ import VisualBox from './Components/VisualBox';
 let variables = [];
 let objects = [];
 let dbg = init_debugger();
-let break_points = [3, 4];
+let break_points = [];
 
+// Reference handling------------------------------------------------------------------------------
+
+// Return a string representing the current status.
 function get_line_status(lineno) {
   if (lineno !== 0) {
     return (
@@ -26,48 +29,47 @@ function get_line_status(lineno) {
   }
 }
 
-function alt_collect_variables() {
-  //variables = [];
-  //objects = [];
+// Update variables and objects using the current status of the Skulpt execution.
+function update_status() {
   let skip = 4;
 
-  // must be from Sk.globals and not Sk.builtin.globals, since the latter creates an entirely
+  // Must be from Sk.globals and not Sk.builtin.globals, since the latter creates an entirely
   // new dictionary which renders the '===' operator useless for reference checking (which is
   // used in retrieve_object_id(...))
-  window.Sk.global.console.log(window.Sk.globals);
   for (const [key, value] of Object.entries(window.Sk.globals)) {
     if (skip > 0) {
       skip--;
       continue;
     }
-    // retrieve id
+
     let _id = retrieve_object_id(value, objects);
 
-    // check if variable is already in variables
+    // Check if variable is already in variables, or if new variable should be added.
     const variable = variables.find((v) => v.name === key);
     if (variable) {
       variable.ref = _id;
     } else {
-      // Add new variable
       variables.push({
         name: key,
         ref: _id
       });
     }
+
     delete_unreferenced_objects();
   }
 }
 
+// Retrieve the object id for the given value.
+// If the value already exists the id to the already existing object is returned.
+// Otherwise a new object is created and this id is returned.
 function retrieve_object_id(value, objects) {
-  // fetch id if the object already exists
-
-  for (let obj in objects) {
+  for (const obj of objects) {
     // '===' returns true only if the objects have the same reference
     if (obj.value === value) {
       return obj.id;
     }
   }
-  // if the object doesn't exist yet add it and return new id
+  // If the object doesn't exist yet add it and return new id
   let _id = uuidv4();
   objects.push({
     id: _id,
@@ -77,9 +79,7 @@ function retrieve_object_id(value, objects) {
   return _id;
 }
 
-/*
-    Delete all objects that has no variable referencing them.
-    */
+// Delete all objects that has no variable referencing them.
 function delete_unreferenced_objects() {
   for (let i = 0; i < objects.length; i++) {
     if (!variables.some((v) => v.ref === objects[i].id)) {
@@ -89,16 +89,16 @@ function delete_unreferenced_objects() {
   }
 }
 
-// temporary id generator
+// Temporary id generator
 function uuidv4() {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
     (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
   );
 }
 
-/*Take steps using debugger------------------------------------------------------------------*/
+// Take steps using debugger-----------------------------------------------------------------------
 
-// initialize a new debugger object
+// Initialize a new debugger object.
 function init_debugger() {
   return new window.Sk.Debugger('<stdin>', {
     print: (txt) => console.log(txt),
@@ -118,7 +118,7 @@ function outf(text) {
   mypre.innerHTML = mypre.innerHTML + text;
 }
 
-function test_debugger(prog) {
+function start_debugger(prog) {
   dbg.enable_step_mode();
 
   window.Sk.configure({
@@ -144,7 +144,7 @@ function test_debugger(prog) {
 }
 
 //Loop through break_points and add a breakpoint at every line
-const init_break_ponts = () => {
+const init_break_points = () => {
   for (let break_point of break_points) {
     dbg.add_breakpoint('<stdin>.py', break_point, 0, false);
   }
@@ -153,10 +153,10 @@ const init_break_ponts = () => {
 const start = (prog, step_mode) => {
   console.log('Reset status');
   dbg = init_debugger();
-  init_break_ponts();
+  init_break_points();
   variables = [];
   objects = [];
-  test_debugger(prog);
+  start_debugger(prog);
 
   //Determine the mode for the debugging
   dbg.step_mode = step_mode;
@@ -168,7 +168,7 @@ const step = (prog) => {
   if (dbg.get_active_suspension() != null) {
     dbg.enable_step_mode();
     dbg.resume.call(dbg);
-    alt_collect_variables();
+    update_status();
 
     //If step_mode is false, restart the program and
     //enable step_mode. The only scenario for this is if
@@ -177,14 +177,18 @@ const step = (prog) => {
     start(prog, true);
     dbg.enable_step_mode();
     dbg.resume.call(dbg);
-    alt_collect_variables();
+    update_status();
 
     //Otherwise, just keep stepping
   } else {
     dbg.resume.call(dbg);
-    alt_collect_variables();
+    update_status();
   }
+
+  hack_set_refs({ objects: objects, variables: variables });
 };
+
+// ------------------------------------------------------------------------------------------------
 
 function runit(prog) {
   //If there is a current suspension, disable step_mode
@@ -214,9 +218,13 @@ function runit(prog) {
   }
 }
 
+let hack_set_refs;
+
 function App() {
   // eslint-disable-next-line no-unused-vars
-  const [refs, setRefs] = useState({});
+  const [refs, setRefs] = useState({ objects: objects, variables: variables });
+
+  hack_set_refs = setRefs;
 
   return (
     <div className="App">
