@@ -1,45 +1,7 @@
-const data = {
-  objects: [
-    {
-      id: '1',
-      _type: 'numeric',
-      value: 72
-    },
-    {
-      id: '2',
-      _type: 'string',
-      value: 'hello world!'
-    },
-    {
-      id: '3',
-      _type: 'list',
-      value: ['1', '2']
-    }
-  ],
-  variables: [
-    {
-      name: 'x',
-      ref: '1'
-    },
-    {
-      name: 'y',
-      ref: '1'
-    },
-    {
-      name: 'z',
-      ref: '2'
-    },
-    {
-      name: 'w',
-      ref: '3'
-    }
-  ]
-};
-
 import { v4 as uuidv4 } from 'uuid';
 
 const parse = (refs) => {
-  refs = data;
+  //refs = data;
   if (typeof refs === 'string') refs = JSON.parse(refs);
 
   const nodes = [];
