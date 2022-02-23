@@ -61,55 +61,48 @@ const data = {
   ]
 };
 
-// prettier-ignore
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 const parse = (refs) => {
   refs = data;
-  if (typeof refs === 'string') refs = JSON.parse(refs);
-
   const nodes = [];
   const edges = [];
 
-  refs.variables.forEach((_var) => {
-    _var.uuid = uuidv4();
-    const obj = refs.objects.find((obj) => obj.id === _var.ref);
-    if (typeof obj === 'undefined') throw new Error('Dangling variable! Memory Leak ALERT!!!!');
-
-    if (typeof obj.vars === 'undefined') obj.vars = [];
-
-    obj.vars.push(_var);
+  refs.variables.forEach((v) => {
+    const var_id = uuidv4();
+    // add variable as node
+    nodes.push({
+      id: var_id,
+      label: v.name
+    });
+    // add edge from variable to the referenced object
+    edges.push({
+      from: var_id,
+      to: v.ref
+    });
   });
 
-  refs.objects.forEach((obj) => {
-    //obj.uuid = uuidv4();
-    if (obj._type === 'list') {
-      obj.value.forEach((item) => {
+  refs.objects.forEach((o) => {
+    if (o._type === 'list') {
+      // lists
+      nodes.push({
+        id: o.id,
+        label: '[...]' // TODO: Update label with something more appropriate
+      });
+      // add edges from this node to all of the items in the list
+      o.value.forEach((item) => {
         edges.push({
-          from: obj.id,
+          from: o.id,
           to: item.ref
         });
       });
-    }
-
-    nodes.push({
-      id: obj.id,
-      label: obj._type === 'list' ? '[...]' : JSON.stringify(obj.value)
-    });
-
-    // TODO: obj.vars is undefined
-    console.log(obj);
-    obj.vars.forEach((_var) => {
+    } else {
+      // immutable objects
       nodes.push({
-        id: _var.uuid,
-        label: _var.name
+        id: o.id,
+        label: o.value.toString()
       });
-
-      edges.push({
-        from: _var.uuid,
-        to: obj.id
-      });
-    });
+    }
   });
   console.log(nodes);
   console.log(edges);
