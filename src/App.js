@@ -183,6 +183,8 @@ const step = (prog) => {
     dbg.resume.call(dbg);
     alt_collect_variables();
   }
+
+  hack_set_refs({ objects: objects, variables: variables });
 };
 
 function runit(prog) {
@@ -213,9 +215,13 @@ function runit(prog) {
   }
 }
 
+let hack_set_refs;
+
 function App() {
   // eslint-disable-next-line no-unused-vars
-  const [refs, setRefs] = useState({});
+  const [refs, setRefs] = useState({ objects: objects, variables: variables });
+
+  hack_set_refs = setRefs;
 
   return (
     <div className="App">
