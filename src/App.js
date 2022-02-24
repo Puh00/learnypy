@@ -4,7 +4,6 @@ import CodeBox from './Components/CodeBox';
 import Header from './Components/Header';
 import Control_panel from './Components/ControlPanel';
 import VisualBox from './Components/VisualBox';
-import Output_box from './Components/OutputBox';
 
 let variables = [];
 let objects = [];
@@ -113,10 +112,10 @@ function builtinRead(x) {
   return window.Sk.builtinFiles['files'][x];
 }
 
-let output = '';
-
 function outf(text) {
-  output = output + text + '\n';
+  var mypre = document.getElementById('output');
+  mypre.setAttribute('aria-label', 'Output from code');
+  mypre.innerHTML = mypre.innerHTML + text;
 }
 
 function start_debugger(prog) {
@@ -142,6 +141,7 @@ function start_debugger(prog) {
     dbg
   );
   myPromise.then(dbg.success.bind(dbg), dbg.error.bind(dbg));
+  update_status();
 }
 
 //Loop through break_points and add a breakpoint at every line
@@ -157,6 +157,8 @@ const start = (prog, step_mode) => {
   init_break_points();
   variables = [];
   objects = [];
+  update_status();
+  hack_set_refs({ objects: objects, variables: variables });
   start_debugger(prog);
 
   //Determine the mode for the debugging
@@ -169,7 +171,6 @@ const step = (prog) => {
   if (dbg.get_active_suspension() != null) {
     dbg.enable_step_mode();
     dbg.resume.call(dbg);
-    update_status();
 
     //If step_mode is false, restart the program and
     //enable step_mode. The only scenario for this is if
@@ -178,14 +179,13 @@ const step = (prog) => {
     start(prog, true);
     dbg.enable_step_mode();
     dbg.resume.call(dbg);
-    update_status();
 
     //Otherwise, just keep stepping
   } else {
     dbg.resume.call(dbg);
-    update_status();
   }
 
+  update_status();
   hack_set_refs({ objects: objects, variables: variables });
 };
 
@@ -197,6 +197,8 @@ function runit(prog) {
   if (dbg.get_active_suspension() != null) {
     dbg.disable_step_mode();
     dbg.resume.call(dbg);
+    update_status();
+    hack_set_refs({ objects: objects, variables: variables });
     return;
   }
 
@@ -217,6 +219,8 @@ function runit(prog) {
     start(prog, false);
     dbg.resume.call(dbg);
   }
+  update_status();
+  hack_set_refs({ objects: objects, variables: variables });
 }
 
 let hack_set_refs;
@@ -234,7 +238,7 @@ function App() {
         <div id="Left-body">
           <Control_panel />
           <CodeBox runit={runit} restart={start} step={step}></CodeBox>
-          <Output_box text={output} />
+          <pre id="output" tabIndex={0}></pre>
         </div>
         <div id="Right-body">
           <VisualBox data={refs} />

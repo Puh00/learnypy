@@ -99,7 +99,6 @@ body {
   position: relative;
   display: inline-block;
 }
-
 .Dropdown-menu{
   display: none;
   position: absolute;
@@ -108,7 +107,6 @@ body {
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
-
 .Dropdown-item {
   color: black;
   padding: 12px 16px;
@@ -122,10 +120,9 @@ body {
   font-family: "Courier New";
   flex-basis: 45%;
   margin: 4px;
-  white-space: pre-line;
 }
 
-.Output-box{
+#output {
   margin: 4px;
   padding: 4px;
   flex-basis: 45%;
