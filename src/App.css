@@ -122,9 +122,10 @@ body {
   font-family: "Courier New";
   flex-basis: 45%;
   margin: 4px;
+  white-space: pre-line;
 }
 
-#output {
+.Output-box{
   margin: 4px;
   padding: 4px;
   flex-basis: 45%;

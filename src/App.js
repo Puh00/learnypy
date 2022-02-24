@@ -4,6 +4,7 @@ import CodeBox from './Components/CodeBox';
 import Header from './Components/Header';
 import Control_panel from './Components/ControlPanel';
 import VisualBox from './Components/VisualBox';
+import Output_box from './Components/OutputBox';
 
 let variables = [];
 let objects = [];
@@ -112,9 +113,10 @@ function builtinRead(x) {
   return window.Sk.builtinFiles['files'][x];
 }
 
+let output = '';
+
 function outf(text) {
-  var mypre = document.getElementById('output');
-  mypre.innerHTML = mypre.innerHTML + text;
+  output = output + text + '\n';
 }
 
 function test_debugger(prog) {
@@ -155,6 +157,7 @@ const start = (prog, step_mode) => {
   init_break_ponts();
   variables = [];
   objects = [];
+  output = '';
   test_debugger(prog);
 
   //Determine the mode for the debugging
@@ -224,7 +227,7 @@ function App() {
         <div id="Left-body">
           <Control_panel />
           <CodeBox runit={runit} restart={start} step={step}></CodeBox>
-          <pre id="output"></pre>
+          <Output_box text={output} />
         </div>
         <div id="Right-body">
           <VisualBox data={refs} />
