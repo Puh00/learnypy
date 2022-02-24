@@ -157,8 +157,6 @@ const start = (prog, step_mode) => {
   init_break_points();
   variables = [];
   objects = [];
-  update_status();
-  hack_set_refs({ objects: objects, variables: variables });
   start_debugger(prog);
 
   //Determine the mode for the debugging
