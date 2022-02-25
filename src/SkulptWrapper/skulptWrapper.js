@@ -1,10 +1,6 @@
 /* eslint-disable no-unused-vars */
 import GlobalsParser from './skulptGlobalsParser';
 
-let parser = new GlobalsParser();
-let dbg = init_debugger();
-let break_points = [];
-
 //------------------------------Builtin functions-------------------------------
 function builtinRead(x) {
   if (window.Sk.builtinFiles === undefined || window.Sk.builtinFiles['files'][x] === undefined)
@@ -153,5 +149,11 @@ function runit(prog, callback) {
 
   parser.update_status(callback);
 }
+
+// -----------------------------------------------------------------------------
+let parser = new GlobalsParser();
+let dbg = init_debugger();
+let break_points = [];
+// -----------------------------------------------------------------------------
 
 export { start, step, runit, add_breakpoint, add_breakpoints, clear_breakpoints };
