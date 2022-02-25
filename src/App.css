@@ -53,7 +53,7 @@ body {
   display: flex;
 }
 
-.Control-button, .Code-box, .Visual-box, #output, .Control-panel{
+.Control-button, .Code-box, .Visual-box, .Output-box, .Control-panel{
   background-color: var(--components);
 }
 
@@ -130,6 +130,7 @@ body {
   padding: 4px;
   flex-basis: 45%;
   border-radius: 4px;
+  white-space: pre-line;
 }
 
 .Code-box{

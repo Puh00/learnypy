@@ -113,10 +113,11 @@ function builtinRead(x) {
   return window.Sk.builtinFiles['files'][x];
 }
 
-let output = '';
+let latest_output = '';
 
 function outf(text) {
-  output = output + text + '\n';
+  latest_output = latest_output + text;
+  hack_set_output({ text: latest_output });
 }
 
 function test_debugger(prog) {
@@ -157,8 +158,9 @@ const start = (prog, step_mode) => {
   init_break_ponts();
   variables = [];
   objects = [];
-  output = '';
   test_debugger(prog);
+  latest_output = '';
+  hack_set_output({ text: '' });
 
   //Determine the mode for the debugging
   dbg.step_mode = step_mode;
@@ -216,9 +218,14 @@ function runit(prog) {
   }
 }
 
+let hack_set_output;
+
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [refs, setRefs] = useState({});
+  const [output, setOutput] = useState({ text: '' });
+
+  hack_set_output = setOutput;
 
   return (
     <div className="App">
