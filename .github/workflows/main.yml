@@ -1,0 +1,46 @@
+name: main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    name: ESLint & Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install modules
+        run: npm install
+
+      - name: Run ESLint
+        run: npm run lint:fix
+
+      - name: Verify Changed files
+        uses: tj-actions/verify-changed-files@v7.1
+        id: verify_changed_files
+        with:
+          files: |
+            .(ts)$
+            .(tsx)$
+            .(js)$
+            .(json)$
+            .(md)$
+            .(css)$
+            .(yml)$
+
+      - name: Commit files
+        if: steps.verify_changed_files.outputs.files_changed == 'true'
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Format Code" -m "skip ci" -a
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          branch: ${{ github.ref }}

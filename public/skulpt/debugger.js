@@ -3,6 +3,10 @@
  */
 
  var Sk = Sk || {}; //jshint ignore:line
+ let variables = [];
+ let objects = [];
+ // Return a string representing the current status.
+
 
  function dbgHasOwnProperty(obj, prop) {
      var proto = obj.constructor.prototype;
@@ -223,9 +227,11 @@
      
      if (this.suspension_stack.length === 0) {
          this.print("No running program");
+
      } else {
          var promise = this.suspension_handler(this.get_active_suspension());
          promise.then(this.success.bind(this), this.error.bind(this));
+   
      }
  };
  

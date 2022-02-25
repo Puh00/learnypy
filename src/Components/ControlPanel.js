@@ -20,7 +20,8 @@ class Control_button extends Button {
         form="CodeForm"
         name={this.on_click()}
         className={this.className}
-        title={this.tooltip}>
+        title={this.tooltip}
+        aria-label={this.tooltip}>
         {this.icon}
       </button>
     );
@@ -74,7 +75,7 @@ const menu_button = new Control_button(
 /* CREATING CONTROL PANEL */
 function Control_panel() {
   return (
-    <div className="Control-panel">
+    <div aria-label="test" className="Control-panel">
       <play_button.render />
       <next_button.render />
       <pause_button.render />
