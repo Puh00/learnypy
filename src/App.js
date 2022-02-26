@@ -9,6 +9,7 @@ let variables = [];
 let objects = [];
 let dbg = init_debugger();
 let break_points = [];
+var last_output;
 
 // Reference handling------------------------------------------------------------------------------
 
@@ -102,7 +103,8 @@ function uuidv4() {
 function init_debugger() {
   return new window.Sk.Debugger('<stdin>', {
     print: (txt) => console.log(txt),
-    get_source_line: (lineno) => get_line_status(lineno)
+    get_source_line: (lineno) => get_line_status(lineno),
+    error: (e) => outf(e)
   });
 }
 
@@ -115,7 +117,12 @@ function builtinRead(x) {
 function outf(text) {
   var mypre = document.getElementById('output');
   mypre.setAttribute('aria-label', 'Output from code');
-  mypre.innerHTML = mypre.innerHTML + text;
+  //new line for every error message
+  if (String(last_output).includes('SyntaxError')) {
+    text = '\n' + text;
+    mypre.innerHTML = mypre.innerHTML + text;
+  } else mypre.innerHTML = mypre.innerHTML + text;
+  last_output = text;
 }
 
 function start_debugger(prog) {
