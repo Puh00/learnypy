@@ -13,7 +13,6 @@ class Control_button extends Button {
   }
 
   render = () => {
-    //prob. better way to do this instead of if/else?
     return (
       <button
         type="submit"

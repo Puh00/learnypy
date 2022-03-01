@@ -41,7 +41,7 @@ class CodeBox extends React.Component {
 
   render() {
     return (
-      <div className="editor-container">
+      <div className="Code-box">
         <ControlledEditorComponent
           onBeforeChange={this.handleChange}
           value={this.state.value}

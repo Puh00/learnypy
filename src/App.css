@@ -54,7 +54,7 @@ body {
   display: flex;
 }
 
-.Code-box, .Visual-box, .Output-box {
+.Visual-box, .Output-box {
   background-color: var(--background);
 }
 
@@ -62,10 +62,11 @@ body {
   background-color: var(--components);
 }
 
-.Code-box, .Visual-box, .Output-box, .Control-button, .Control-panel {
+.Code-box, .Visual-box, .Output-box, .Control-panel{
   border-width: 2px;
   border-color: var(--dark);
   border-style: solid;
+  border-radius: 4px;
 }
 
 .Control-panel {
@@ -83,6 +84,8 @@ body {
   align-items: center;
   justify-content: space-around;
   width: 66px;
+  border-color: var(--dark);
+  border-style: solid;
   border-top-width: 0px;
   border-bottom-width: 0px;
   border-left-width: 0px;
@@ -127,15 +130,6 @@ body {
   display: block;
 } */
 
-.Form-box {
-  display: flex;
-  flex-direction: column;
-  font-family: "Courier New";
-  flex-basis: 45%;
-  margin: 4px;
-  white-space: pre-line;
-}
-
 .Output-box{
   margin: 4px;
   padding: 4px;
@@ -145,8 +139,7 @@ body {
 }
 
 .Code-box{
-  flex-basis: 100%;
-  border-radius: 4px;
+  margin: 4px;
 }
 
 .Visual-box {
