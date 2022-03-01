@@ -1,5 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/mode/python/python';
+import 'codemirror/theme/neat.css';
+import { Controlled as ControlledEditorComponent } from 'react-codemirror2-react-17';
 
 class CodeBox extends React.Component {
   constructor(props) {
@@ -17,8 +21,8 @@ class CodeBox extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
+  handleChange(editor, data, value) {
+    this.setState({ value: value });
   }
 
   handleSubmit(event) {
@@ -37,14 +41,20 @@ class CodeBox extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} className="Form-box" id="CodeForm">
-        <textarea
+      <div className="editor-container">
+        <ControlledEditorComponent
+          onBeforeChange={this.handleChange}
           value={this.state.value}
-          aria-label="write your code here"
-          onChange={this.handleChange}
-          className="Code-box"
+          className="code-mirror-wrapper"
+          options={{
+            lineWrapping: true,
+            lint: true,
+            mode: 'python',
+            lineNumbers: true,
+            theme: 'neat'
+          }}
         />
-      </form>
+      </div>
     );
   }
 }

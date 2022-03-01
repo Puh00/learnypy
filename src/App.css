@@ -1,7 +1,8 @@
 :root {
-  --background: gray;
-  --components: white;
-  --accent: black;
+  --background: white;
+  --components: #D6E0F0;
+  --dark: #393B44;
+  --hover: #cedaee;
 }
 
 html,
@@ -30,7 +31,7 @@ body {
 
 .Header-style {
   margin: 12px;
-  color: var(--accent);
+  color: var(--dark);
 }
 
 #App-body {
@@ -53,8 +54,18 @@ body {
   display: flex;
 }
 
-.Control-button, .Code-box, .Visual-box, .Output-box, .Control-panel{
+.Code-box, .Visual-box, .Output-box {
+  background-color: var(--background);
+}
+
+.Control-button, .Control-panel {
   background-color: var(--components);
+}
+
+.Code-box, .Visual-box, .Output-box, .Control-button, .Control-panel {
+  border-width: 2px;
+  border-color: var(--dark);
+  border-style: solid;
 }
 
 .Control-panel {
@@ -65,7 +76,6 @@ body {
   flex-direction: row;
   flex-wrap: nowrap;
   border-radius: 4px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .Control-button {
@@ -76,6 +86,7 @@ body {
   border-top-width: 0px;
   border-bottom-width: 0px;
   border-left-width: 0px;
+  color: var(--dark);
 }
 
 .Control-button:first-child{
@@ -92,7 +103,7 @@ body {
 }
 
 .Control-button:hover{
-  background-color:rgb(242, 254, 255);
+  background-color:var(--hover);
 }
 
 /* .Dropdown {
