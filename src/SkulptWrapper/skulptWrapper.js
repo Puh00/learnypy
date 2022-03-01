@@ -57,7 +57,9 @@ const start_debugger = (prog, callback) => {
     breakpoints: dbg.check_breakpoints.bind(dbg)
   });
 
-  parser.update_status(callback);
+  if (typeof callback === 'function') {
+    callback();
+  }
 
   let susp_handlers = {};
   susp_handlers['*'] = dbg.suspension_handler.bind(this);
@@ -92,12 +94,12 @@ const clear_breakpoints = () => {
   break_points = [];
 };
 
-const start = (prog, step_mode = false) => {
+const start = (prog, step_mode = false, callback) => {
   console.log('Reset status');
   parser = new GlobalsParser();
   dbg = init_debugger();
   init_break_points();
-  start_debugger(prog);
+  start_debugger(prog, callback);
 
   //Determine the mode for the debugging
   dbg.step_mode = step_mode;
@@ -142,7 +144,7 @@ function runit(prog, callback) {
     //If the current suspension stack is empty, run the program normally.
     //Otherwise, resume the debugging with step_mode disabled
     if (dbg.get_active_suspension() == null) {
-      start(prog, false);
+      start(prog, false, callback);
       dbg.resume.call(dbg);
     } else {
       dbg.resume.call(dbg);
@@ -150,7 +152,7 @@ function runit(prog, callback) {
 
     //Just start the program normally
   } else {
-    start(prog, false);
+    start(prog, false, callback);
     dbg.resume.call(dbg);
   }
 
