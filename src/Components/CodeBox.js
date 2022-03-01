@@ -3,6 +3,10 @@ import React from 'react';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/python/python';
 import 'codemirror/theme/neat.css';
+import 'codemirror/addon/edit/closetag';
+import 'codemirror/addon/edit/closebrackets';
+import 'codemirror/addon/edit/closetag';
+import 'codemirror/addon/edit/closebrackets';
 import { Controlled as ControlledEditorComponent } from 'react-codemirror2-react-17';
 
 class CodeBox extends React.Component {
@@ -10,7 +14,7 @@ class CodeBox extends React.Component {
     super(props);
 
     this.state = {
-      value: 'print(1)\nprint(2)\nprint(3)\nprint(4)\nprint(5)'
+      value: 'print(1)\nprint(2)\na=1;\nb=2;\nc=a;'
     };
 
     this.runit = props.runit;
@@ -51,7 +55,9 @@ class CodeBox extends React.Component {
             lint: true,
             mode: 'python',
             lineNumbers: true,
-            theme: 'neat'
+            theme: 'neat',
+            autoCloseBrackets: true,
+            autoCloseTags: true
           }}
         />
       </div>
