@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 import GlobalsParser from './skulptGlobalsParser';
 
+// instantiate the globals since undefined in JavaScript is a atrocious
+window.Sk.globals = {};
+
 //------------------------------Builtin functions-------------------------------
 function builtinRead(x) {
   if (window.Sk.builtinFiles === undefined || window.Sk.builtinFiles['files'][x] === undefined)
