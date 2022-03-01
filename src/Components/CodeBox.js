@@ -30,6 +30,7 @@ class CodeBox extends React.Component {
   }
 
   handleSubmit(event) {
+    console.log('handleSubmit');
     event.preventDefault();
     if (event.nativeEvent?.submitter.name == 'run') {
       console.log('run');

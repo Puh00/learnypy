@@ -15,9 +15,7 @@ class Control_button extends Button {
   render = () => {
     return (
       <button
-        type="submit"
-        form="CodeForm"
-        name={this.on_click()}
+        onClick={this.on_click} //The onClick functions needs to call handleSubmit() in CodeBox. But how?
         className={this.className}
         title={this.tooltip}
         aria-label={this.tooltip}>
@@ -32,6 +30,7 @@ const play_button = new Control_button(
   <Play_logo />,
   () => {
     /* Run all code */
+    console.log('clicked play-button');
     return 'run';
   },
   'Run code'
@@ -40,6 +39,7 @@ const play_button = new Control_button(
 const next_button = new Control_button(
   <Next_logo />,
   () => {
+    console.log('clicked step-button');
     return 'step';
   },
   'Run next line'
@@ -49,6 +49,7 @@ const pause_button = new Control_button(
   <Pause_logo />,
   () => {
     /*pause running code*/
+    console.log('clicked pause-button');
     return 'pause';
   },
   'Pause running code'
@@ -57,6 +58,7 @@ const pause_button = new Control_button(
 const repeat_button = new Control_button(
   <Repeat_logo />,
   () => {
+    console.log('clicked repeat-button');
     return 'restart';
   },
   'Restart'
@@ -66,6 +68,7 @@ const menu_button = new Control_button(
   <Menu_logo />,
   () => {
     /*Drop down menu*/
+    console.log('clicked menu-button');
     return 'dropdown';
   },
   'Menu'
