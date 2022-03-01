@@ -27,6 +27,7 @@ function App() {
     latest_output = latest_output + text;
     setOutput({ text: latest_output });
   };
+
   return (
     <div className="App">
       <Header />

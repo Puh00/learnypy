@@ -41,7 +41,8 @@ const init_debugger = () => {
 
   return new window.Sk.Debugger('<stdin>', {
     print: (txt) => console.log(txt),
-    get_source_line: get_line_status
+    get_source_line: get_line_status,
+    error: (e) => func.outf(e)
   });
 };
 
