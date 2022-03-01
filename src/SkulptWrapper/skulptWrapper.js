@@ -13,6 +13,12 @@ function outf(text) {
   mypre.setAttribute('aria-label', 'Output from code');
   mypre.innerHTML = mypre.innerHTML + text;
 }
+
+// export this object to dynamically "override" the builtin functions
+const func = {
+  builtinRead: builtinRead,
+  outf: outf
+};
 //------------------------------------------------------------------------------
 
 // Initialize a new debugger object.
@@ -39,17 +45,19 @@ const init_debugger = () => {
   });
 };
 
-const start_debugger = (prog) => {
+const start_debugger = (prog, callback) => {
   dbg.enable_step_mode();
 
   window.Sk.configure({
-    output: outf,
-    read: builtinRead,
+    output: func.outf,
+    read: func.builtinRead,
     yieldLimit: null,
     execLimit: null,
     debugging: true,
     breakpoints: dbg.check_breakpoints.bind(dbg)
   });
+
+  parser.update_status(callback);
 
   let susp_handlers = {};
   susp_handlers['*'] = dbg.suspension_handler.bind(this);
@@ -62,7 +70,6 @@ const start_debugger = (prog) => {
     dbg
   );
   myPromise.then(dbg.success.bind(dbg), dbg.error.bind(dbg));
-  parser.update_status();
 };
 
 //Loop through break_points and add a breakpoint at every line
@@ -156,4 +163,4 @@ let dbg = init_debugger();
 let break_points = [];
 // -----------------------------------------------------------------------------
 
-export { start, step, runit, add_breakpoint, add_breakpoints, clear_breakpoints };
+export { func, start, step, runit, add_breakpoint, add_breakpoints, clear_breakpoints };
