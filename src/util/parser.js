@@ -19,13 +19,14 @@ const parse = (refs) => {
   });
 
   refs.objects.forEach((o) => {
-    if (o._type === 'list') {
+    if (o.type === 'list') {
       // lists
       nodes.push({
         id: o.id,
         label: '[...]' // TODO: Update label with something more appropriate
       });
       // add edges from this node to all of the items in the list
+
       o.value.forEach((item) => {
         edges.push({
           from: o.id,
