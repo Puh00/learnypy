@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import styles from './VisualBox.module.css';
 
@@ -6,6 +6,11 @@ import Graph from 'react-graph-vis';
 import parse from '../util/parser';
 
 function VisualBox({ data }) {
+  useEffect(() => {
+    set_text();
+    set_logical_tabbing_on_graph();
+  });
+
   const options = {
     layout: {
       hierarchical: {
@@ -26,7 +31,6 @@ function VisualBox({ data }) {
   };
 
   //generates a text that discribes the graph of objects and sets it as aria-label for the canvas element to support screen readers
-  // eslint-disable-next-line no-unused-vars
   function set_text() {
     const refs = parse(data);
     var alt_text = '';
@@ -49,10 +53,13 @@ function VisualBox({ data }) {
     }
     var canvas = document.getElementsByTagName('canvas')[0];
     canvas.setAttribute('aria-label', alt_text);
-    //places the graph in logical tab order
+  }
+
+  function set_logical_tabbing_on_graph() {
     var viz_box = document.getElementsByClassName('vis-network')[0];
     viz_box.setAttribute('tabindex', '0');
   }
+
   return (
     <div className={styles['visual-box']}>
       <Graph graph={parse(data)} options={options} />
