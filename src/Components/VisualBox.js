@@ -53,7 +53,6 @@ function VisualBox({ data }) {
     }
     var canvas = document.getElementsByTagName('canvas')[0];
     canvas.setAttribute('aria-label', alt_text);
-    console.log(refs.nodes);
   }
 
   function set_logical_tabbing_on_graph() {
