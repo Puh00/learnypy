@@ -4,87 +4,86 @@ import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
 import { ReactComponent as Pause_logo } from './Icons/pause.svg';
 import { ReactComponent as Repeat_logo } from './Icons/repeat.svg';
 import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg'; /*Find correct logo*/
-import Button from './Button';
 
-/* SPECIALICED BUTTONS CLASS */
-class Control_button extends Button {
-  constructor(icon, on_click, tooltip) {
-    super(icon, on_click, tooltip, 'Control-button');
-  }
-
-  render = () => {
+const ControlPanel = ({ code, runit, step, restart }) => {
+  const play_button = () => {
     return (
       <button
-        onClick={this.on_click} //The onClick functions needs to call handleSubmit() in CodeBox. But how?
-        className={this.className}
-        title={this.tooltip}
-        aria-label={this.tooltip}>
-        {this.icon}
+        onClick={() => {
+          runit(code);
+        }}
+        className={'Control-button'}
+        data-toggle="tooltip"
+        title={'Run code'}>
+        {<Play_logo />}
       </button>
     );
   };
-}
 
-/*  CREATING BUTTONS */
-const play_button = new Control_button(
-  <Play_logo />,
-  () => {
-    /* Run all code */
-    console.log('clicked play-button');
-    return 'run';
-  },
-  'Run code'
-);
+  const next_button = () => {
+    return (
+      <button
+        onClick={() => {
+          step(code);
+        }}
+        className={'Control-button'}
+        data-toggle="tooltip"
+        title={'Run next line'}>
+        {<Next_logo />}
+      </button>
+    );
+  };
 
-const next_button = new Control_button(
-  <Next_logo />,
-  () => {
-    console.log('clicked step-button');
-    return 'step';
-  },
-  'Run next line'
-);
+  const pause_button = () => {
+    return (
+      <button
+        onClick={() => {
+          console.log('Pause not implemented');
+        }}
+        className={'Control-button'}
+        data-toggle="tooltip"
+        title={'Pause running code'}>
+        {<Pause_logo />}
+      </button>
+    );
+  };
 
-const pause_button = new Control_button(
-  <Pause_logo />,
-  () => {
-    /*pause running code*/
-    console.log('clicked pause-button');
-    return 'pause';
-  },
-  'Pause running code'
-);
+  const repeat_button = () => {
+    return (
+      <button
+        onClick={() => {
+          restart(code);
+        }}
+        className={'Control-button'}
+        data-toggle="tooltip"
+        title={'Restart'}>
+        {<Repeat_logo />}
+      </button>
+    );
+  };
 
-const repeat_button = new Control_button(
-  <Repeat_logo />,
-  () => {
-    console.log('clicked repeat-button');
-    return 'restart';
-  },
-  'Restart'
-);
-
-const menu_button = new Control_button(
-  <Menu_logo />,
-  () => {
-    /*Drop down menu*/
-    console.log('clicked menu-button');
-    return 'dropdown';
-  },
-  'Menu'
-);
-
-/* CREATING CONTROL PANEL */
-function Control_panel() {
+  const menu_button = () => {
+    return (
+      <button
+        onClick={() => {
+          console.log('Drop-down menu not implemented');
+        }}
+        className={'Control-button'}
+        data-toggle="tooltip"
+        title={'Menu'}>
+        {<Menu_logo />}
+      </button>
+    );
+  };
   return (
     <div aria-label="test" className="Control-panel">
-      <play_button.render />
-      <next_button.render />
-      <pause_button.render />
-      <repeat_button.render />
-      <menu_button.render />
+      {play_button()}
+      {next_button()}
+      {pause_button()}
+      {repeat_button()}
+      {menu_button()}
     </div>
   );
-}
+};
 
-export default Control_panel;
+export default ControlPanel;

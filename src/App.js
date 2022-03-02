@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import CodeBox from './Components/CodeBox';
 import Header from './Components/Header';
-import Control_panel from './Components/ControlPanel';
+import ControlPanel from './Components/ControlPanel';
 import VisualBox from './Components/VisualBox';
 import Output_box from './Components/OutputBox';
 
@@ -11,6 +11,7 @@ import { func, start, step, runit } from './SkulptWrapper/skulptWrapper';
 function App() {
   const [refs, setRefs] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
+  const [code, setCode] = useState('a=1\nb=1\nc=b');
 
   // instantiate with setRefs as the callback function
   const runit_callback = (prog) => runit(prog, setRefs);
@@ -33,8 +34,13 @@ function App() {
       <Header />
       <div id="App-body">
         <div id="Left-body">
-          <Control_panel />
-          <CodeBox runit={runit_callback} restart={start_callback} step={step_callback}></CodeBox>
+          <ControlPanel
+            code={code}
+            runit={runit_callback}
+            step={step_callback}
+            restart={start_callback}
+          />
+          <CodeBox code={code} setCode={setCode} />
           <Output_box text={output} />
         </div>
         <div id="Right-body">
