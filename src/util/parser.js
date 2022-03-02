@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-
+var count = 0;
 const parse = (refs) => {
   const nodes = [];
   const edges = [];
@@ -30,9 +30,12 @@ const parse = (refs) => {
       o.value.forEach((item) => {
         edges.push({
           from: o.id,
-          to: item.ref
+          to: item.ref,
+          label: generate_index_text(count, o.id, item.ref) //TODO: style labels
         });
+        count++;
       });
+      count = 0;
     } else {
       // immutable objects
       nodes.push({
@@ -43,6 +46,17 @@ const parse = (refs) => {
   });
   console.log(nodes);
   console.log(edges);
+
+  function generate_index_text(count, from, to) {
+    for (let i = 0; i < edges.length; i++) {
+      if (edges[i].from == from && edges[i].to == to) {
+        let old_label = edges[i].label;
+        edges[i].label = '';
+        return old_label + ' & index:' + count;
+      }
+    }
+    return 'index:' + count;
+  }
 
   return {
     nodes: nodes,
