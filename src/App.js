@@ -12,17 +12,22 @@ function App() {
   const [refs, setRefs] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
 
+  let latest_output = '';
+
   // instantiate with setRefs as the callback function
-  const runit_callback = (prog) => runit(prog, setRefs);
-  const step_callback = (prog) =>
-    step(prog, (vars, objs) => {
-      setRefs(vars, objs);
-    });
+  const runit_callback = (prog) => {
+    setOutput({ test: '' });
+    runit(prog, setRefs);
+    latest_output = '';
+  };
+  const step_callback = (prog) => {
+    setOutput({ text: latest_output });
+    step(prog, setRefs);
+  };
   const start_callback = (prog) =>
     start(prog, false, () => {
-      setOutput('');
+      setOutput({ text: '' });
     });
-  let latest_output = '';
   func.outf = (text) => {
     latest_output = latest_output + text;
     setOutput({ text: latest_output });
