@@ -5,7 +5,6 @@ class GlobalsParser {
     this.variables = [];
     this.objects = [];
   }
-  internal_objects = [];
 
   // Update variables and objects using the current status of the Skulpt execution.
   update_status(callback) {
@@ -20,7 +19,7 @@ class GlobalsParser {
         continue;
       }
 
-      let _id = this.retrieve_object_id(value, this.internal_objects);
+      let _id = this.retrieve_object_id(value);
       // Check if variable is already in variables, or if new variable should be added.
       const variable = this.variables.find((v) => v.name === key);
       if (variable) {
@@ -33,50 +32,70 @@ class GlobalsParser {
       }
     }
 
-    this.regenerate_objects();
+    this.update_values();
+    this.remove_unreferenced_objects();
 
     if (typeof callback === 'function') {
       this.callback(callback);
     }
   }
 
-  // Replace objects with new array based on internal_object
-  regenerate_objects() {
-    let test = [];
-    for (let i = 0; i < this.internal_objects.length; i++) {
-      if (this.internal_objects[i].type === 'list') {
+  // Create new object
+  // (value is used to represent object, js_object is used for comparison)
+  create_object(js_object) {
+    if (js_object.tp$name === 'list') {
+      let value = [];
+      for (const v of js_object.v) {
+        value.push({ ref: this.retrieve_object_id(v) });
+      }
+      return {
+        id: uuidv4(),
+        value: value,
+        type: js_object.tp$name,
+        js_object: js_object
+      };
+      // Add more types here
+    } else {
+      return {
+        id: uuidv4(),
+        value: js_object.v,
+        type: js_object.tp$name,
+        js_object: js_object
+      };
+    }
+  }
+
+  // Update all values (if there was a change in js_object)
+  update_values() {
+    for (let i = 0; i < this.objects.length; i++) {
+      if (this.objects[i].type === 'list') {
         let test2 = [];
-        for (const v of this.internal_objects[i].value.v) {
+        for (const v of this.objects[i].js_object.v) {
           test2.push({ ref: this.retrieve_object_id(v) });
         }
-        test.push({ ...this.internal_objects[i], value: test2 });
+        this.objects[i].value = test2;
       } else {
-        test.push(this.internal_objects[i]);
+        console.log(this.objects[i].js_object.v);
+        this.objects[i].ref = this.objects[i].js_object.v;
+        this.objects[i].value = this.objects[i].js_object.v;
       }
     }
-    this.objects = test;
-
-    this.remove_unreferenced_objects();
   }
 
   // Retrieve the object id for the given value.
   // If the value already exists the id to the already existing object is returned.
   // Otherwise a new object is created and this id is returned.
-  retrieve_object_id(value) {
-    for (const obj of this.internal_objects) {
+  retrieve_object_id(js_object) {
+    for (const obj of this.objects) {
       // '===' returns true only if the objects have the same reference
-      if (obj.value === value) {
+      if (obj.js_object === js_object) {
         return obj.id;
       }
     }
     // If the object doesn't exist yet add it and return new id
-    let _id = uuidv4();
-    this.internal_objects.push({
-      id: _id,
-      value: value,
-      type: value.tp$name
-    });
-    return _id;
+    let obj = this.create_object(js_object);
+    this.objects.push(obj);
+    return obj.id;
   }
 
   // Remove all objects that has no reference to them.
