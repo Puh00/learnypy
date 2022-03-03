@@ -40,8 +40,16 @@ class GlobalsParser {
     }
   }
 
-  // Create new object
-  // (value is used to represent object, js_object is used for comparison)
+  /*
+  Create and return new object.
+  Type of object:
+    Object: {
+      id: uuid for the object,
+      value: used for visual representation,
+      type: type of the object,
+      js_object: used to compare with objects from Sk.globals
+    }
+  */
   create_object(js_object) {
     if (js_object.tp$name === 'list') {
       let value = [];
@@ -65,20 +73,17 @@ class GlobalsParser {
     }
   }
 
-  // Update all values (if there was a change in js_object)
+  // Update all object values (only needed for mutable objects).
   update_values() {
-    for (let i = 0; i < this.objects.length; i++) {
-      if (this.objects[i].type === 'list') {
-        let test2 = [];
-        for (const v of this.objects[i].js_object.v) {
-          test2.push({ ref: this.retrieve_object_id(v) });
+    for (const obj of this.objects) {
+      if (obj.type === 'list') {
+        let refs = [];
+        // Update all references in the list
+        for (const v of obj.js_object.v) {
+          refs.push({ ref: this.retrieve_object_id(v) });
         }
-        this.objects[i].value = test2;
-      } else {
-        console.log(this.objects[i].js_object.v);
-        this.objects[i].ref = this.objects[i].js_object.v;
-        this.objects[i].value = this.objects[i].js_object.v;
-      }
+        obj.value = refs;
+      } // Add more types
     }
   }
 
