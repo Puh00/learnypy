@@ -91,18 +91,36 @@ class GlobalsParser {
   // If the value already exists the id to the already existing object is returned.
   // Otherwise a new object is created and this id is returned.
   retrieve_object_id(js_object) {
+    var obj;
     for (const obj of this.objects) {
       // '===' returns true only if the objects have the same reference
       if (obj.js_object === js_object) {
         return obj.id;
       }
     }
-    // If the object doesn't exist yet add it and return new id
-    let obj = this.create_object(js_object);
+    //small int objects is not created more than once
+    if (js_object.tp$name === 'int' && js_object.v <= 256 && js_object.v >= -5) {
+      var small_int_id = this.retrieve_small_int_object_id(js_object);
+      if (!small_int_id) {
+        obj = this.create_object(js_object);
+      } else return small_int_id;
+    } else {
+      // If the object doesn't exist yet add it and return new id
+      obj = this.create_object(js_object);
+    }
     this.objects.push(obj);
     return obj.id;
   }
 
+  // If the small int value already exists the id to the already existing object is returned, otherwise false is returned.
+  retrieve_small_int_object_id(js_object) {
+    for (const obj of this.objects) {
+      if (obj.js_object.v === js_object.v) {
+        return obj.id;
+      }
+    }
+    return false;
+  }
   // Remove all objects that has no reference to them.
   remove_unreferenced_objects() {
     for (let i = 0; i < this.objects.length; i++) {
