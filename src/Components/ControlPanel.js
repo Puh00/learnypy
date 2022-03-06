@@ -3,7 +3,7 @@ import { ReactComponent as Play_logo } from './Icons/play.svg';
 import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
 import { ReactComponent as Pause_logo } from './Icons/pause.svg';
 import { ReactComponent as Repeat_logo } from './Icons/repeat.svg';
-import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg'; /*Find correct logo*/
+import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg';
 
 const ControlPanel = ({ code, runit, step, restart }) => {
   const play_button = () => {
