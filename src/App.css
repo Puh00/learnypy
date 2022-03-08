@@ -1,7 +1,8 @@
 :root {
-  --background: gray;
-  --components: white;
-  --accent: black;
+  --background: white;
+  --components: #D6E0F0;
+  --dark: #393B44;
+  --hover: #cedaee;
 }
 
 html,
@@ -30,7 +31,7 @@ body {
 
 .Header-style {
   margin: 12px;
-  color: var(--accent);
+  color: var(--dark);
 }
 
 #App-body {
@@ -53,8 +54,19 @@ body {
   display: flex;
 }
 
-.Control-button, .Code-box, .Visual-box, .Output-box, .Control-panel{
+.Visual-box, .Output-box {
+  background-color: var(--background);
+}
+
+.Control-button, .Control-panel {
   background-color: var(--components);
+}
+
+.Code-box, .Visual-box, .Output-box, .Control-panel{
+  border-width: 2px;
+  border-color: var(--dark);
+  border-style: solid;
+  border-radius: 4px;
 }
 
 .Control-panel {
@@ -65,7 +77,6 @@ body {
   flex-direction: row;
   flex-wrap: nowrap;
   border-radius: 4px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .Control-button {
@@ -73,9 +84,12 @@ body {
   align-items: center;
   justify-content: space-around;
   width: 66px;
+  border-color: var(--dark);
+  border-style: solid;
   border-top-width: 0px;
   border-bottom-width: 0px;
   border-left-width: 0px;
+  color: var(--dark);
 }
 
 .Control-button:first-child{
@@ -92,7 +106,7 @@ body {
 }
 
 .Control-button:hover{
-  background-color:rgb(242, 254, 255);
+  background-color:var(--hover);
 }
 
 /* .Dropdown {
@@ -116,15 +130,6 @@ body {
   display: block;
 } */
 
-.Form-box {
-  display: flex;
-  flex-direction: column;
-  font-family: "Courier New";
-  flex-basis: 45%;
-  margin: 4px;
-  white-space: pre-line;
-}
-
 .Output-box{
   margin: 4px;
   padding: 4px;
@@ -134,8 +139,7 @@ body {
 }
 
 .Code-box{
-  flex-basis: 100%;
-  border-radius: 4px;
+  margin: 4px;
 }
 
 .Visual-box {
