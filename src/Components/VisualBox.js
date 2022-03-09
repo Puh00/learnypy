@@ -1,15 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styles from './VisualBox.module.css';
 
 import Graph from 'react-graph-vis';
 import parse from '../util/parser';
 
-function VisualBox({ data }) {
+const VisualBox = ({ data }) => {
+  const [graph, setGraph] = useState({ edges: [], nodes: [] });
+
   useEffect(() => {
-    set_text();
+    const parsed_data = parse(data);
+    setGraph(parsed_data);
+
+    // can't pass graph here since it hasn't updated yet (weird flow in react)
+    set_text(parsed_data);
     set_logical_tabbing_on_graph();
-  });
+  }, [data]);
 
   const options = {
     layout: {
@@ -30,9 +36,10 @@ function VisualBox({ data }) {
     // }
   };
 
-  //generates a text that discribes the graph of objects and sets it as aria-label for the canvas element to support screen readers
-  function set_text() {
-    const refs = parse(data);
+  // generates a text that discribes the graph of objects and sets it as aria-label
+  // for the canvas element to support screen readers
+  const set_text = (graph) => {
+    const refs = graph;
     var alt_text = '';
     for (let i = 0; i < refs.nodes.length; i++) {
       var id = refs.nodes[i].id;
@@ -53,18 +60,18 @@ function VisualBox({ data }) {
     }
     var canvas = document.getElementsByTagName('canvas')[0];
     canvas.setAttribute('aria-label', alt_text);
-  }
+  };
 
-  function set_logical_tabbing_on_graph() {
+  const set_logical_tabbing_on_graph = () => {
     var viz_box = document.getElementsByClassName('vis-network')[0];
     viz_box.setAttribute('tabindex', '0');
-  }
+  };
 
   return (
     <div className={styles['visual-box']}>
-      <Graph graph={parse(data)} options={options} />
+      <Graph graph={graph} options={options} />
     </div>
   );
-}
+};
 
 export default VisualBox;
