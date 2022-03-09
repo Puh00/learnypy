@@ -20,7 +20,9 @@ function outf(text) {
 // export this object to dynamically "override" the builtin functions
 const func = {
   builtinRead: builtinRead,
-  outf: outf
+  outf: outf,
+  current_line: (lineno) => {}, // called at each step
+  success: () => {} // called after a program has been executed
 };
 //------------------------------------------------------------------------------
 
@@ -45,7 +47,9 @@ const init_debugger = () => {
   return new window.Sk.Debugger('<stdin>', {
     print: (txt) => console.log(txt),
     get_source_line: get_line_status,
-    error: (e) => func.outf(e)
+    error: (e) => func.outf(e),
+    current_line: (lineno) => func.current_line(lineno),
+    success: () => func.success()
   });
 };
 

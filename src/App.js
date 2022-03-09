@@ -12,6 +12,7 @@ function App() {
   const [refs, setRefs] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
   const [code, setCode] = useState('a=1\nb=1\nc=b');
+  const [line, setLine] = useState(-1);
 
   let latest_output = '';
 
@@ -33,10 +34,18 @@ function App() {
     latest_output = latest_output + text;
     setOutput({ text: latest_output });
   };
+  func.current_line = (lineno) => {
+    setLine(lineno);
+  };
+  func.success = () => {
+    setLine(-420);
+    console.log('successfully executed through the program');
+  };
 
   return (
     <div className="App">
       <Header />
+      <button onClick={() => console.log('react: ' + line)}>line</button>
       <div id="App-body">
         <div id="Left-body">
           <ControlPanel
@@ -45,7 +54,7 @@ function App() {
             step={step_callback}
             restart={start_callback}
           />
-          <CodeBox code={code} setCode={setCode} />
+          <CodeBox code={code} setCode={setCode} line={line} />
           <Output_box text={output} />
         </div>
         <div id="Right-body">

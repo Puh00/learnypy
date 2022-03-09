@@ -8,7 +8,10 @@ import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import { Controlled as ControlledEditorComponent } from 'react-codemirror2-react-17';
 
-const CodeBox = ({ code, setCode }) => {
+import './CodeBox.css';
+
+// eslint-disable-next-line no-unused-vars
+const CodeBox = ({ code, setCode, line }) => {
   return (
     <div className="Code-box">
       <ControlledEditorComponent
@@ -25,6 +28,7 @@ const CodeBox = ({ code, setCode }) => {
         }}
         onBeforeChange={(editor, data, value) => {
           setCode(value);
+          // editor.addLineClass(line, 'wrap', 'mark');
         }}
       />
     </div>
