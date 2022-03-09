@@ -2,17 +2,17 @@
   "objects": [
     {
       "id": "1",
-      "_type": "numeric",
+      "type": "numeric",
       "value": 72
     },
     {
       "id": "2",
-      "_type": "string",
+      "type": "string",
       "value": "hello world!"
     },
     {
       "id": "3",
-      "_type": "list",
+      "type": "list",
       "value": [
         {
           "ref": "1"
@@ -27,7 +27,7 @@
     },
     {
       "id": "4",
-      "_type": "list",
+      "type": "list",
       "value": [
         {
           "ref": "1"

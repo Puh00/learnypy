@@ -19,8 +19,7 @@ class GlobalsParser {
         continue;
       }
 
-      let _id = this.retrieve_object_id(value, this.objects);
-
+      let _id = this.retrieve_object_id(value);
       // Check if variable is already in variables, or if new variable should be added.
       const variable = this.variables.find((v) => v.name === key);
       if (variable) {
@@ -31,43 +30,110 @@ class GlobalsParser {
           ref: _id
         });
       }
-
-      this.delete_unreferenced_objects();
     }
+
+    this.update_values();
+    this.remove_unreferenced_objects();
 
     if (typeof callback === 'function') {
       this.callback(callback);
     }
   }
 
+  /*
+  Create and return new object.
+  Type of object:
+    Object: {
+      id: uuid for the object,
+      value: used for visual representation,
+      type: type of the object,
+      js_object: used to compare with objects from Sk.globals
+    }
+  */
+  create_object(js_object) {
+    if (js_object.tp$name === 'list') {
+      let value = [];
+      for (const v of js_object.v) {
+        value.push({ ref: this.retrieve_object_id(v) });
+      }
+      return {
+        id: uuidv4(),
+        value: value,
+        type: js_object.tp$name,
+        js_object: js_object
+      };
+      // Add more types here
+    } else {
+      return {
+        id: uuidv4(),
+        value: js_object.v,
+        type: js_object.tp$name,
+        js_object: js_object
+      };
+    }
+  }
+
+  // Update all object values (only needed for mutable objects).
+  update_values() {
+    for (const obj of this.objects) {
+      if (obj.type === 'list') {
+        let refs = [];
+        // Update all references in the list
+        for (const v of obj.js_object.v) {
+          refs.push({ ref: this.retrieve_object_id(v) });
+        }
+        obj.value = refs;
+      } // Add more types
+    }
+  }
+
   // Retrieve the object id for the given value.
   // If the value already exists the id to the already existing object is returned.
   // Otherwise a new object is created and this id is returned.
-  retrieve_object_id(value, objects) {
-    for (const obj of objects) {
+  retrieve_object_id(js_object) {
+    for (const obj of this.objects) {
       // '===' returns true only if the objects have the same reference
-      if (obj.value === value) {
+      if (obj.js_object === js_object) {
         return obj.id;
       }
     }
     // If the object doesn't exist yet add it and return new id
-    let _id = uuidv4();
-    objects.push({
-      id: _id,
-      value: value,
-      type: value.tp$name
-    });
-    return _id;
+    let obj = this.create_object(js_object);
+    this.objects.push(obj);
+    return obj.id;
   }
 
-  // Delete all objects that has no variable referencing them.
-  delete_unreferenced_objects() {
+  // Remove all objects that has no reference to them.
+  remove_unreferenced_objects() {
     for (let i = 0; i < this.objects.length; i++) {
-      if (!this.variables.some((v) => v.ref === this.objects[i].id)) {
+      let id = this.objects[i].id;
+      if (!(this.is_ref_by_var(id) || this.is_ref_by_obj(id))) {
         this.objects.splice(i, 1);
         i--;
       }
     }
+  }
+
+  // Returns true if there is a variable referencing the given id, otherwise false.
+  is_ref_by_var(id) {
+    return this.variables.some((v) => v.ref === id);
+  }
+
+  // Returns true if there is an object referencing the given id, otherwise false.
+  is_ref_by_obj(id) {
+    for (const obj of this.objects) {
+      if (obj.value === id) {
+        return true;
+      }
+      if (obj.type === 'list') {
+        // Also check all elements in the list
+        if (obj.value.some((v) => v.ref === id)) {
+          return true;
+        }
+      }
+      // Add more object types that can reference other objects
+    }
+    return false;
   }
 
   // callback function with the current status as parameter
