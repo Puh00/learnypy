@@ -35,9 +35,16 @@ const Home = () => {
     setOutput({ text: latest_output });
   };
 
+  const navItems = [
+    {
+      name: 'About',
+      link: '/about'
+    }
+  ];
+
   return (
     <div className="App">
-      <Header />
+      <Header navItems={navItems} />
       <div id="App-body">
         <div id="Left-body">
           <ControlPanel
