@@ -38,14 +38,12 @@ function App() {
     setLine(lineno);
   };
   func.success = () => {
-    setLine(-420);
-    console.log('successfully executed through the program');
+    setLine(-1);
   };
 
   return (
     <div className="App">
       <Header />
-      <button onClick={() => console.log('react: ' + line)}>line</button>
       <div id="App-body">
         <div id="Left-body">
           <ControlPanel

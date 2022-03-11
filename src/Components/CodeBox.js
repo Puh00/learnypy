@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/python/python';
 import 'codemirror/theme/neat.css';
@@ -6,15 +6,27 @@ import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
-import { Controlled as ControlledEditorComponent } from 'react-codemirror2-react-17';
+import { UnControlled as CodeMirror } from 'react-codemirror2-react-17';
 
 import './CodeBox.css';
 
-// eslint-disable-next-line no-unused-vars
 const CodeBox = ({ code, setCode, line }) => {
+  // This is a truly horrible and scuffed hack for forcing the CodeMirror to update.
+  // The two useEffects below basically appends and removes a character that I found
+  // from scrolling through the character list for UTF-16. This forces the CodeMirror
+  // component to update which triggers the onChange event.
+  useEffect(() => {
+    setCode(code + 'ϗ');
+  }, [line]);
+  useEffect(() => {
+    // Yes, this code makes it impossible to write the 'ϗ' symbol. Hopefully there
+    // won't be any greek programmers that uses our tool in the future.
+    if (code.slice(-1) === 'ϗ') setCode(code.slice(0, -1));
+  }, [code]);
+
   return (
     <div className="Code-box">
-      <ControlledEditorComponent
+      <CodeMirror
         value={code}
         className="code-mirror-wrapper"
         options={{
@@ -26,9 +38,15 @@ const CodeBox = ({ code, setCode, line }) => {
           autoCloseBrackets: true,
           autoCloseTags: true
         }}
-        onBeforeChange={(editor, data, value) => {
+        onChange={(editor, data, value) => {
           setCode(value);
-          // editor.addLineClass(line, 'wrap', 'mark');
+
+          // remove all previous highlighted lines
+          editor.removeLineClass(Infinity, 'wrap', 'mark');
+          if (line > 0) {
+            // highlight the current execution row
+            editor.addLineClass(line, 'wrap', 'mark');
+          }
         }}
       />
     </div>
