@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import GlobalsParser from './skulptGlobalsParser';
+import parse_globals from './skulptGlobalsParser';
 
 // instantiate the globals since undefined in JavaScript is a atrocious
 window.Sk.globals = {};
@@ -27,6 +26,7 @@ const func = {
 // Initialize a new debugger object.
 const init_debugger = () => {
   const get_line_status = (lineno) => {
+    let parser = parse_globals();
     if (lineno !== 0) {
       return (
         'Line ' +
@@ -100,7 +100,6 @@ const clear_breakpoints = () => {
 
 const start = (prog, step_mode = false, callback) => {
   console.log('Reset status');
-  parser = new GlobalsParser();
   dbg = init_debugger();
   init_break_points();
   start_debugger(prog, callback);
@@ -129,7 +128,7 @@ const step = (prog, callback) => {
     dbg.resume.call(dbg);
   }
 
-  parser.update_status(callback);
+  callback(parse_globals());
 };
 
 function runit(prog, callback) {
@@ -138,7 +137,7 @@ function runit(prog, callback) {
   if (dbg.get_active_suspension() != null) {
     dbg.disable_step_mode();
     dbg.resume.call(dbg);
-    parser.update_status(callback);
+    callback(parse_globals());
     return;
   }
 
@@ -160,11 +159,10 @@ function runit(prog, callback) {
     dbg.resume.call(dbg);
   }
 
-  parser.update_status(callback);
+  callback(parse_globals());
 }
 
 // -----------------------------------------------------------------------------
-let parser = new GlobalsParser();
 let dbg = init_debugger();
 let break_points = [];
 // -----------------------------------------------------------------------------
