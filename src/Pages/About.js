@@ -4,11 +4,11 @@ import Header from '../Components/Header';
 const About = () => {
   const navItems = [
     {
-      name: 'Home',
+      name: 'home',
       link: '/'
     },
     {
-      name: 'About',
+      name: 'about',
       link: '/about'
     }
   ];

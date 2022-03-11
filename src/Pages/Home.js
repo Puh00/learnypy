@@ -37,7 +37,7 @@ const Home = () => {
 
   const navItems = [
     {
-      name: 'About',
+      name: 'about',
       link: '/about'
     }
   ];

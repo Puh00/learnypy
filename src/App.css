@@ -23,22 +23,41 @@ body {
   background-color: var(--background);
   display: flex;
 }
+
 .App-header {
   flex-direction: row;
   align-items: stretch;
-  justify-content: flex-start;
-
-    
-  border-width: 2px;
-  border-color: var(--dark);
-  border-style: solid;
-  border-radius: 4px;
+  justify-content: space-between;
 }
 
 .Home-logo {
   margin: 12px;
   color: var(--dark);
-  border: 2px red solid;
+
+  text-decoration: none;
+  font-size: 1.5em;
+  font-weight: bolder;
+}
+
+.Nav-menu {
+  margin-right: 12px;
+  margin-top: 8px;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.Nav-item {
+  margin-left: 5px;
+  margin-right: 5px;
+  color: var(--dark);
+
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.Nav-item:hover{
+  color: var(--hover);
 }
 
 #App-body {
