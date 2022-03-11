@@ -11,6 +11,8 @@ function Header({ navItems }) {
       <div className="Nav-menu">
         {navItems.map((item, index, arr) => {
           let link;
+          // determine when to add a '|' to separate the navigation items,
+          // yes this just copies from CodingBat...
           if (index === arr.length - 1) {
             link = (
               <Link className="Nav-item" to={item.link}>
