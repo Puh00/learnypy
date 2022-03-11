@@ -38,7 +38,7 @@ const CodeBox = ({ code, setCode, line }) => {
           autoCloseBrackets: true,
           autoCloseTags: true
         }}
-        onChange={(editor, data, value) => {
+        onChange={(editor, _, value) => {
           setCode(value);
 
           // remove all previous highlighted lines
