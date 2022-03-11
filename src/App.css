@@ -27,11 +27,18 @@ body {
   flex-direction: row;
   align-items: stretch;
   justify-content: flex-start;
+
+    
+  border-width: 2px;
+  border-color: var(--dark);
+  border-style: solid;
+  border-radius: 4px;
 }
 
-.Header-style {
+.Home-logo {
   margin: 12px;
   color: var(--dark);
+  border: 2px red solid;
 }
 
 #App-body {
