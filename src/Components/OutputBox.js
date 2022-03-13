@@ -7,7 +7,7 @@ class Output_box extends React.Component {
 
   render() {
     return (
-      <div className="Output-box" ref={this.ref}>
+      <div className="Output-box" data-testid="output-box" ref={this.ref}>
         {this.props.text.text}
       </div>
     );
