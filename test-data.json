@@ -33,6 +33,24 @@
           "ref": "1"
         }
       ]
+    },
+    {
+      "id": "3",
+      "type": "dict",
+      "value": [
+        {
+          "key": "age",
+          "val": "1"
+        },
+        {
+          "key": "name",
+          "val": "2"
+        },
+        {
+          "key": 3,
+          "val": "3"
+        }
+      ]
     }
   ],
   "variables": [

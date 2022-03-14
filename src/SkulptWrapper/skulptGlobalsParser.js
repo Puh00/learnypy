@@ -42,26 +42,30 @@ Type of object:
   }
 */
 const create_object = (js_object) => {
+  let value = null;
   if (js_object.tp$name === 'list') {
-    let value = [];
+    value = [];
     for (const v of js_object.v) {
       value.push({ ref: retrieve_object_id(v) });
     }
-    return {
-      id: uuidv4(),
-      value: value,
-      type: js_object.tp$name,
-      js_object: js_object
-    };
+  } else if (js_object.tp$name === 'dict') {
+    value = [];
+    const entries = Object.values(js_object.entries);
+    for (const [k, v] of entries) {
+      value.push({ key: k.v, val: retrieve_object_id(v) });
+    }
+
     // Add more types here
   } else {
-    return {
-      id: uuidv4(),
-      value: js_object.v,
-      type: js_object.tp$name,
-      js_object: js_object
-    };
+    // Immutables
+    value = js_object.v;
   }
+  return {
+    id: uuidv4(),
+    value: value,
+    type: js_object.tp$name,
+    js_object: js_object
+  };
 };
 
 // Retrieve the object id for the given value.
@@ -93,7 +97,7 @@ const retrieve_object_id = (js_object) => {
 // otherwise false is returned.
 const retrieve_small_int_object_id = (js_object) => {
   for (const obj of objects) {
-    if (obj.js_object.v === js_object.v) {
+    if (obj.type === 'int' && obj.js_object.v === js_object.v) {
       return obj.id;
     }
   }
