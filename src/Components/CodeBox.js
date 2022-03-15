@@ -14,24 +14,33 @@ import './CodeBox.css';
 const CodeBox = ({ code, setCode, line }) => {
   const [next, setNext] = useState(null);
 
+  // To prevent error caused by typos
+  const breakpointGutterID = 'breakpoints';
+  const lineMarkerGutterID = 'lineMarker';
+
   const setHighlightedRow = (editor) => {
-    // remove all previous highlighted lines
+    // remove all previous highlighted lines and line markers
     editor.eachLine((line) => {
       editor.removeLineClass(line, 'wrap', 'mark');
+      editor.setGutterMarker(line, lineMarkerGutterID, null);
     });
 
     if (line > 0) {
+      // Create line marker
+      var marker_node = document.createElement('span');
+      marker_node.innerHTML = '&#11166;';
+      marker_node.style.fontSize = '12px';
+
       // highlight the current execution row
       editor.addLineClass(line, 'wrap', 'mark');
+      editor.setGutterMarker(line, lineMarkerGutterID, marker_node);
     }
   };
-
-  // To prevent error caused by typos
-  const breakpointGutterID = 'breakpoints';
 
   const setBreakpoint = (lineNumber) => {
     var breakpoint_node = document.createElement('span');
     breakpoint_node.innerHTML = '&#128308;';
+    breakpoint_node.style.fontSize = '10px';
 
     // Add breakpoint functionality
     add_breakpoint(lineNumber);
@@ -78,10 +87,10 @@ const CodeBox = ({ code, setCode, line }) => {
           theme: 'neat',
           autoCloseBrackets: true,
           autoCloseTags: true,
-          gutters: [breakpointGutterID, 'CodeMirror-linenumbers']
+          gutters: [breakpointGutterID, lineMarkerGutterID, 'CodeMirror-linenumbers']
         }}
         onGutterClick={(editor, lineNumber) => {
-          handleBreakpoints(editor, lineNumber);
+          if (lineNumber > 0) handleBreakpoints(editor, lineNumber);
         }}
         editorDidMount={(_editor, _value, next) => {
           setNext(() => next);

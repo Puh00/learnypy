@@ -1,3 +1,13 @@
 .mark {
-  background-color: gold;
+  background-color: #D6E0F0;
+}
+
+.breakpoints{
+  width: 14px;
+  justify-content: center;
+  margin: 2px;
+}
+
+.CodeMirror-linenumber{
+  padding-right: 4px;
 }
