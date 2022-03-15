@@ -1,61 +1,66 @@
+// The forwardRef is important!!
+// Dropdown needs access to the DOM node in order to position the Menu
 import React from 'react';
+import { Dropdown } from 'react-bootstrap';
 
-//TODO
 
-// } else if (this.on_click() == 'dropdown') {
-//   return (
-//     <div className="Dropdown">
-//       <button onClick={this.on_click} className="Control-button">
-//         {this.icon}
-//       </button>
-//       <div className="Dropdown-menu">
-//         <a className="Dropdown-item" href="#">
-//           Action
-//         </a>
-//         <a className="Dropdown-item" href="#">
-//           Another action
-//         </a>
-//         <a className="Dropdown-item" href="#">
-//           Something else here
-//         </a>
-//       </div>
-//     </div>
-//   );
+class DropdownTest extends React.Component {
+    constructor(props) {
+      super(props);
+    }
 
-// eslint-disable-next-line no-unused-vars
-class Dropdown_item {
-  constructor(text, tooltip, action = () => {}) {
-    this.text = text;
-    this.tooltip = tooltip;
-    this.action = action;
-  }
-}
+    CustomToggle = () => { React.forwardRef(({ children, onClick }, ref) => (
+    <a
+        href=""
+        ref={ref}
+        onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+        }}>
+        {children}
+        &#x25bc;
+    </a>
+    ));}
 
-class Dropdown {
-  contents = [];
-  constructor(button, contents = this.contents, className = 'Dropdown') {
-    this.button = button;
-    this.contents = contents;
-    this.className = className;
-  }
+    // forwardRef again here!
+    // Dropdown needs access to the DOM of the Menu to measure it
+    const CustomMenu = React.forwardRef(
+    ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
+        const [value, setValue] = useState('');
 
-  calc_rows() {}
-
-  render() {
-    return (
-      <div className="Dropdown-menu">
-        <a className="Dropdown-item" href="#">
-          Action
-        </a>
-        <a className="Dropdown-item" href="#">
-          Another action
-        </a>
-        <a className="Dropdown-item" href="#">
-          Something else here
-        </a>
-      </div>
+        return (
+        <div ref={ref} style={style} className={className} aria-labelledby={labeledBy}>
+            <FormControl
+            autoFocus
+            className="mx-3 my-2 w-auto"
+            placeholder="Type to filter..."
+            onChange={(e) => setValue(e.target.value)}
+            value={value}
+            />
+            <ul className="list-unstyled">
+            {React.Children.toArray(children).filter(
+                (child) => !value || child.props.children.toLowerCase().startsWith(value)
+            )}
+            </ul>
+        </div>
+        );
+    }
     );
-  }
-}
 
-export default Dropdown;
+    render() {
+    <Dropdown>
+        <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+        Custom toggle
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu as={CustomMenu}>
+        <Dropdown.Item eventKey="1">Red</Dropdown.Item>
+        <Dropdown.Item eventKey="2">Blue</Dropdown.Item>
+        <Dropdown.Item eventKey="3" active>
+            Orange
+        </Dropdown.Item>
+        <Dropdown.Item eventKey="1">Red-Orange</Dropdown.Item>
+        </Dropdown.Menu>
+    </Dropdown>
+    };
+}

@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { ReactComponent as Play_logo } from './Icons/play.svg';
 import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
 import { ReactComponent as Pause_logo } from './Icons/pause.svg';
 import { ReactComponent as Repeat_logo } from './Icons/repeat.svg';
 import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg';
+import { Dropdown } from 'react-bootstrap';
+import 'react-dropdown/style.css';
 
 const ControlPanel = ({ code, runit, step, restart }) => {
   const play_button = () => {
@@ -64,15 +67,30 @@ const ControlPanel = ({ code, runit, step, restart }) => {
 
   const menu_button = () => {
     return (
-      <button
-        onClick={() => {
-          console.log('Drop-down menu not implemented');
-        }}
-        className={'Control-button'}
-        data-toggle="tooltip"
-        title={'Menu'}>
-        {<Menu_logo />}
-      </button>
+      <div className={'Control-button'}>
+        <Dropdown autoClose="outside" className={'Dropdown'}>
+          <Dropdown.Toggle
+            variant="success"
+            id="dropdown-autoclose-outside"
+            className={'Dropdown-button'}>
+            {<Menu_logo />}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item className={'Dropdown-item'} href="#">
+              Home Page
+            </Dropdown.Item>
+            <Dropdown.Item className={'Dropdown-item'} href="#">
+              Settings
+            </Dropdown.Item>
+            <Dropdown.Item className={'Dropdown-item'} href="#">
+              Ld
+            </Dropdown.Item>
+            <Dropdown.Item className={'Dropdown-item'} href="#">
+              Logout
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
     );
   };
   return (
