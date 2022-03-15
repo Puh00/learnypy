@@ -40,6 +40,7 @@ Sk.Debugger.prototype.print = function (txt) {
 
 Sk.Debugger.prototype.get_source_line = function (lineno) {
   if (this.output_callback != null) {
+    this.output_callback.current_line(lineno);
     return this.output_callback.get_source_line(lineno);
   }
 
@@ -253,6 +254,7 @@ Sk.Debugger.prototype.success = function (r) {
       this.pop_suspension_stack();
 
       if (this.suspension_stack.length === 0) {
+        this.output_callback.success();
         this.print('Program execution complete 1');
         return;
       }
@@ -275,10 +277,10 @@ Sk.Debugger.prototype.error = function (e) {
   for (var idx = 0; idx < e.traceback.length; ++idx) {
     this.print(
       '  File "' +
-        e.traceback[idx].filename +
-        '", line ' +
-        e.traceback[idx].lineno +
-        ', in <module>'
+      e.traceback[idx].filename +
+      '", line ' +
+      e.traceback[idx].lineno +
+      ', in <module>'
     );
     var code = this.get_source_line(e.traceback[idx].lineno - 1);
     code = code.trim();
