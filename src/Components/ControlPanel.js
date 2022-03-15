@@ -13,7 +13,7 @@ const ControlPanel = ({ code, runit, step, restart }) => {
         }}
         className={'Control-button'}
         data-toggle="tooltip"
-        title={'Run code (until the first breakpoint)'}>
+        title={'Run code (until next breakpoint)'}>
         {<Play_logo />}
       </button>
     );
