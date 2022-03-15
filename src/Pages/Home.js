@@ -13,6 +13,7 @@ const Home = () => {
   const [refs, setRefs] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
   const [code, setCode] = useState('a=1\nb=1\nc=b');
+  const [line, setLine] = useState(-1);
 
   let latest_output = '';
 
@@ -34,6 +35,12 @@ const Home = () => {
     latest_output = latest_output + text;
     setOutput({ text: latest_output });
   };
+  func.current_line = (lineno) => {
+    setLine(lineno);
+  };
+  func.success = () => {
+    setLine(-1);
+  };
 
   const navItems = [
     {
@@ -53,7 +60,7 @@ const Home = () => {
             step={step_callback}
             restart={start_callback}
           />
-          <CodeBox code={code} setCode={setCode} />
+          <CodeBox code={code} setCode={setCode} line={line} />
           <Output_box text={output} />
         </div>
         <div id="Right-body">

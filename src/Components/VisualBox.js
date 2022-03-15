@@ -20,6 +20,7 @@ const VisualBox = ({ data }) => {
   const options = {
     layout: {
       hierarchical: {
+        treeSpacing: 80,
         direction: 'LR',
         sortMethod: 'directed'
       }
@@ -27,9 +28,11 @@ const VisualBox = ({ data }) => {
     edges: {
       color: '#000000'
     },
-    height: '500px',
     nodes: {
       shape: 'box'
+    },
+    physics: {
+      enabled: false
     }
     // interaction: {
     //   zoomView: false

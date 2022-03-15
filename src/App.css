@@ -9,6 +9,7 @@ html,
 body {
   height: 100%;
   margin: 0;
+  overflow: hidden;
 }
 
 .App {
@@ -96,6 +97,10 @@ body {
   margin: 8px 8px 8px 4px;
   flex-basis: 100%;
   display: flex;
+  border-width: 2px;
+  border-color: var(--dark);
+  border-style: solid;
+  border-radius: 4px;
 }
 
 .Visual-box, .Output-box {
