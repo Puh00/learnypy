@@ -51,7 +51,7 @@ const create_object = (js_object) => {
   objects.push(obj);
 
   let value = null;
-  if (js_object.tp$name === 'list') {
+  if (js_object.tp$name === 'list' || js_object.tp$name === 'tuple') {
     value = [];
     for (const v of js_object.v) {
       value.push({ ref: retrieve_object_id(v) });
