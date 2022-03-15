@@ -40,6 +40,8 @@ const Home = () => {
     start(prog, false, () => {
       setOutput({ text: '' });
       setRefs({ objects: [], variables: [] });
+      setLine(-1);
+      setStepped(false);
     });
 
   // run these functions only once
