@@ -30,6 +30,7 @@ const Home = () => {
   const start_callback = (prog) =>
     start(prog, false, () => {
       setOutput({ text: '' });
+      setRefs({ objects: [], variables: [] });
     });
   func.outf = (text) => {
     latest_output = latest_output + text;
