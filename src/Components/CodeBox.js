@@ -26,24 +26,32 @@ const CodeBox = ({ code, setCode, line }) => {
     }
   };
 
+  // To prevent error caused by typos
   const breakpointGutterID = 'breakpoints';
 
   const setBreakpoint = (lineNumber) => {
-    console.log('set breakpoint on line ' + (lineNumber + 1));
     var breakpoint_node = document.createElement('span');
     breakpoint_node.innerHTML = '&#128308;';
+
+    // Add breakpoint functionality
     add_breakpoint(lineNumber);
+
+    // Set breakpoint icon
     return breakpoint_node;
   };
 
   const clearBreakpoint = (lineNumber) => {
-    console.log('clear breakpoint on line ' + (lineNumber + 1));
+    // Remove breakpoint functionality
     clear_breakpoint(lineNumber);
+
+    // Clear breakpoint icon
     return null;
   };
 
   const handleBreakpoints = (editor, lineNumber) => {
     var info = editor.lineInfo(lineNumber);
+
+    //Set or clear breakpoint from clicked line
     editor.setGutterMarker(
       lineNumber,
       breakpointGutterID,
