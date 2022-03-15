@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/python/python';
 import 'codemirror/theme/neat.css';
@@ -6,23 +6,30 @@ import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
-import { UnControlled as CodeMirror } from 'react-codemirror2-react-17';
+import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
 
 import './CodeBox.css';
 
 const CodeBox = ({ code, setCode, line }) => {
-  // This is a truly horrible and scuffed hack for forcing the CodeMirror to update.
-  // The two useEffects below basically appends and removes a character that I found
-  // from scrolling through the character list for UTF-16. This forces the CodeMirror
-  // component to update which triggers the onChange event.
+  const [next, setNext] = useState(null);
+
+  const setHighlightedRow = (editor) => {
+    // remove all previous highlighted lines
+    editor.eachLine((line) => {
+      editor.removeLineClass(line, 'wrap', 'mark');
+    });
+
+    if (line > 0) {
+      // highlight the current execution row
+      editor.addLineClass(line, 'wrap', 'mark');
+    }
+  };
+
   useEffect(() => {
-    setCode(code + 'ϗ');
+    if (next === null) return;
+    // calling next() to force an editorDidConfigure event
+    next();
   }, [line]);
-  useEffect(() => {
-    // Yes, this code makes it impossible to write the 'ϗ' symbol. Hopefully there
-    // won't be any greek programmers that uses our tool in the future.
-    if (code.slice(-1) === 'ϗ') setCode(code.slice(0, -1));
-  }, [code]);
 
   return (
     <div className="Code-box">
@@ -38,15 +45,14 @@ const CodeBox = ({ code, setCode, line }) => {
           autoCloseBrackets: true,
           autoCloseTags: true
         }}
-        onChange={(editor, _, value) => {
+        editorDidMount={(_editor, _value, next) => {
+          setNext(() => next);
+        }}
+        editorDidConfigure={(editor) => {
+          setHighlightedRow(editor);
+        }}
+        onBeforeChange={(_editor, _data, value) => {
           setCode(value);
-
-          // remove all previous highlighted lines
-          editor.removeLineClass(Infinity, 'wrap', 'mark');
-          if (line > 0) {
-            // highlight the current execution row
-            editor.addLineClass(line, 'wrap', 'mark');
-          }
         }}
       />
     </div>
