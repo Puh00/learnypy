@@ -42,6 +42,14 @@ Type of object:
   }
 */
 const create_object = (js_object) => {
+  let obj = {
+    id: uuidv4(),
+    value: null,
+    type: js_object.tp$name,
+    js_object: js_object
+  };
+  objects.push(obj);
+
   let value = null;
   if (js_object.tp$name === 'list') {
     value = [];
@@ -60,12 +68,9 @@ const create_object = (js_object) => {
     // Immutables
     value = js_object.v;
   }
-  return {
-    id: uuidv4(),
-    value: value,
-    type: js_object.tp$name,
-    js_object: js_object
-  };
+
+  obj.value = value;
+  return obj;
 };
 
 // Retrieve the object id for the given value.
@@ -89,7 +94,7 @@ const retrieve_object_id = (js_object) => {
     // If the object doesn't exist yet add it and return new id
     obj = create_object(js_object);
   }
-  objects.push(obj);
+  //objects.push(obj);
   return obj.id;
 };
 
