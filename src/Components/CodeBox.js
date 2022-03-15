@@ -25,6 +25,25 @@ const CodeBox = ({ code, setCode, line }) => {
     }
   };
 
+  const getBreakpointNode = () => {
+    var breakpoint_node = document.createElement('span');
+    breakpoint_node.innerHTML = '&#128308;';
+    return breakpoint_node;
+  };
+
+  const handleBreakpoints = (editor, lineNumber) => {
+    console.log('Gutter click');
+    var info = editor.lineInfo(lineNumber);
+
+    if (info.markerText) {
+      console.log('clear breakpoint from line ' + (lineNumber + 1));
+      editor.clearGutter(lineNumber);
+    } else {
+      console.log('set breakpoint on line ' + (lineNumber + 1));
+      editor.setGutterMarker(lineNumber, 'breakpoints', getBreakpointNode());
+    }
+  };
+
   useEffect(() => {
     if (next === null) return;
     // calling next() to force an editorDidConfigure event
@@ -43,7 +62,11 @@ const CodeBox = ({ code, setCode, line }) => {
           lineNumbers: true,
           theme: 'neat',
           autoCloseBrackets: true,
-          autoCloseTags: true
+          autoCloseTags: true,
+          gutters: ['breakpoints', 'CodeMirror-linenumbers']
+        }}
+        onGutterClick={(editor, lineNumber) => {
+          handleBreakpoints(editor, lineNumber);
         }}
         editorDidMount={(_editor, _value, next) => {
           setNext(() => next);
