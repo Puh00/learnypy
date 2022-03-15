@@ -7,6 +7,7 @@ import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
+import { add_breakpoint, clear_breakpoint } from '../SkulptWrapper/skulptWrapper';
 
 import './CodeBox.css';
 
@@ -27,20 +28,26 @@ const CodeBox = ({ code, setCode, line }) => {
 
   const breakpointGutterID = 'breakpoints';
 
-  const getBreakpointNode = () => {
+  const setBreakpoint = (lineNumber) => {
+    console.log('set breakpoint on line ' + (lineNumber + 1));
     var breakpoint_node = document.createElement('span');
     breakpoint_node.innerHTML = '&#128308;';
+    add_breakpoint(lineNumber);
     return breakpoint_node;
   };
 
+  const clearBreakpoint = (lineNumber) => {
+    console.log('clear breakpoint on line ' + (lineNumber + 1));
+    clear_breakpoint(lineNumber);
+    return null;
+  };
+
   const handleBreakpoints = (editor, lineNumber) => {
-    console.log('Gutter click');
     var info = editor.lineInfo(lineNumber);
-    console.log('set breakpoint on line ' + (lineNumber + 1));
     editor.setGutterMarker(
       lineNumber,
       breakpointGutterID,
-      info.gutterMarkers ? null : getBreakpointNode()
+      info.gutterMarkers ? clearBreakpoint(lineNumber) : setBreakpoint(lineNumber)
     );
   };
 
