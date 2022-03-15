@@ -28,6 +28,7 @@ const func = {
 
 // Initialize a new debugger object.
 const init_debugger = () => {
+  // Gives error for cyclic objects, cleanup at end...
   const get_line_status = (lineno) => {
     let parser = parse_globals();
     if (lineno !== 0) {
