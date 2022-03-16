@@ -40,6 +40,24 @@ const parse = (refs) => {
         count++;
       });
       count = 0;
+    } else if (o.type === 'tuple') {
+      // add node for tuple
+      nodes.push({
+        id: o.id,
+        font: { multi: true },
+        label: '{size: ' + o.value.length + '}\n<i>tuple</i>'
+      });
+
+      // add edges from this node to all of the items in the tuple
+      o.value.forEach((item) => {
+        edges.push({
+          from: o.id,
+          to: item.ref,
+          label: generate_index_text(count, o.id, item.ref) //TODO: style labels
+        });
+        count++;
+      });
+      count = 0;
     } else if (o.type === 'dict') {
       // add node for dict
       nodes.push({
