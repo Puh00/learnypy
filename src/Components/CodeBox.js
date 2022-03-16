@@ -19,7 +19,7 @@ const CodeBox = ({ code, setCode, line }) => {
       editor.removeLineClass(line, 'wrap', 'mark');
     });
 
-    if (line > 0) {
+    if (line >= 0) {
       // highlight the current execution row
       editor.addLineClass(line, 'wrap', 'mark');
     }
