@@ -36,7 +36,7 @@ class DropdownLocal extends React.Component {
                 Example 1
               </button>
             </Dropdown.Item>
-            <Dropdown.Item as="button" href="#">
+            <Dropdown.Item as="button" id={'Dropdown-item'} href="#">
               <button
                 id={'Dropdown-button'}
                 onClick={() => {

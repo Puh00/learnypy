@@ -64,7 +64,14 @@ const ControlPanel = ({ code, runit, step, restart, setCode }) => {
   };
 
   const menu_button = () => {
-    return <DropdownLocal logo={<Menu_logo />} setCode={setCode} restart={restart} />;
+    return (
+      <DropdownLocal
+        className={'Control-button'}
+        logo={<Menu_logo />}
+        setCode={setCode}
+        restart={restart}
+      />
+    );
   };
 
   return (
