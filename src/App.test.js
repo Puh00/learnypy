@@ -27,6 +27,20 @@ jest.mock('./Components/CodeBox', () => {
   };
 });
 
+/**
+ * ____________________________________NOTES____________________________________
+ * =============================================================================
+ * - You can simply ignore the warning/error about not using act(), it's not
+ *   really possible to do with the setup in our website, it's always going to
+ *   change state after the program finished runnning.
+ *
+ * - Don't think there is a way to test if the nodes/edges have been rendered
+ *   correctly since the graph visualisation library does not want to work,
+ *   the best we can do is to test if the parse() function parses correctly.
+ *
+ * - Can we at some point remove all the console.log()?
+ */
+
 test('render correctly', () => {
   render(<App />);
 });
@@ -91,7 +105,6 @@ print(5)`;
   expect(outputBox.textContent).toBe(expected);
 });
 
-// TODO: need to change this test once the behaviour of step has been changed...
 test('step through a simple program and check if output display correctly', async () => {
   render(<App />);
 
@@ -99,7 +112,6 @@ test('step through a simple program and check if output display correctly', asyn
   const outputBox = screen.getByTestId('output-box');
   const stepButton = screen.getByTitle('Run next line');
 
-  // !!note!!
   // '{' and '[' are used as special characters in userEvent.type() so we need to double them...
   const code = `
 a = [[1,2,3]
@@ -111,6 +123,9 @@ print(a)`;
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
+
+  userEvent.click(stepButton); // no row executed
+  await sleep(50);
 
   userEvent.click(stepButton); // a = [1,2,3]
   await sleep(50);

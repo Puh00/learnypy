@@ -47,7 +47,11 @@ b = a`;
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
 
-  // first click
+  // first click, does nothing
+  userEvent.click(stepButton);
+  await sleep(50);
+
+  // runs the first line
   userEvent.click(stepButton);
   refs = JSON.parse(visualBox.textContent);
 
