@@ -6,7 +6,7 @@ import { ReactComponent as Repeat_logo } from './Icons/repeat.svg';
 import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg';
 import DropdownLocal from './Dropdown';
 
-const ControlPanel = ({ code, runit, step, restart }) => {
+const ControlPanel = ({ code, runit, step, restart, setCode }) => {
   const play_button = () => {
     return (
       <button
@@ -64,7 +64,7 @@ const ControlPanel = ({ code, runit, step, restart }) => {
   };
 
   const menu_button = () => {
-    return <DropdownLocal logo={<Menu_logo />} />;
+    return <DropdownLocal logo={<Menu_logo />} setCode={setCode} restart={restart} />;
   };
 
   return (
