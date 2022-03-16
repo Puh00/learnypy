@@ -52,8 +52,8 @@ const CodeBox = ({ code, setCode, line, graph_ref, drop_down_menu_ref }) => {
         editorDidConfigure={(editor) => {
           setHighlightedRow(editor);
         }}
-        onBeforeChange={(_editor, _data, value) => {
-          setCode(value);
+        onBeforeChange={(_editor, data, value) => {
+          if (data.text[0] != '\t') setCode(value);
         }}
         onKeyDown={(_editor, event) => {
           if (event.key === 'Tab') {
