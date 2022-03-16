@@ -9,6 +9,10 @@ const VisualBox = ({ data, graph_ref }) => {
   const [graph, setGraph] = useState({ edges: [], nodes: [] });
 
   useEffect(() => {
+    disable_tabbing_on_graph();
+  }, []);
+
+  useEffect(() => {
     const parsed_data = parse(data);
     setGraph(parsed_data);
 
@@ -62,6 +66,13 @@ const VisualBox = ({ data, graph_ref }) => {
     }
     var canvas = document.getElementsByTagName('canvas')[0];
     canvas.setAttribute('aria-label', alt_text);
+  };
+
+  // for some reason the Graph component has a tabIndex of 900
+  const disable_tabbing_on_graph = () => {
+    var viz_box = document.getElementsByClassName('vis-network')[0];
+    // disable the graph's tabindex
+    viz_box.setAttribute('tabindex', '-1');
   };
 
   return (

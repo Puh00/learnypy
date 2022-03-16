@@ -34,7 +34,6 @@ const CodeBox = ({ code, setCode, line, graph_ref, drop_down_menu_ref }) => {
   return (
     <div className="Code-box">
       <CodeMirror
-        tabindex="0"
         value={code}
         className="code-mirror-wrapper"
         options={{
