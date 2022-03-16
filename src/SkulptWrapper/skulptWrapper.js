@@ -67,10 +67,6 @@ const start_debugger = (prog, callback) => {
     breakpoints: dbg.check_breakpoints.bind(dbg)
   });
 
-  if (typeof callback === 'function') {
-    callback();
-  }
-
   let susp_handlers = {};
   susp_handlers['*'] = dbg.suspension_handler.bind(this);
 
@@ -82,6 +78,10 @@ const start_debugger = (prog, callback) => {
     dbg
   );
   myPromise.then(dbg.success.bind(dbg), dbg.error.bind(dbg));
+
+  if (typeof callback === 'function') {
+    callback();
+  }
 };
 
 //Loop through break_points and add a breakpoint at every line
