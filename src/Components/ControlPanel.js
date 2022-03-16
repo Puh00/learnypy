@@ -4,7 +4,7 @@ import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
 import { ReactComponent as Stop_logo } from './Icons/stop.svg';
 import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg';
 
-const ControlPanel = ({ code, runit, step, restart }) => {
+const ControlPanel = ({ code, runit, step, restart, drop_down_menu_ref }) => {
   const play_button = () => {
     return (
       <button
@@ -55,7 +55,8 @@ const ControlPanel = ({ code, runit, step, restart }) => {
         }}
         className={'Control-button'}
         data-toggle="tooltip"
-        title={'Code Examples'}>
+        title={'Code Examples'}
+        ref={drop_down_menu_ref}>
         {<Menu_logo />}
       </button>
     );

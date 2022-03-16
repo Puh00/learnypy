@@ -5,7 +5,7 @@ import styles from './VisualBox.module.css';
 import Graph from 'react-graph-vis';
 import parse from '../util/parser';
 
-const VisualBox = ({ data }) => {
+const VisualBox = ({ data, graph_ref }) => {
   const [graph, setGraph] = useState({ edges: [], nodes: [] });
 
   useEffect(() => {
@@ -14,7 +14,6 @@ const VisualBox = ({ data }) => {
 
     // can't pass graph here since it hasn't updated yet (weird flow in react)
     set_text(parsed_data);
-    set_logical_tabbing_on_graph();
   }, [data]);
 
   const options = {
@@ -65,13 +64,8 @@ const VisualBox = ({ data }) => {
     canvas.setAttribute('aria-label', alt_text);
   };
 
-  const set_logical_tabbing_on_graph = () => {
-    var viz_box = document.getElementsByClassName('vis-network')[0];
-    viz_box.setAttribute('tabindex', '0');
-  };
-
   return (
-    <div className={styles['visual-box']}>
+    <div className={styles['visual-box']} ref={graph_ref} tabIndex={0}>
       <Graph graph={graph} options={options} />
     </div>
   );

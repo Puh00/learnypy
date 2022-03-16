@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import ControlPanel from '../Components/ControlPanel';
 import CodeBox from '../Components/CodeBox';
@@ -15,6 +15,9 @@ const Home = () => {
   const [code, setCode] = useState('a=1\nb=1\nc=b');
   const [line, setLine] = useState(-1);
   const [stepped, setStepped] = useState(false);
+
+  const graph_ref = useRef(null);
+  const drop_down_menu_ref = useRef(null);
 
   let latest_output = '';
 
@@ -78,12 +81,19 @@ const Home = () => {
             runit={runit_callback}
             step={step_callback}
             restart={start_callback}
+            drop_down_menu_ref={drop_down_menu_ref}
           />
-          <CodeBox code={code} setCode={setCode} line={line} />
+          <CodeBox
+            code={code}
+            setCode={setCode}
+            line={line}
+            graph_ref={graph_ref}
+            drop_down_menu_ref={drop_down_menu_ref}
+          />
           <Output_box text={output} />
         </div>
         <div id="Right-body">
-          <VisualBox data={refs} />
+          <VisualBox data={refs} graph_ref={graph_ref} />
         </div>
       </div>
     </div>

@@ -10,7 +10,7 @@ import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
 
 import './CodeBox.css';
 
-const CodeBox = ({ code, setCode, line }) => {
+const CodeBox = ({ code, setCode, line, graph_ref, drop_down_menu_ref }) => {
   const [next, setNext] = useState(null);
 
   const setHighlightedRow = (editor) => {
@@ -34,6 +34,7 @@ const CodeBox = ({ code, setCode, line }) => {
   return (
     <div className="Code-box">
       <CodeMirror
+        tabindex="0"
         value={code}
         className="code-mirror-wrapper"
         options={{
@@ -43,7 +44,8 @@ const CodeBox = ({ code, setCode, line }) => {
           lineNumbers: true,
           theme: 'neat',
           autoCloseBrackets: true,
-          autoCloseTags: true
+          autoCloseTags: true,
+          tabindex: 0
         }}
         editorDidMount={(_editor, _value, next) => {
           setNext(() => next);
@@ -53,6 +55,14 @@ const CodeBox = ({ code, setCode, line }) => {
         }}
         onBeforeChange={(_editor, _data, value) => {
           setCode(value);
+        }}
+        onKeyDown={(_editor, event) => {
+          if (event.key === 'Tab') {
+            console.log('event : ', event);
+            if (event.shiftKey) return drop_down_menu_ref.current.focus();
+
+            graph_ref.current.focus();
+          }
         }}
       />
     </div>
