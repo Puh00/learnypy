@@ -172,6 +172,11 @@ body {
   border-style: outset;
 }
 
+.dropdown-toggle::after {
+  display: none !important; 
+}
+
+
 #dropdownMenu {
   color: black !important;
   margin: 0px 10px;
