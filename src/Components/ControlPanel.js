@@ -3,8 +3,9 @@ import { ReactComponent as Play_logo } from './Icons/play.svg';
 import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
 import { ReactComponent as Stop_logo } from './Icons/stop.svg';
 import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg';
+import DropdownLocal from './Dropdown';
 
-const ControlPanel = ({ code, runit, step, restart }) => {
+const ControlPanel = ({ code, runit, step, restart, setCode }) => {
   const play_button = () => {
     return (
       <button
@@ -49,17 +50,17 @@ const ControlPanel = ({ code, runit, step, restart }) => {
 
   const menu_button = () => {
     return (
-      <button
-        onClick={() => {
-          console.log('Drop-down menu not implemented');
-        }}
+      <DropdownLocal
         className={'Control-button'}
+        logo={<Menu_logo />}
+        setCode={setCode}
+        restart={restart}
         data-toggle="tooltip"
-        title={'Code Examples'}>
-        {<Menu_logo />}
-      </button>
+        title={'Code Examples'}
+      />
     );
   };
+
   return (
     <div aria-label="test" className="Control-panel">
       {play_button()}

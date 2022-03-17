@@ -1,61 +1,57 @@
+/* eslint-disable react/display-name */
+// The forwardRef is important!!
+// Dropdown needs access to the DOM node in order to position the Menu
 import React from 'react';
 
-//TODO
+import { Dropdown } from 'react-bootstrap';
+import 'react-dropdown/style.css';
 
-// } else if (this.on_click() == 'dropdown') {
-//   return (
-//     <div className="Dropdown">
-//       <button onClick={this.on_click} className="Control-button">
-//         {this.icon}
-//       </button>
-//       <div className="Dropdown-menu">
-//         <a className="Dropdown-item" href="#">
-//           Action
-//         </a>
-//         <a className="Dropdown-item" href="#">
-//           Another action
-//         </a>
-//         <a className="Dropdown-item" href="#">
-//           Something else here
-//         </a>
-//       </div>
-//     </div>
-//   );
+const example1 = 'a=[]\nb=a\nb.append(3)\nprint(b)';
+const example2 = 'a=2\nb=1\nc=b';
+const example3 = 'a=3\nb=1\nc=b';
 
-// eslint-disable-next-line no-unused-vars
-class Dropdown_item {
-  constructor(text, tooltip, action = () => {}) {
-    this.text = text;
-    this.tooltip = tooltip;
-    this.action = action;
-  }
+function DropdownLocal(props) {
+  return (
+    <div className={'Control-button'}>
+      <Dropdown autoClose="outside">
+        <Dropdown.Toggle variant="success" id="Dropdown" className={'Dropdown-button'}>
+          {props.logo}
+        </Dropdown.Toggle>
+        <Dropdown.Menu id={'dropdownMenu'}>
+          <Dropdown.Item as="button" id={'Dropdown-item'} href="#">
+            <button
+              id={'Dropdown-button'}
+              onClick={() => {
+                props.setCode(example1);
+                props.restart(example1);
+              }}>
+              Example 1
+            </button>
+          </Dropdown.Item>
+          <Dropdown.Item as="button" id={'Dropdown-item'} href="#">
+            <button
+              id={'Dropdown-button'}
+              onClick={() => {
+                props.setCode(example2);
+                props.restart(example2);
+              }}>
+              Example 2
+            </button>
+          </Dropdown.Item>
+          <Dropdown.Item as="button" id={'Dropdown-item'} href="#">
+            <button
+              id={'Dropdown-button'}
+              onClick={() => {
+                props.setCode(example3);
+                props.restart(example3);
+              }}>
+              Example 3
+            </button>
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    </div>
+  );
 }
 
-class Dropdown {
-  contents = [];
-  constructor(button, contents = this.contents, className = 'Dropdown') {
-    this.button = button;
-    this.contents = contents;
-    this.className = className;
-  }
-
-  calc_rows() {}
-
-  render() {
-    return (
-      <div className="Dropdown-menu">
-        <a className="Dropdown-item" href="#">
-          Action
-        </a>
-        <a className="Dropdown-item" href="#">
-          Another action
-        </a>
-        <a className="Dropdown-item" href="#">
-          Something else here
-        </a>
-      </div>
-    );
-  }
-}
-
-export default Dropdown;
+export default DropdownLocal;

@@ -78,6 +78,7 @@ const Home = () => {
             runit={runit_callback}
             step={step_callback}
             restart={start_callback}
+            setCode={setCode}
           />
           <CodeBox code={code} setCode={setCode} line={line} />
           <Output_box text={output} />
