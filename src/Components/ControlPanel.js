@@ -56,9 +56,8 @@ const ControlPanel = ({ code, runit, step, restart, setCode }) => {
         setCode={setCode}
         restart={restart}
         data-toggle="tooltip"
-        title={'Code Examples'
+        title={'Code Examples'}
       />
-
     );
   };
 
