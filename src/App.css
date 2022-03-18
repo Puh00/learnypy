@@ -1,7 +1,7 @@
 :root {
   --background: white;
-  --components: #D6E0F0;
-  --dark: #393B44;
+  --components: #d6e0f0;
+  --dark: #393b44;
   --hover: #cedaee;
 }
 
@@ -21,7 +21,8 @@ body {
   position: relative;
 }
 
-.App-header, #App-body{
+.App-header,
+#App-body {
   background-color: var(--background);
   display: flex;
 }
@@ -58,13 +59,13 @@ body {
   font-weight: 600;
 }
 
-.Nav-item:hover{
+.Nav-item:hover {
   color: var(--hover);
 }
 
 .About-content {
   margin: 8px;
-  
+
   padding: 8px;
   border-width: 2px;
   border-color: var(--dark);
@@ -104,15 +105,20 @@ body {
   border-radius: 4px;
 }
 
-.Visual-box, .Output-box {
+.Visual-box,
+.Output-box {
   background-color: var(--background);
 }
 
-.Control-button, .Control-panel {
+.Control-button,
+.Control-panel {
   background-color: var(--components);
 }
 
-.Code-box, .Visual-box, .Output-box, .Control-panel{
+.Code-box,
+.Visual-box,
+.Output-box,
+.Control-panel {
   border-width: 2px;
   border-color: var(--dark);
   border-style: solid;
@@ -142,12 +148,12 @@ body {
   color: var(--dark);
 }
 
-.Control-button:first-child{
+.Control-button:first-child {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.Control-button:last-child{
+.Control-button:last-child {
   margin-left: auto;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
@@ -155,12 +161,13 @@ body {
   border-left-width: 2px;
 }
 
-.Control-button:hover{
-  background-color:var(--hover);
+.Control-button:hover {
+  background-color: var(--hover);
 }
 
-
-#Dropdown, #Dropdown:hover, #Dropdown:focus {
+#Dropdown,
+#Dropdown:hover,
+#Dropdown:focus {
   position: relative;
   z-index: 9;
   color: black;
@@ -173,9 +180,8 @@ body {
 }
 
 .dropdown-toggle::after {
-  display: none !important; 
+  display: none !important;
 }
-
 
 #dropdownMenu {
   color: black !important;
@@ -183,7 +189,8 @@ body {
   outline: none;
 }
 
-#Dropdown-button, #Dropdown-button:focus {
+#Dropdown-button,
+#Dropdown-button:focus {
   background: none;
   color: black;
   border: transparent !important;
@@ -195,7 +202,9 @@ body {
   border-style: outset;
 }
 
-#Dropdown-item, #Dropdown-item:active, #Dropdown-focus{
+#Dropdown-item,
+#Dropdown-item:active,
+#Dropdown-focus {
   border-style: outset;
   outline: none;
   color: none;
@@ -218,15 +227,17 @@ body {
   display: block;
 } */
 
-.Output-box{
+.Output-box {
   margin: 4px;
   padding: 4px;
   flex-basis: 45%;
   border-radius: 4px;
   white-space: pre-line;
+  overflow: auto;
+  max-height: 369px;
 }
 
-.Code-box{
+.Code-box {
   margin: 4px;
 }
 
