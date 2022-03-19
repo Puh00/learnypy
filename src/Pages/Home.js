@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import ControlPanel from '../Components/ControlPanel';
 import CodeBox from '../Components/CodeBox';
 import Output_box from '../Components/OutputBox';
-import VisualBox from '../Components/VisualBox';
+//import VisualBox from '../Components/VisualBox';
+import VisualBox from '../Components/GraphvizBox';
 
 import { func, start, step, runit } from '../SkulptWrapper/skulptWrapper';
 import Header from '../Components/Header';
