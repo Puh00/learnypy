@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
-import sleep from './util/sleep';
+import { getObjectByValue, getVariableByName } from './util/testUtils';
 
 // mock these components since the imported libraries seem to break everything...
 jest.mock('./Components/VisualBox', () => {
@@ -31,45 +31,87 @@ jest.mock('./Components/CodeBox', () => {
 // normally you would want to use a different framework dedicated to the
 // backend but since we are stuck with React, oh well...
 
-test('b has same reference as a', async () => {
+test('assignment guarantees same reference for integers', async () => {
   render(<App />);
 
-  let refs;
-
   const codebox = screen.getByRole('textbox');
-  const stepButton = screen.getByTitle('Run next line');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
   const visualBox = screen.getByTestId('visual-box');
 
   const code = `
-a = 1
-b = a`;
+big_int = 2**52
+small_int = -2**52
+zero = 0
+a = big_int
+b = small_int
+c = zero`;
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
 
-  // first click, does nothing
-  userEvent.click(stepButton);
-  await sleep(50);
+  // execute the code
+  userEvent.click(runButton);
 
-  // runs the first line
-  userEvent.click(stepButton);
-  refs = JSON.parse(visualBox.textContent);
+  const refs = JSON.parse(visualBox.textContent);
 
-  expect(refs.objects).toHaveLength(1);
-  expect(refs.objects[0].value).toBe(1);
+  const big_int = getVariableByName(refs.variables, 'big_int');
+  const small_int = getVariableByName(refs.variables, 'small_int');
+  const zero = getVariableByName(refs.variables, 'zero');
+  const a = getVariableByName(refs.variables, 'a');
+  const b = getVariableByName(refs.variables, 'b');
+  const c = getVariableByName(refs.variables, 'c');
 
-  expect(refs.variables).toHaveLength(1);
-  expect(refs.variables[0].ref).toBe(refs.objects[0].id);
+  expect(a.ref).toEqual(big_int.ref);
+  expect(b.ref).toEqual(small_int.ref);
+  expect(c.ref).toEqual(zero.ref);
+});
 
-  // if you click too fast the it apparently won't have time to update...
-  await sleep(50);
+test('small integers have same references', async () => {
+  render(<App />);
 
-  // second click
-  userEvent.click(stepButton);
-  refs = JSON.parse(visualBox.textContent);
+  const codebox = screen.getByRole('textbox');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+  const visualBox = screen.getByTestId('visual-box');
 
-  expect(refs.objects).toHaveLength(1);
-  expect(refs.variables).toHaveLength(2);
-  // check that they point at the same ref
-  expect(refs.variables[0].ref).toBe(refs.variables[1].ref);
+  const code = `
+a = -5
+b = -2 + -3
+c = a + 6
+d = 1
+e = 256
+f = 100 + 156
+g = 257
+h = g + 1 - 1`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  // execute the code
+  userEvent.click(runButton);
+
+  const refs = JSON.parse(visualBox.textContent);
+
+  const a = getVariableByName(refs.variables, 'a');
+  const b = getVariableByName(refs.variables, 'b');
+  const c = getVariableByName(refs.variables, 'c');
+  const d = getVariableByName(refs.variables, 'd');
+  const e = getVariableByName(refs.variables, 'e');
+  const f = getVariableByName(refs.variables, 'f');
+  const g = getVariableByName(refs.variables, 'g');
+  const h = getVariableByName(refs.variables, 'h');
+
+  const minus_five = getObjectByValue(refs.objects, -5);
+  const one = getObjectByValue(refs.objects, 1);
+  const _256 = getObjectByValue(refs.objects, 256);
+  const _257 = getObjectByValue(refs.objects, 257);
+
+  expect(minus_five).toHaveLength(1);
+  expect(one).toHaveLength(1);
+  expect(_256).toHaveLength(1);
+  expect(_257).toHaveLength(2);
+
+  expect(a.ref).toEqual(b.ref);
+  expect(c.ref).toEqual(d.ref);
+  expect(e.ref).toEqual(f.ref);
+  expect(g.ref).not.toEqual(h.ref);
 });
