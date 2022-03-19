@@ -31,7 +31,7 @@ jest.mock('./Components/CodeBox', () => {
 // normally you would want to use a different framework dedicated to the
 // backend but since we are stuck with React, oh well...
 
-test('basic reference 1', async () => {
+test('b has same reference as a', async () => {
   render(<App />);
 
   let refs;
