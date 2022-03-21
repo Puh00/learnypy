@@ -50,6 +50,8 @@ const Home = () => {
   useEffect(() => {
     func.current_line = (lineno) => {
       setLine(lineno);
+      console.log('globals', window.Sk.builtin.globals());
+      console.log('locals', window.Sk.builtin.locals());
     };
 
     func.success = () => {
