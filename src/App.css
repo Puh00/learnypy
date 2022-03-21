@@ -18,6 +18,7 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .App-header, #App-body{
@@ -158,11 +159,49 @@ body {
   background-color:var(--hover);
 }
 
-/* .Dropdown {
+
+#Dropdown, #Dropdown:hover, #Dropdown:focus {
   position: relative;
-  display: inline-block;
+  z-index: 9;
+  color: black;
+  background: transparent;
+  background-color: transparent;
+  box-shadow: none;
+  outline: none;
+  border: transparent;
+  border-style: outset;
 }
 
+.dropdown-toggle::after {
+  display: none !important; 
+}
+
+
+#dropdownMenu {
+  color: black !important;
+  margin: 0px 10px;
+  outline: none;
+}
+
+#Dropdown-button, #Dropdown-button:focus {
+  background: none;
+  color: black;
+  border: transparent !important;
+  border-style: outset;
+  outline: none;
+}
+
+#Dropdown-button:active {
+  border-style: outset;
+}
+
+#Dropdown-item, #Dropdown-item:active, #Dropdown-focus{
+  border-style: outset;
+  outline: none;
+  color: none;
+}
+
+/*
 .Dropdown-menu{
   display: none;
   position: absolute;
@@ -198,4 +237,5 @@ body {
   border-radius: 4px;
 }
 
-*:focus {outline:3px solid blue; outline-offset: 0px;}
+/* if !important is not on then the react-bootstrap components won't be affected */
+*:focus {outline:3px solid blue !important; outline-offset: none !important;}

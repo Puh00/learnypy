@@ -8,6 +8,7 @@ import VisualBox from '../Components/VisualBox';
 
 import { func, start, step, runit } from '../SkulptWrapper/skulptWrapper';
 import Header from '../Components/Header';
+import '../App.css';
 
 const Home = () => {
   const [refs, setRefs] = useState({ objects: [], variables: [] });
@@ -22,11 +23,8 @@ const Home = () => {
   let latest_output = '';
 
   // instantiate with setRefs as the callback function
-  const runit_callback = (prog) => {
-    setOutput({ test: '' });
-    runit(prog, setRefs);
-    latest_output = '';
-  };
+  const runit_callback = (prog) => runit(prog, setRefs);
+
   const step_callback = (prog) => {
     if (!stepped) {
       // reset the program to allow continous stepping
@@ -36,9 +34,9 @@ const Home = () => {
       return;
     }
 
-    setOutput({ text: latest_output });
     step(prog, setRefs);
   };
+
   const start_callback = (prog) =>
     start(prog, false, () => {
       setOutput({ text: '' });
@@ -82,6 +80,7 @@ const Home = () => {
             step={step_callback}
             restart={start_callback}
             drop_down_menu_ref={drop_down_menu_ref}
+            setCode={setCode}
           />
           <CodeBox
             code={code}
