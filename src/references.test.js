@@ -284,3 +284,60 @@ a[["self_ref"] = a`;
   expect(self_ref_val.type).toEqual('dict');
   expect(self_ref_val.id).toEqual(a_obj.id);
 });
+
+test('creating basic tuples', () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const code = `
+a = [[1]
+b = (a, 1)
+c = (b, {{"test": ""}, "")`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  // execute the code
+  userEvent.click(runButton);
+
+  const refs = getRefs(visualBox);
+
+  const a = getVariableByName(refs.variables, 'a');
+  const a_obj = getObjectById(refs.objects, a.ref);
+  expect(a.ref).toEqual(a_obj.id);
+  expect(a_obj.type).toEqual('list');
+  expect(a_obj.value).toHaveLength(1);
+
+  // get the object of the number 1
+  const one = getObjectById(refs.objects, a_obj.value[0].ref);
+
+  const b = getVariableByName(refs.variables, 'b');
+  const b_obj = getObjectById(refs.objects, b.ref);
+  expect(b.ref).toEqual(b_obj.id);
+  expect(b_obj.type).toEqual('tuple');
+  expect(b_obj.value).toHaveLength(2);
+  expect(b_obj.value[0].ref).toEqual(a_obj.id);
+  expect(b_obj.value[1].ref).toEqual(one.id);
+
+  const c = getVariableByName(refs.variables, 'c');
+  const c_obj = getObjectById(refs.objects, c.ref);
+  expect(c.ref).toEqual(c_obj.id);
+  expect(c_obj.type).toEqual('tuple');
+  expect(c_obj.value).toHaveLength(3);
+
+  // get the dict {"test": ""}
+  const tuple_ele_2 = getObjectById(refs.objects, c_obj.value[1].ref);
+  expect(tuple_ele_2.type).toEqual('dict');
+  expect(tuple_ele_2.value).toHaveLength(1);
+
+  // get the empty string
+  const tuple_ele_3 = getObjectById(refs.objects, c_obj.value[2].ref);
+  expect(tuple_ele_3.value).toEqual('');
+
+  expect(c_obj.value[0].ref).toEqual(b_obj.id);
+  expect(c_obj.value[1].ref).toEqual(tuple_ele_2.id);
+  expect(c_obj.value[2].ref).toEqual(tuple_ele_3.id);
+});
