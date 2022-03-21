@@ -8,9 +8,9 @@ const code_examples = [
   { name: 'Example 3', code: 'a=3\nb=1\nc=b' }
 ];
 
-function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref }) {
+function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref, button_border }) {
   return (
-    <Dropdown as={ButtonGroup} data-toggle="tooltip" title="Code examples">
+    <Dropdown style={button_border} as={ButtonGroup} data-toggle="tooltip" title="Code examples">
       <Dropdown.Toggle variant="light" id="dropdown-basic" ref={drop_down_menu_ref}>
         {logo}
       </Dropdown.Toggle>
