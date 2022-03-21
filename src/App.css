@@ -197,3 +197,5 @@ body {
   flex-basis: 100%;
   border-radius: 4px;
 }
+
+*:focus {outline:3px solid blue; outline-offset: 0px;}
