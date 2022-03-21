@@ -58,7 +58,6 @@ const CodeBox = ({ code, setCode, line, drop_down_menu_ref, output_box_ref }) =>
         onKeyDown={(_editor, event) => {
           if (event.key === 'Tab') {
             if (event.shiftKey) return drop_down_menu_ref.current.focus();
-            console.log(output_box_ref);
             output_box_ref.current.focus();
           }
         }}
