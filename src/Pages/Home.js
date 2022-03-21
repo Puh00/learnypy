@@ -47,13 +47,13 @@ const Home = () => {
       setStepped(false);
     });
 
+  func.outf = (text) => {
+    latest_output = latest_output + text;
+    setOutput({ text: latest_output });
+  };
+
   // run these functions only once
   useEffect(() => {
-    func.outf = (text) => {
-      latest_output = latest_output + text;
-      setOutput({ text: latest_output });
-    };
-
     func.current_line = (lineno) => {
       setLine(lineno);
     };
