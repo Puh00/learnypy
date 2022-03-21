@@ -16,8 +16,8 @@ const Home = () => {
   const [line, setLine] = useState(-1);
   const [stepped, setStepped] = useState(false);
 
-  const graph_ref = useRef(null);
   const drop_down_menu_ref = useRef(null);
+  const output_box_ref = useRef(null);
 
   let latest_output = '';
 
@@ -87,13 +87,13 @@ const Home = () => {
             code={code}
             setCode={setCode}
             line={line}
-            graph_ref={graph_ref}
             drop_down_menu_ref={drop_down_menu_ref}
+            output_box_ref={output_box_ref}
           />
-          <Output_box text={output} />
+          <Output_box output={output} output_box_ref={output_box_ref} />
         </div>
         <div id="Right-body">
-          <VisualBox data={refs} graph_ref={graph_ref} />
+          <VisualBox data={refs} />
         </div>
       </div>
     </div>

@@ -10,7 +10,7 @@ import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
 
 import './CodeBox.css';
 
-const CodeBox = ({ code, setCode, line, graph_ref, drop_down_menu_ref }) => {
+const CodeBox = ({ code, setCode, line, drop_down_menu_ref, output_box_ref }) => {
   const [next, setNext] = useState(null);
 
   const setHighlightedRow = (editor) => {
@@ -58,7 +58,8 @@ const CodeBox = ({ code, setCode, line, graph_ref, drop_down_menu_ref }) => {
         onKeyDown={(_editor, event) => {
           if (event.key === 'Tab') {
             if (event.shiftKey) return drop_down_menu_ref.current.focus();
-            graph_ref.current.focus();
+            console.log(output_box_ref);
+            output_box_ref.current.focus();
           }
         }}
       />

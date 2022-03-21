@@ -5,7 +5,7 @@ import styles from './VisualBox.module.css';
 import Graph from 'react-graph-vis';
 import parse from '../util/parser';
 
-const VisualBox = ({ data, graph_ref }) => {
+const VisualBox = ({ data }) => {
   const [graph, setGraph] = useState({ edges: [], nodes: [] });
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const VisualBox = ({ data, graph_ref }) => {
   };
 
   return (
-    <div className={styles['visual-box']} ref={graph_ref} tabIndex={0}>
+    <div className={styles['visual-box']} tabIndex={0}>
       <Graph graph={graph} options={options} />
     </div>
   );
