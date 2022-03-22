@@ -64,7 +64,7 @@ body {
 
 .About-content {
   margin: 8px;
-  
+
   padding: 8px;
   border-width: 2px;
   border-color: var(--dark);
@@ -98,10 +98,6 @@ body {
   margin: 8px 8px 8px 4px;
   flex-basis: 100%;
   display: flex;
-  border-width: 2px;
-  border-color: var(--dark);
-  border-style: solid;
-  border-radius: 4px;
 }
 
 .Visual-box, .Output-box {
@@ -120,7 +116,7 @@ body {
 }
 
 .Control-panel {
-  margin: 4px;
+  margin: 0px 4px 4px 4px;
   flex-basis: 10%;
   display: flex;
   justify-content: space-between;
@@ -173,7 +169,7 @@ body {
 }
 
 .dropdown-toggle::after {
-  display: none !important; 
+  display: none !important;
 }
 
 
@@ -219,7 +215,7 @@ body {
 } */
 
 .Output-box{
-  margin: 4px;
+  margin: 4px 4px 0px 4px;
   padding: 4px;
   flex-basis: 45%;
   border-radius: 4px;
@@ -231,8 +227,12 @@ body {
 }
 
 .Visual-box {
-  margin: 4px;
-  padding: 50px;
-  flex-basis: 100%;
-  border-radius: 4px;
+  max-height: 100%;
+  width: 100%;
+}
+
+.Visual-box svg {
+  max-height: 100%;
+  width: 100%;
+  transform: translateY(35%);
 }

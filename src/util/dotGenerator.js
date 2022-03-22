@@ -52,7 +52,7 @@ const generate_dot = (refs) => {
   let res = 'digraph structs { node [shape=box]\n' + nodes + edges + '}';
 
   // use console.log to check for errors in dot language when adding new types
-  console.log(res);
+  //console.log(res);
   return {
     dot: res
   };
