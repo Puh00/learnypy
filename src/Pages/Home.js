@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import ControlPanel from '../Components/ControlPanel';
 import CodeBox from '../Components/CodeBox';
@@ -8,6 +8,7 @@ import VisualBox from '../Components/VisualBox';
 
 import { func, start, step, runit } from '../SkulptWrapper/skulptWrapper';
 import Header from '../Components/Header';
+import '../App.css';
 
 const Home = () => {
   const [globals, setGlobals] = useState({ objects: [], variables: [] });
@@ -17,6 +18,9 @@ const Home = () => {
   const [code, setCode] = useState('a=1\nb=1\nc=b');
   const [line, setLine] = useState(-1);
   const [stepped, setStepped] = useState(false);
+
+  const drop_down_menu_ref = useRef(null);
+  const output_box_ref = useRef(null);
 
   let latest_output = '';
 
@@ -83,10 +87,17 @@ const Home = () => {
             runit={runit_callback}
             step={step_callback}
             restart={start_callback}
+            drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
           />
-          <CodeBox code={code} setCode={setCode} line={line} />
-          <Output_box text={output} />
+          <CodeBox
+            code={code}
+            setCode={setCode}
+            line={line}
+            drop_down_menu_ref={drop_down_menu_ref}
+            output_box_ref={output_box_ref}
+          />
+          <Output_box output={output} output_box_ref={output_box_ref} />
         </div>
         <div id="Right-body">
           <VisualBox data={globals} />
