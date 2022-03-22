@@ -24,7 +24,8 @@ const func = {
   current_line: (lineno) => {}, // called at each step
   success: () => {}, // called after a program has been executed,
   // eslint-disable-next-line no-unused-vars
-  verbose_debug_output: (txt) => {} // disabled by default
+  verbose_debug_output: (txt) => {}, // does nothing by default
+  error: () => {} // called after a program has failed to execute
 };
 //------------------------------------------------------------------------------
 
@@ -51,9 +52,9 @@ const init_debugger = () => {
   return new window.Sk.Debugger('<stdin>', {
     print: (txt) => func.verbose_debug_output(txt),
     get_source_line: get_line_status,
-    error: (e) => func.outf(e),
     current_line: (lineno) => func.current_line(lineno),
-    success: () => func.success()
+    success: () => func.success(),
+    error: (e) => func.error(e)
   });
 };
 

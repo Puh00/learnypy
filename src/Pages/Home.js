@@ -30,13 +30,21 @@ const Home = () => {
     setLocals(locals);
   };
 
-  // instantiate with callback as the callback function
-  const runit_callback = (prog) => runit(prog, callback);
+  const restart = (prog) =>
+    start(prog, false, () => {
+      clear();
+    });
+
+  // instantiate with setRefs as the callback function
+  const runit_callback = (prog) => {
+    clear();
+    runit(prog, callback);
+  };
 
   const step_callback = (prog) => {
     if (!stepped) {
       // reset the program to allow continous stepping
-      start_callback(prog);
+      restart(prog);
       setStepped(true);
       setLine(0);
       return;
@@ -45,13 +53,13 @@ const Home = () => {
     step(prog, callback);
   };
 
-  const start_callback = (prog) =>
-    start(prog, false, () => {
-      setOutput({ text: '' });
-      setGlobals({ objects: [], variables: [] });
-      setLine(-1);
-      setStepped(false);
-    });
+  const clear = () => {
+    setOutput({ text: '' });
+    setGlobals({ objects: [], variables: [] });
+    setLocals({ objects: [], variables: [] });
+    setLine(-1);
+    setStepped(false);
+  };
 
   func.outf = (text) => {
     latest_output = latest_output + text;
@@ -67,6 +75,13 @@ const Home = () => {
     func.success = () => {
       setLine(-1);
       setStepped(false);
+    };
+
+    func.error = (e) => {
+      setGlobals({ objects: [], variables: [] });
+      setLocals({ objects: [], variables: [] });
+      setStepped(false);
+      func.outf(e);
     };
   }, []);
 
@@ -86,7 +101,7 @@ const Home = () => {
             code={code}
             runit={runit_callback}
             step={step_callback}
-            restart={start_callback}
+            restart={clear}
             drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
           />
