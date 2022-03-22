@@ -9,12 +9,15 @@ const VisualBox = ({ data }) => {
   const [graph, setGraph] = useState({ edges: [], nodes: [] });
 
   useEffect(() => {
+    disable_tabbing_on_graph();
+  }, []);
+
+  useEffect(() => {
     const parsed_data = parse(data);
     setGraph(parsed_data);
 
     // can't pass graph here since it hasn't updated yet (weird flow in react)
     set_text(parsed_data);
-    set_logical_tabbing_on_graph();
   }, [data]);
 
   const options = {
@@ -65,13 +68,15 @@ const VisualBox = ({ data }) => {
     canvas.setAttribute('aria-label', alt_text);
   };
 
-  const set_logical_tabbing_on_graph = () => {
+  // for some reason the Graph component has a tabIndex of 900
+  const disable_tabbing_on_graph = () => {
     var viz_box = document.getElementsByClassName('vis-network')[0];
-    viz_box.setAttribute('tabindex', '0');
+    // disable the graph's tabindex
+    viz_box.setAttribute('tabindex', '-1');
   };
 
   return (
-    <div className={styles['visual-box']}>
+    <div className={styles['visual-box']} tabIndex={0}>
       <Graph graph={graph} options={options} />
     </div>
   );
