@@ -1,56 +1,37 @@
-/* eslint-disable react/display-name */
-// The forwardRef is important!!
-// Dropdown needs access to the DOM node in order to position the Menu
 import React from 'react';
 
-import { Dropdown } from 'react-bootstrap';
-import 'react-dropdown/style.css';
+import { Dropdown, ButtonGroup } from 'react-bootstrap';
 
-const example1 = 'a=[]\nb=a\nb.append(3)\nprint(b)';
-const example2 = 'a=2\nb=1\nc=b';
-const example3 = 'a=3\nb=1\nc=b';
+const code_examples = [
+  { name: 'Example 1', code: 'a=[]\nb=a\nb.append(3)\nprint(b)' },
+  { name: 'Example 2', code: 'a=2\nb=1\nc=b' },
+  { name: 'Example 3', code: 'a=3\nb=1\nc=b' }
+];
 
-function DropdownLocal(props) {
+function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref, button_border }) {
   return (
-    <div className={'Control-button'}>
-      <Dropdown autoClose="outside">
-        <Dropdown.Toggle variant="success" id="Dropdown" className={'Dropdown-button'}>
-          {props.logo}
-        </Dropdown.Toggle>
-        <Dropdown.Menu id={'dropdownMenu'}>
-          <Dropdown.Item as="button" id={'Dropdown-item'} href="#">
-            <button
-              id={'Dropdown-button'}
+    <Dropdown style={button_border} as={ButtonGroup} data-toggle="tooltip" title="Code examples">
+      <Dropdown.Toggle variant="light" id="dropdown-basic" ref={drop_down_menu_ref}>
+        {logo}
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+        {code_examples.map((item, index) => {
+          return (
+            <Dropdown.Item
+              as="button"
+              id={'Dropdown-item'}
+              key={index}
               onClick={() => {
-                props.setCode(example1);
-                props.restart(example1);
+                setCode(item.code);
+                restart(item.code);
               }}>
-              Example 1
-            </button>
-          </Dropdown.Item>
-          <Dropdown.Item as="button" id={'Dropdown-item'} href="#">
-            <button
-              id={'Dropdown-button'}
-              onClick={() => {
-                props.setCode(example2);
-                props.restart(example2);
-              }}>
-              Example 2
-            </button>
-          </Dropdown.Item>
-          <Dropdown.Item as="button" id={'Dropdown-item'} href="#">
-            <button
-              id={'Dropdown-button'}
-              onClick={() => {
-                props.setCode(example3);
-                props.restart(example3);
-              }}>
-              Example 3
-            </button>
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    </div>
+              {item.name}
+            </Dropdown.Item>
+          );
+        })}
+      </Dropdown.Menu>
+    </Dropdown>
   );
 }
 
