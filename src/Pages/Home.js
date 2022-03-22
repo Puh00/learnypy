@@ -11,6 +11,7 @@ import Header from '../Components/Header';
 
 const Home = () => {
   const [globals, setGlobals] = useState({ objects: [], variables: [] });
+  // eslint-disable-next-line no-unused-vars
   const [locals, setLocals] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
   const [code, setCode] = useState('a=1\nb=1\nc=b');
@@ -18,10 +19,6 @@ const Home = () => {
   const [stepped, setStepped] = useState(false);
 
   let latest_output = '';
-
-  useEffect(() => {
-    console.log('locals', locals);
-  }, [locals]);
 
   // callback function sent to the debugger
   const callback = (globals, locals) => {
