@@ -26,9 +26,8 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
     // new dictionary which renders the '===' operator useless for reference checking (which is
     // used in retrieve_object_id(...))
     for (const [key, value] of Object.entries(other)) {
-      if (filter.includes(key)) {
-        continue;
-      }
+      // skip if it's an Python attribute or a function
+      if (filter.includes(key) || Object.getPrototypeOf(value).tp$name == 'function') continue;
 
       variables.push({
         name: key,
