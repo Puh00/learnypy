@@ -18,13 +18,18 @@ const Home = () => {
 
   let latest_output = '';
 
+  const restart = (prog) =>
+    start(prog, false, () => {
+      clear();
+    });
+
   // instantiate with setRefs as the callback function
   const runit_callback = (prog) => runit(prog, setRefs);
 
   const step_callback = (prog) => {
     if (!stepped) {
       // reset the program to allow continous stepping
-      start_callback(prog);
+      restart(prog);
       setStepped(true);
       setLine(0);
       return;
@@ -33,13 +38,12 @@ const Home = () => {
     step(prog, setRefs);
   };
 
-  const start_callback = (prog) =>
-    start(prog, false, () => {
-      setOutput({ text: '' });
-      setRefs({ objects: [], variables: [] });
-      setLine(-1);
-      setStepped(false);
-    });
+  const clear = () => {
+    setOutput({ text: '' });
+    setRefs({ objects: [], variables: [] });
+    setLine(-1);
+    setStepped(false);
+  };
 
   func.outf = (text) => {
     latest_output = latest_output + text;
@@ -55,6 +59,12 @@ const Home = () => {
     func.success = () => {
       setLine(-1);
       setStepped(false);
+    };
+
+    func.error = (e) => {
+      setRefs({ objects: [], variables: [] });
+      setStepped(false);
+      func.outf(e);
     };
   }, []);
 
@@ -74,7 +84,7 @@ const Home = () => {
             code={code}
             runit={runit_callback}
             step={step_callback}
-            restart={start_callback}
+            restart={clear}
             setCode={setCode}
           />
           <CodeBox code={code} setCode={setCode} line={line} />
