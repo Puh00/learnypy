@@ -24,7 +24,10 @@ const Home = () => {
     });
 
   // instantiate with setRefs as the callback function
-  const runit_callback = (prog) => runit(prog, setRefs);
+  const runit_callback = (prog) => {
+    clear();
+    runit(prog, setRefs);
+  };
 
   const step_callback = (prog) => {
     if (!stepped) {
