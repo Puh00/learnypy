@@ -10,7 +10,8 @@ import { func, start, step, runit } from '../SkulptWrapper/skulptWrapper';
 import Header from '../Components/Header';
 
 const Home = () => {
-  const [refs, setRefs] = useState({ objects: [], variables: [] });
+  const [globals, setGlobals] = useState({ objects: [], variables: [] });
+  const [locals, setLocals] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
   const [code, setCode] = useState('a=1\nb=1\nc=b');
   const [line, setLine] = useState(-1);
@@ -18,8 +19,18 @@ const Home = () => {
 
   let latest_output = '';
 
-  // instantiate with setRefs as the callback function
-  const runit_callback = (prog) => runit(prog, setRefs);
+  useEffect(() => {
+    console.log('locals', locals);
+  }, [locals]);
+
+  // callback function sent to the debugger
+  const callback = (globals, locals) => {
+    setGlobals(globals);
+    setLocals(locals);
+  };
+
+  // instantiate with callback as the callback function
+  const runit_callback = (prog) => runit(prog, callback);
 
   const step_callback = (prog) => {
     if (!stepped) {
@@ -30,13 +41,13 @@ const Home = () => {
       return;
     }
 
-    step(prog, setRefs);
+    step(prog, callback);
   };
 
   const start_callback = (prog) =>
     start(prog, false, () => {
       setOutput({ text: '' });
-      setRefs({ objects: [], variables: [] });
+      setGlobals({ objects: [], variables: [] });
       setLine(-1);
       setStepped(false);
     });
@@ -50,8 +61,6 @@ const Home = () => {
   useEffect(() => {
     func.current_line = (lineno) => {
       setLine(lineno);
-      console.log('globals', window.Sk.builtin.globals());
-      console.log('locals', window.Sk.builtin.locals());
     };
 
     func.success = () => {
@@ -83,7 +92,7 @@ const Home = () => {
           <Output_box text={output} />
         </div>
         <div id="Right-body">
-          <VisualBox data={refs} />
+          <VisualBox data={globals} />
         </div>
       </div>
     </div>
