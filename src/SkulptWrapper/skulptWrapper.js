@@ -22,7 +22,8 @@ const func = {
   outf: outf,
   // eslint-disable-next-line no-unused-vars
   current_line: (lineno) => {}, // called at each step
-  success: () => {} // called after a program has been executed
+  success: () => {}, // called after a program has been executed
+  error: () => {} // called after a program has failed to execute
 };
 //------------------------------------------------------------------------------
 
@@ -49,9 +50,9 @@ const init_debugger = () => {
   return new window.Sk.Debugger('<stdin>', {
     print: (txt) => console.log(txt),
     get_source_line: get_line_status,
-    error: (e) => func.outf(e),
     current_line: (lineno) => func.current_line(lineno),
-    success: () => func.success()
+    success: () => func.success(),
+    error: (e) => func.error(e)
   });
 };
 
