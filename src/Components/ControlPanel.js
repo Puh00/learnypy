@@ -18,7 +18,8 @@ const ControlPanel = ({ code, runit, step, restart, setCode, drop_down_menu_ref 
       variant="light"
       onClick={func}
       data-toggle="tooltip"
-      title={tooltip_text}>
+      title={tooltip_text}
+      aria-label={tooltip_text}>
       {logo}
     </Button>
   );
@@ -51,7 +52,7 @@ const ControlPanel = ({ code, runit, step, restart, setCode, drop_down_menu_ref 
         setCode={setCode}
         restart={restart}
         data-toggle="tooltip"
-        title={'Code Examples'}
+        title="Code Examples"
         drop_down_menu_ref={drop_down_menu_ref}
         button_border={button_border}
       />
