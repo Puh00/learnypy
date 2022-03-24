@@ -39,6 +39,7 @@ const CodeBox = ({ code, setCode, line }) => {
   };
 
   const setBreakpoint = (lineNumber) => {
+    console.log('setBreakpont on line ' + (lineNumber + 1));
     var breakpoint_node = document.createElement('span');
     breakpoint_node.className = 'breakpoint-node';
     breakpoint_node.innerHTML =
@@ -52,6 +53,8 @@ const CodeBox = ({ code, setCode, line }) => {
   };
 
   const clearBreakpoint = (lineNumber) => {
+    console.log('clearBreakpont on line ' + (lineNumber + 1));
+
     // Remove breakpoint functionality
     clear_breakpoint(lineNumber);
 

@@ -86,15 +86,11 @@ const start_debugger = (prog, callback) => {
 
 //Loop through break_points and add a breakpoint at every line
 const init_break_points = () => {
+  dbg.clear_all_breakpoints();
   for (let break_point of break_points) {
     dbg.add_breakpoint('<stdin>.py', break_point + 1, 0, false);
   }
 };
-
-// utility breakpoint functions that might be used later
-// const add_breakpoints = (bps) => {
-//   break_points.push(...bps);
-// };
 
 const add_breakpoint = (bp) => {
   break_points.push(bp);
@@ -105,14 +101,8 @@ const clear_breakpoint = (bp) => {
   if (index > -1) break_points.splice(index, 1);
 };
 
-// const clear_breakpoints = () => {
-//   break_points = [];
-// };
-
 const start = (prog, step_mode = false, callback) => {
   console.log('Reset status');
-  dbg = init_debugger();
-  init_break_points();
   start_debugger(prog, callback);
 
   //Determine the mode for the debugging
@@ -143,6 +133,12 @@ const step = (prog, callback) => {
 };
 
 function runit(prog, callback) {
+  if (dbg == null) {
+    dbg = init_debugger();
+  }
+
+  init_break_points();
+
   //If there is a current suspension, disable step_mode
   //and continue where the program left off
   if (dbg.get_active_suspension() != null) {
