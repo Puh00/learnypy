@@ -11,7 +11,7 @@ import { add_breakpoint, clear_breakpoint } from '../SkulptWrapper/skulptWrapper
 
 import './CodeBox.css';
 
-const CodeBox = ({ code, setCode, line }) => {
+const CodeBox = ({ code, setCode, line, drop_down_menu_ref, output_box_ref }) => {
   const [next, setNext] = useState(null);
 
   // To prevent error caused by typos
@@ -103,8 +103,14 @@ const CodeBox = ({ code, setCode, line }) => {
         editorDidConfigure={(editor) => {
           setHighlightedRow(editor);
         }}
-        onBeforeChange={(_editor, _data, value) => {
-          setCode(value);
+        onBeforeChange={(_editor, data, value) => {
+          if (data.text[0] != '\t') setCode(value);
+        }}
+        onKeyDown={(_editor, event) => {
+          if (event.key === 'Tab') {
+            if (event.shiftKey) return drop_down_menu_ref.current.focus();
+            output_box_ref.current.focus();
+          }
         }}
       />
     </div>

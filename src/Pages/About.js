@@ -64,6 +64,12 @@ const About = () => {
             - For providing us with this amazing framework that allows us to execute Python code
             directly in the browser.
           </dd>
+          <dt>
+            <a href="http://www.cse.chalmers.se/~krasimir/" target="_blank" rel="noreferrer">
+              Krasimir Angelov
+            </a>
+          </dt>
+          <dd>- For being our supervisor during this project and giving us great support.</dd>
         </dl>
       </div>
     </div>

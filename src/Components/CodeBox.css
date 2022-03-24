@@ -30,3 +30,6 @@
   cursor: pointer;
   color: rgb(255, 139, 139);
 }
+
+/* .CodeMirror { border: 3px solid black } */
+.CodeMirror-focused { border: 3px solid blue; outline-offset: 1px }

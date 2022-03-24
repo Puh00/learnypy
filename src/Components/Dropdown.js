@@ -1,61 +1,38 @@
 import React from 'react';
 
-//TODO
+import { Dropdown, ButtonGroup } from 'react-bootstrap';
 
-// } else if (this.on_click() == 'dropdown') {
-//   return (
-//     <div className="Dropdown">
-//       <button onClick={this.on_click} className="Control-button">
-//         {this.icon}
-//       </button>
-//       <div className="Dropdown-menu">
-//         <a className="Dropdown-item" href="#">
-//           Action
-//         </a>
-//         <a className="Dropdown-item" href="#">
-//           Another action
-//         </a>
-//         <a className="Dropdown-item" href="#">
-//           Something else here
-//         </a>
-//       </div>
-//     </div>
-//   );
+const code_examples = [
+  { name: 'Example 1', code: 'a=[]\nb=a\nb.append(3)\nprint(b)' },
+  { name: 'Example 2', code: 'a=2\nb=1\nc=b' },
+  { name: 'Example 3', code: 'a=3\nb=1\nc=b' }
+];
 
-// eslint-disable-next-line no-unused-vars
-class Dropdown_item {
-  constructor(text, tooltip, action = () => {}) {
-    this.text = text;
-    this.tooltip = tooltip;
-    this.action = action;
-  }
+function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref, button_border }) {
+  return (
+    <Dropdown style={button_border} as={ButtonGroup}>
+      <Dropdown.Toggle variant="light" id="dropdown-basic" ref={drop_down_menu_ref}>
+        {logo}
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+        {code_examples.map((item, index) => {
+          return (
+            <Dropdown.Item
+              as="button"
+              id={'Dropdown-item'}
+              key={index}
+              onClick={() => {
+                setCode(item.code);
+                restart(item.code);
+              }}>
+              {item.name}
+            </Dropdown.Item>
+          );
+        })}
+      </Dropdown.Menu>
+    </Dropdown>
+  );
 }
 
-class Dropdown {
-  contents = [];
-  constructor(button, contents = this.contents, className = 'Dropdown') {
-    this.button = button;
-    this.contents = contents;
-    this.className = className;
-  }
-
-  calc_rows() {}
-
-  render() {
-    return (
-      <div className="Dropdown-menu">
-        <a className="Dropdown-item" href="#">
-          Action
-        </a>
-        <a className="Dropdown-item" href="#">
-          Another action
-        </a>
-        <a className="Dropdown-item" href="#">
-          Something else here
-        </a>
-      </div>
-    );
-  }
-}
-
-export default Dropdown;
+export default DropdownLocal;

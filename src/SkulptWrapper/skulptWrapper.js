@@ -1,4 +1,4 @@
-import parse_globals from './skulptGlobalsParser';
+import { parse_globals, parse_locals } from './skulptParser';
 
 // instantiate the globals since undefined in JavaScript is a atrocious
 window.Sk.globals = {};
@@ -22,7 +22,10 @@ const func = {
   outf: outf,
   // eslint-disable-next-line no-unused-vars
   current_line: (lineno) => {}, // called at each step
-  success: () => {} // called after a program has been executed
+  success: () => {}, // called after a program has been executed,
+  // eslint-disable-next-line no-unused-vars
+  verbose_debug_output: (txt) => {}, // does nothing by default
+  error: () => {} // called after a program has failed to execute
 };
 //------------------------------------------------------------------------------
 
@@ -47,11 +50,11 @@ const init_debugger = () => {
   };
 
   return new window.Sk.Debugger('<stdin>', {
-    print: (txt) => console.log(txt),
+    print: (txt) => func.verbose_debug_output(txt),
     get_source_line: get_line_status,
-    error: (e) => func.outf(e),
     current_line: (lineno) => func.current_line(lineno),
-    success: () => func.success()
+    success: () => func.success(),
+    error: (e) => func.error(e)
   });
 };
 
@@ -67,10 +70,6 @@ const start_debugger = (prog, callback) => {
     breakpoints: dbg.check_breakpoints.bind(dbg)
   });
 
-  if (typeof callback === 'function') {
-    callback();
-  }
-
   let susp_handlers = {};
   susp_handlers['*'] = dbg.suspension_handler.bind(this);
 
@@ -82,6 +81,10 @@ const start_debugger = (prog, callback) => {
     dbg
   );
   myPromise.then(dbg.success.bind(dbg), dbg.error.bind(dbg));
+
+  if (typeof callback === 'function') {
+    callback();
+  }
 };
 
 //Loop through break_points and add a breakpoint at every line
@@ -129,7 +132,7 @@ const step = (prog, callback) => {
     dbg.resume.call(dbg);
   }
 
-  callback(parse_globals());
+  callback(parse_globals(), parse_locals());
 };
 
 function runit(prog, callback) {
@@ -144,7 +147,7 @@ function runit(prog, callback) {
   if (dbg.get_active_suspension() != null) {
     dbg.disable_step_mode();
     dbg.resume.call(dbg);
-    callback(parse_globals());
+    callback(parse_globals(), parse_locals());
     return;
   }
 
