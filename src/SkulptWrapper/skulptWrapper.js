@@ -2,6 +2,7 @@ import { parse_globals, parse_locals } from './skulptParser';
 
 // instantiate the globals since undefined in JavaScript is a atrocious
 window.Sk.globals = {};
+let dbg;
 
 //------------------------------Builtin functions-------------------------------
 function builtinRead(x) {
@@ -15,6 +16,46 @@ function outf(text) {
   mypre.setAttribute('aria-label', 'Output from code');
   mypre.innerHTML = mypre.innerHTML + text;
 }
+
+let suspension_handlerNew = function (susp1) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var susp2 = susp1.resume();
+
+      // Whenever there is a fork into a function
+      // save the child and parent to use in the hack in resume()
+      if (susp2 && susp2.child && susp2.child.$isSuspension) {
+        self.parentSuspension = susp2;
+        self.childSuspension = susp2.child;
+      } else {
+        self.parentSuspension = null;
+        self.childSuspension = null;
+      }
+      resolve(susp2);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let resumeNew = function () {
+  // Reset the suspension stack to the topmost
+  this.current_suspension = this.suspension_stack.length - 1;
+
+  // hack to force debugger to use the 'parent' suspsension
+  // when there is a child suspension
+  // to fix resuming from the end of a function
+  if (self.childSuspension) {
+    this.suspension_stack[this.current_suspension] = self.parentSuspension;
+  }
+
+  if (this.suspension_stack.length === 0) {
+    this.print('No suspensions to resume');
+  } else {
+    var promise = this.suspension_handler(this.get_active_suspension());
+    promise.then(this.success.bind(this), this.error.bind(this));
+  }
+};
 
 // export this object to dynamically "override" the builtin functions
 const func = {
@@ -49,13 +90,16 @@ const init_debugger = () => {
     }
   };
 
-  return new window.Sk.Debugger('<stdin>', {
+  dbg = new window.Sk.Debugger('<stdin>', {
     print: (txt) => func.verbose_debug_output(txt),
     get_source_line: get_line_status,
     current_line: (lineno) => func.current_line(lineno),
     success: () => func.success(),
     error: (e) => func.error(e)
   });
+  dbg.resume = resumeNew;
+  dbg.suspension_handler = suspension_handlerNew;
+  return;
 };
 
 const start_debugger = (prog, callback) => {
@@ -108,7 +152,7 @@ const clear_breakpoints = () => {
 };
 
 const start = (prog, step_mode = false, callback) => {
-  dbg = init_debugger();
+  init_debugger();
   init_break_points();
   start_debugger(prog, callback);
 
@@ -171,7 +215,8 @@ function runit(prog, callback) {
 }
 
 // -----------------------------------------------------------------------------
-let dbg = init_debugger();
+init_debugger();
+
 let break_points = [];
 // -----------------------------------------------------------------------------
 
