@@ -1,5 +1,7 @@
+@import "/src/rootStyles.css";
+
 .mark {
-  background-color: #D6E0F0;
+  background-color: var(--components);
 }
 
 .breakpoints{
@@ -10,4 +12,21 @@
 
 .CodeMirror-linenumber{
   padding-right: 4px;
+}
+
+.marker-node .breakpoint-node{
+  display: inline-block;
+}
+
+.marker-node{
+  color: var(--dark);
+}
+
+.breakpoint-node{
+  color: red;
+}
+
+.breakpoint-node:hover{
+  cursor: pointer;
+  color: rgb(255, 139, 139);
 }
