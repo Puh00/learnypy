@@ -14,7 +14,7 @@ const button_border = {
 const ControlPanel = ({ code, runit, step, restart, setCode, drop_down_menu_ref }) => {
   const create_button = (func, tooltip_text, logo) => (
     <Button
-      className="Control-button"
+      style={button_border}
       variant="light"
       onClick={func}
       data-toggle="tooltip"
@@ -25,7 +25,7 @@ const ControlPanel = ({ code, runit, step, restart, setCode, drop_down_menu_ref 
   );
 
   return (
-    <ButtonGroup className="Control-panel">
+    <ButtonGroup style={{ border: '1px solid', borderRadius: '5px' }}>
       {create_button(
         () => {
           runit(code);
