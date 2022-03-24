@@ -10,7 +10,7 @@ const code_examples = [
 
 function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref, button_border }) {
   return (
-    <Dropdown style={button_border} as={ButtonGroup} data-toggle="tooltip" title="Code examples">
+    <Dropdown style={button_border} as={ButtonGroup}>
       <Dropdown.Toggle variant="light" id="dropdown-basic" ref={drop_down_menu_ref}>
         {logo}
       </Dropdown.Toggle>
