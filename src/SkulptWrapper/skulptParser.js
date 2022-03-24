@@ -3,26 +3,37 @@ import { v4 as uuidv4 } from 'uuid';
 let variables = [];
 let objects = [];
 
-// Parse the current status of Sk.globals and return variables and objects.
-const parse_globals = () => {
-  let skip = 4;
+// retrieve the global variables and objects
+const parse_globals = () => parse_objects(window.Sk.globals);
+
+// retrieve the local variables and objects
+const parse_locals = () => parse_objects(window.Sk._frame?.locals);
+
+/**
+ * Parse the current status of {other} and return variables and objects
+ * @param {Object} other generally globals or locals
+ * @param {Array} filter irrelevant python attributes that are filtered out
+ * @returns variables and objects from {other}
+ */
+const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__package__']) => {
   // Variables and objects reset before parsing
   variables = [];
   objects = [];
 
-  // Must be from Sk.globals and not Sk.builtin.globals, since the latter creates an entirely
-  // new dictionary which renders the '===' operator useless for reference checking (which is
-  // used in retrieve_object_id(...))
-  for (const [key, value] of Object.entries(window.Sk.globals)) {
-    if (skip > 0) {
-      skip--;
-      continue;
-    }
+  // there's a risk for locals being undefined
+  if (other) {
+    // Must be from Sk.globals and not Sk.builtin.globals, since the latter creates an entirely
+    // new dictionary which renders the '===' operator useless for reference checking (which is
+    // used in retrieve_object_id(...))
+    for (const [key, value] of Object.entries(other)) {
+      // skip if it's an Python attribute or a function
+      if (filter.includes(key) || Object.getPrototypeOf(value).tp$name == 'function') continue;
 
-    variables.push({
-      name: key,
-      ref: retrieve_object_id(value)
-    });
+      variables.push({
+        name: key,
+        ref: retrieve_object_id(value)
+      });
+    }
   }
 
   return {
@@ -109,4 +120,4 @@ const retrieve_small_int_object_id = (js_object) => {
   return false;
 };
 
-export default parse_globals;
+export { parse_globals, parse_locals };

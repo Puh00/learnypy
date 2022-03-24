@@ -11,7 +11,9 @@ import Header from '../Components/Header';
 import '../App.css';
 
 const Home = () => {
-  const [refs, setRefs] = useState({ objects: [], variables: [] });
+  const [globals, setGlobals] = useState({ objects: [], variables: [] });
+  // eslint-disable-next-line no-unused-vars
+  const [locals, setLocals] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
   const [code, setCode] = useState('a=1\nb=1\nc=b');
   const [line, setLine] = useState(-1);
@@ -22,6 +24,12 @@ const Home = () => {
 
   let latest_output = '';
 
+  // callback function sent to the debugger
+  const callback = (globals, locals) => {
+    setGlobals(globals);
+    setLocals(locals);
+  };
+
   const restart = (prog) =>
     start(prog, false, () => {
       clear();
@@ -30,7 +38,7 @@ const Home = () => {
   // instantiate with setRefs as the callback function
   const runit_callback = (prog) => {
     clear();
-    runit(prog, setRefs);
+    runit(prog, callback);
   };
 
   const step_callback = (prog) => {
@@ -42,12 +50,13 @@ const Home = () => {
       return;
     }
 
-    step(prog, setRefs);
+    step(prog, callback);
   };
 
   const clear = () => {
     setOutput({ text: '' });
-    setRefs({ objects: [], variables: [] });
+    setGlobals({ objects: [], variables: [] });
+    setLocals({ objects: [], variables: [] });
     setLine(-1);
     setStepped(false);
   };
@@ -69,7 +78,8 @@ const Home = () => {
     };
 
     func.error = (e) => {
-      setRefs({ objects: [], variables: [] });
+      setGlobals({ objects: [], variables: [] });
+      setLocals({ objects: [], variables: [] });
       setStepped(false);
       func.outf(e);
     };
@@ -105,7 +115,7 @@ const Home = () => {
           <Output_box output={output} output_box_ref={output_box_ref} />
         </div>
         <div id="Right-body">
-          <VisualBox data={refs} />
+          <VisualBox data={globals} />
         </div>
       </div>
     </div>
