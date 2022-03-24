@@ -70,8 +70,8 @@ const create_object = (js_object) => {
   } else if (js_object.tp$name === 'dict') {
     value = [];
     const entries = Object.values(js_object.entries);
-    for (let i = 0; i < entries.length; i++) {
-      value.push({ key: entries[i].lhs.v, val: retrieve_object_id(entries[i].rhs) });
+    for (const entr of entries) {
+      value.push({ key: entr.lhs.v, val: retrieve_object_id(entr.rhs) });
     }
 
     // Add more types here
