@@ -13,35 +13,5 @@ body {
   overflow-x: hidden; 
 }
 
-.Outer-grid {
-  height: 100vh;
-  width: 100vw;
-  display: grid;
-  grid-template-rows: 60px;
-  padding-bottom: 5px;
-}
-
-.Content-body {
-  grid-row: 2;
-  display: grid;
-  /* So the left- and right-body doesn't collide */
-  grid-template-columns: repeat(auto-fit, minmax(220px, 40%)) 60%;
-  margin: 3px;
-}
-
-.Left-body {
-  display: grid;
-  grid-template-rows: 50px 60%;
-  row-gap: 10px;
-  margin: 5px;
-}
-
-.Border {
-  border-width: 2px;
-  border-color: var(--dark);
-  border-style: solid;
-  border-radius: 4px;
-}
-
 /* if !important is not on then the react-bootstrap components won't be affected */
 *:focus {outline:3px solid blue !important; outline-offset: none !important;}

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-// import styles from './VisualBox.module.css';
-import './VisualBox.css';
-
 import Graph from 'react-graph-vis';
 import parse from '../util/parser';
+
+import styles from './VisualBox.module.css';
+import border from './Border.module.css';
 
 const VisualBox = ({ data }) => {
   const [graph, setGraph] = useState({ edges: [], nodes: [] });
@@ -77,7 +77,7 @@ const VisualBox = ({ data }) => {
   };
 
   return (
-    <div className="Visual-box Border" tabIndex={0}>
+    <div className={`${styles.Container} ${border.Border}`} tabIndex={0}>
       <Graph graph={graph} options={options} />
     </div>
   );

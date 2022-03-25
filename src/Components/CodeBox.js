@@ -8,7 +8,9 @@ import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
 
-import './CodeBox.css';
+import './CodeBox.css'; // CodeMirror stuff
+import styles from './CodeBox.module.css';
+import border from './Border.module.css';
 
 const CodeBox = ({ code, setCode, line, drop_down_menu_ref, output_box_ref }) => {
   const [next, setNext] = useState(null);
@@ -16,12 +18,12 @@ const CodeBox = ({ code, setCode, line, drop_down_menu_ref, output_box_ref }) =>
   const setHighlightedRow = (editor) => {
     // remove all previous highlighted lines
     editor.eachLine((line) => {
-      editor.removeLineClass(line, 'wrap', 'mark');
+      editor.removeLineClass(line, 'wrap', styles['Line-highlight']);
     });
 
     if (line >= 0) {
       // highlight the current execution row
-      editor.addLineClass(line, 'wrap', 'mark');
+      editor.addLineClass(line, 'wrap', styles['Line-highlight']);
     }
   };
 
@@ -32,7 +34,7 @@ const CodeBox = ({ code, setCode, line, drop_down_menu_ref, output_box_ref }) =>
   }, [line]);
 
   return (
-    <div className="Code-box Border">
+    <div className={`${styles.Container} ${border.Border}`}>
       <CodeMirror
         value={code}
         options={{

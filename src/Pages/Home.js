@@ -5,9 +5,11 @@ import ControlPanel from '../Components/ControlPanel';
 import CodeBox from '../Components/CodeBox';
 import OutputBox from '../Components/OutputBox';
 import VisualBox from '../Components/VisualBox';
+import Header from '../Components/Header';
 
 import { func, start, step, runit } from '../SkulptWrapper/skulptWrapper';
-import Header from '../Components/Header';
+
+import styles from './Home.module.css';
 
 const Home = () => {
   const [globals, setGlobals] = useState({ objects: [], variables: [] });
@@ -92,10 +94,10 @@ const Home = () => {
   ];
 
   return (
-    <div className="Outer-grid">
+    <div className={styles['Outer-grid']}>
       <Header navItems={navItems} />
-      <div className="Content-body">
-        <div className="Left-body">
+      <div className={styles['Content-body']}>
+        <div className={styles['Left-body']}>
           <ControlPanel
             code={code}
             runit={runit_callback}

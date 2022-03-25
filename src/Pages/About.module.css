@@ -1,4 +1,4 @@
-.About-content {
+.Content {
   margin: 8px;
   padding: 8px;
   border-width: 2px;
@@ -7,7 +7,7 @@
   border-radius: 4px;
 }
 
-.About-title {
+.Title {
   margin-top: 0px;
   margin-left: 0px;
   font-size: 1.3em;

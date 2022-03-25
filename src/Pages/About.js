@@ -2,7 +2,7 @@ import React from 'react';
 
 import Header from '../Components/Header';
 
-import './About.css';
+import styles from './About.module.css';
 
 const About = () => {
   const navItems = [
@@ -21,8 +21,8 @@ const About = () => {
   return (
     <div>
       <Header navItems={navItems} />
-      <div className="About-content">
-        <h2 className="About-title">About {appName}</h2>
+      <div className={styles.Content}>
+        <h2 className={styles.Title}>About {appName}</h2>
         <p>
           {appName} is a free site of{' '}
           <a href="https://www.python.org/" target="_blank" rel="noreferrer">
@@ -46,8 +46,8 @@ const About = () => {
           .
         </p>
 
-        <h2 className="About-title">The Team</h2>
-        <ul className="About-team">
+        <h2 className={styles.Title}>The Team</h2>
+        <ul>
           <li>Moa Berglund</li>
           <li>Saga Hassellöf</li>
           <li>Simon Johansson</li>
@@ -56,7 +56,7 @@ const About = () => {
           <li>Yenan Wang</li>
         </ul>
 
-        <h2 className="About-title">Special Thanks</h2>
+        <h2 className={styles.Title}>Special Thanks</h2>
         <dl>
           <dt>
             <a href="https://skulpt.org/" target="_blank" rel="noreferrer">
