@@ -51,7 +51,7 @@ const generate_dot = (refs) => {
   });
   let res = 'digraph structs { node [shape=box]\n' + nodes + edges + '}';
 
-  // use console.log to check for errors in dot language when adding new types
+  // use console.log to check for errors in dot language
   //console.log(res);
   return {
     dot: res
@@ -77,31 +77,36 @@ const set_indexable_object = (o, start_bracket, end_bracket) => {
     'size: ' +
     o.value.length +
     end_bracket +
-    '</TD>\n\t</TR>\n\t<TR>\n\t\t<TD ';
+    '</TD>\n\t</TR>\n';
 
-  // set value for index and add arrow to object
-  o.value.forEach((item) => {
-    switch (o.type) {
-      case 'tuple':
-      case 'list':
-        index = count;
-        to = item.ref;
-        break;
-      case 'dict':
-        index = item.key;
-        to = item.val;
-        break;
-      default:
-    }
-    nodes += 'PORT="' + count + '">' + index;
-    edges += '"' + o.id + '":"' + count + '" -> "' + to + '"[color=lightsteelblue3];\n';
+  if (o.value.length > 0) {
+    nodes += '\t<TR>\n\t\t<TD ';
 
-    // check if one more key is added after this one
-    count++;
-    if (count < o.value.length) nodes += '</TD>\n\t\t<TD ';
-  });
+    // set value for index and add arrow to object
+    o.value.forEach((item) => {
+      switch (o.type) {
+        case 'tuple':
+        case 'list':
+          index = count;
+          to = item.ref;
+          break;
+        case 'dict':
+          index = item.key;
+          to = item.val;
+          break;
+        default:
+      }
+      nodes += 'PORT="' + count + '">' + index;
+      edges += '"' + o.id + '":"' + count + '" -> "' + to + '"[color=lightsteelblue3];\n';
 
-  nodes += '</TD>\n\t</TR>\n</TABLE>\n>];\n';
+      // check if one more key is added after this one
+      count++;
+      if (count < o.value.length) nodes += '</TD>\n\t\t<TD ';
+    });
+
+    nodes += '</TD>\n\t</TR>\n';
+  }
+  nodes += '</TABLE>\n>];\n';
 };
 
 export default generate_dot;
