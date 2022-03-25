@@ -97,8 +97,6 @@ const parse = (refs) => {
       }
     }
   });
-  //console.log(nodes);
-  //console.log(edges);
 
   function generate_index_text(count, from, to) {
     for (let i = 0; i < edges.length; i++) {

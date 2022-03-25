@@ -126,12 +126,15 @@ print(a)`;
 
   userEvent.click(stepButton); // no row executed
   await sleep(50);
+  expect(outputBox.textContent).toBe('');
 
   userEvent.click(stepButton); // a = [1,2,3]
   await sleep(50);
+  expect(outputBox.textContent).toBe('');
 
   userEvent.click(stepButton); // b = a
   await sleep(50);
+  expect(outputBox.textContent).toBe('');
 
   userEvent.click(stepButton); // print(b)
   await sleep(50);
@@ -139,13 +142,13 @@ print(a)`;
 
   userEvent.click(stepButton); // b.append(4)
   await sleep(50);
+  expect(outputBox.textContent).toBe('[1, 2, 3]\n');
 
   userEvent.click(stepButton); // print(b)
   await sleep(50);
-
   expect(outputBox.textContent).toBe('[1, 2, 3]\n[1, 2, 3, 4]\n');
+
   userEvent.click(stepButton); // print(a)
   await sleep(50);
-
   expect(outputBox.textContent).toBe('[1, 2, 3]\n[1, 2, 3, 4]\n[1, 2, 3, 4]\n');
 });

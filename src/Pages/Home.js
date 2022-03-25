@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import ControlPanel from '../Components/ControlPanel';
 import CodeBox from '../Components/CodeBox';
@@ -9,38 +9,58 @@ import VisualBox from '../Components/GraphvizBox';
 
 import { func, start, step, runit } from '../SkulptWrapper/skulptWrapper';
 import Header from '../Components/Header';
+import '../App.css';
 
 const Home = () => {
-  const [refs, setRefs] = useState({ objects: [], variables: [] });
+  const [globals, setGlobals] = useState({ objects: [], variables: [] });
+  // eslint-disable-next-line no-unused-vars
+  const [locals, setLocals] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
   const [code, setCode] = useState('a=1\nb=1\nc=b');
   const [line, setLine] = useState(-1);
   const [stepped, setStepped] = useState(false);
 
+  const drop_down_menu_ref = useRef(null);
+  const output_box_ref = useRef(null);
+
   let latest_output = '';
 
+  // callback function sent to the debugger
+  const callback = (globals, locals) => {
+    setGlobals(globals);
+    setLocals(locals);
+  };
+
+  const restart = (prog) =>
+    start(prog, false, () => {
+      clear();
+    });
+
   // instantiate with setRefs as the callback function
-  const runit_callback = (prog) => runit(prog, setRefs);
+  const runit_callback = (prog) => {
+    clear();
+    runit(prog, callback);
+  };
 
   const step_callback = (prog) => {
     if (!stepped) {
       // reset the program to allow continous stepping
-      start_callback(prog);
+      restart(prog);
       setStepped(true);
       setLine(0);
       return;
     }
 
-    step(prog, setRefs);
+    step(prog, callback);
   };
 
-  const start_callback = (prog) =>
-    start(prog, false, () => {
-      setOutput({ text: '' });
-      setRefs({ objects: [], variables: [] });
-      setLine(-1);
-      setStepped(false);
-    });
+  const clear = () => {
+    setOutput({ text: '' });
+    setGlobals({ objects: [], variables: [] });
+    setLocals({ objects: [], variables: [] });
+    setLine(-1);
+    setStepped(false);
+  };
 
   func.outf = (text) => {
     latest_output = latest_output + text;
@@ -56,6 +76,13 @@ const Home = () => {
     func.success = () => {
       setLine(-1);
       setStepped(false);
+    };
+
+    func.error = (e) => {
+      setGlobals({ objects: [], variables: [] });
+      setLocals({ objects: [], variables: [] });
+      setStepped(false);
+      func.outf(e);
     };
   }, []);
 
@@ -75,14 +102,21 @@ const Home = () => {
             code={code}
             runit={runit_callback}
             step={step_callback}
-            restart={start_callback}
+            restart={clear}
+            drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
           />
-          <CodeBox code={code} setCode={setCode} line={line} />
-          <Output_box text={output} />
+          <CodeBox
+            code={code}
+            setCode={setCode}
+            line={line}
+            drop_down_menu_ref={drop_down_menu_ref}
+            output_box_ref={output_box_ref}
+          />
+          <Output_box output={output} output_box_ref={output_box_ref} />
         </div>
         <div id="Right-body">
-          <VisualBox data={refs} />
+          <VisualBox data={globals} />
         </div>
       </div>
     </div>
