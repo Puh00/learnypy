@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Graphviz } from 'graphviz-react';
+import { graphviz } from 'd3-graphviz';
 import generate_dot from '../util/dotGenerator';
 
 const VisualBox = ({ data }) => {
@@ -9,21 +9,14 @@ const VisualBox = ({ data }) => {
   useEffect(() => {
     const dot = generate_dot(data);
     setGraph(dot);
-
-    //TODO screen reader
-    set_logical_tabbing_on_graph();
+    //TODO screen reader + tab
   }, [data]);
 
-  const set_logical_tabbing_on_graph = () => {
-    var viz_box = document.getElementsByClassName('Visual-box')[0];
-    viz_box.setAttribute('tabindex', '0');
-  };
+  useEffect(() => {
+    graphviz(`#graph-body`).renderDot(graph.dot);
+  }, [graph]);
 
-  return (
-    <div className="Visual-box">
-      <Graphviz dot={graph.dot} options={{ zoom: true }} />
-    </div>
-  );
+  return <div className={'Visual-box'} id="graph-body"></div>;
 };
 
 export default VisualBox;
