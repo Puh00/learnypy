@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Header({ navItems }) {
+import './Header.css';
+
+const Header = ({ navItems }) => {
   return (
-    <header className="App-header">
+    <header className="Header">
       <Link className="Home-logo" to="/">
         The Dynamic Memory Model
       </Link>
@@ -35,6 +37,6 @@ function Header({ navItems }) {
       </div>
     </header>
   );
-}
+};
 
 export default Header;

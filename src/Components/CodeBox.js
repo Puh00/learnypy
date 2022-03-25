@@ -32,10 +32,9 @@ const CodeBox = ({ code, setCode, line, drop_down_menu_ref, output_box_ref }) =>
   }, [line]);
 
   return (
-    <div className="Code-box">
+    <div className="Code-box Border">
       <CodeMirror
         value={code}
-        className="code-mirror-wrapper"
         options={{
           lineWrapping: true,
           lint: true,

@@ -1,5 +1,26 @@
 .mark {
   background-color: gold;
 }
-/* .CodeMirror { border: 3px solid black } */
-.CodeMirror-focused { border: 3px solid blue; outline-offset: 1px }
+
+.CodeMirror-focused {
+  border: 3px solid blue;
+  outline-offset: 1px
+}
+
+/* courtsey to https://discuss.codemirror.net/t/size-inside-flexbox/1359/4*/
+
+.CodeMirror {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+
+.Code-box {
+  flex: 1 1 auto;
+  margin-top: 0;
+  height: 100%;
+  position: relative;
+}

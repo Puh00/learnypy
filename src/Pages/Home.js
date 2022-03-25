@@ -3,12 +3,11 @@ import { useState, useEffect, useRef } from 'react';
 
 import ControlPanel from '../Components/ControlPanel';
 import CodeBox from '../Components/CodeBox';
-import Output_box from '../Components/OutputBox';
+import OutputBox from '../Components/OutputBox';
 import VisualBox from '../Components/VisualBox';
 
 import { func, start, step, runit } from '../SkulptWrapper/skulptWrapper';
 import Header from '../Components/Header';
-import '../App.css';
 
 const Home = () => {
   const [globals, setGlobals] = useState({ objects: [], variables: [] });
@@ -93,10 +92,10 @@ const Home = () => {
   ];
 
   return (
-    <div className="App">
+    <div className="Outer-grid">
       <Header navItems={navItems} />
-      <div id="App-body">
-        <div id="Left-body">
+      <div className="Content-body">
+        <div className="Left-body">
           <ControlPanel
             code={code}
             runit={runit_callback}
@@ -112,11 +111,9 @@ const Home = () => {
             drop_down_menu_ref={drop_down_menu_ref}
             output_box_ref={output_box_ref}
           />
-          <Output_box output={output} output_box_ref={output_box_ref} />
+          <OutputBox output={output} output_box_ref={output_box_ref} />
         </div>
-        <div id="Right-body">
-          <VisualBox data={globals} />
-        </div>
+        <VisualBox data={globals} />
       </div>
     </div>
   );

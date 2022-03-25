@@ -9,243 +9,37 @@ html,
 body {
   height: 100%;
   margin: 0;
-  overflow: auto;
+  overflow: hidden; /* to hide the scrollbar */
+  overflow-x: hidden; 
 }
 
-.App {
-  height: 100%;
-  min-height: 99vh;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  position: relative;
+.Outer-grid {
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-rows: 60px;
+  padding-bottom: 5px;
 }
 
-.App-header,
-#App-body {
-  background-color: var(--background);
-  display: flex;
+.Content-body {
+  grid-row: 2;
+  display: grid;
+  /* So the left- and right-body doesn't collide */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 40%)) 60%;
+  margin: 3px;
 }
 
-.App-header {
-  flex-direction: row;
-  align-items: stretch;
-  justify-content: space-between;
+.Left-body {
+  display: grid;
+  grid-template-rows: 50px 60%;
+  row-gap: 10px;
+  margin: 5px;
 }
 
-.Home-logo {
-  margin: 12px;
-  color: var(--dark);
-
-  text-decoration: none;
-  font-size: 1.5em;
-  font-weight: bolder;
-}
-
-.Nav-menu {
-  margin-right: 12px;
-  margin-top: 8px;
-
-  display: flex;
-  flex-direction: row;
-}
-
-.Nav-item {
-  margin-left: 5px;
-  margin-right: 5px;
-  color: var(--dark);
-
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.Nav-item:hover {
-  color: var(--hover);
-}
-
-.About-content {
-  margin: 8px;
-
-  padding: 8px;
+.Border {
   border-width: 2px;
   border-color: var(--dark);
   border-style: solid;
-  border-radius: 4px;
-}
-
-.About-title {
-  margin-top: 0px;
-  margin-left: 0px;
-
-  font-size: 1.3em;
-  font-weight: 600;
-}
-
-#App-body {
-  flex: 2;
-}
-
-#Left-body {
-  margin: 8px 4px 8px 8px;
-  flex-basis: 70%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-}
-
-/* top | right | bottom | left */
-#Right-body {
-  margin: 8px 8px 8px 4px;
-  flex-basis: 100%;
-  display: flex;
-  border-width: 2px;
-  border-color: var(--dark);
-  border-style: solid;
-  border-radius: 4px;
-}
-
-.Visual-box,
-.Output-box {
-  background-color: var(--background);
-}
-
-.Control-button,
-.Control-panel {
-  background-color: var(--components);
-}
-
-.Code-box,
-.Visual-box,
-.Output-box,
-.Control-panel {
-  border-width: 2px;
-  border-color: var(--dark);
-  border-style: solid;
-  border-radius: 4px;
-}
-
-.Control-panel {
-  margin: 4px;
-  flex-basis: 10%;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  border-radius: 4px;
-}
-
-.Control-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 66px;
-  border-color: var(--dark);
-  border-style: solid;
-  border-top-width: 0px;
-  border-bottom-width: 0px;
-  border-left-width: 0px;
-  color: var(--dark);
-}
-
-.Control-button:first-child {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-
-.Control-button:last-child {
-  margin-left: auto;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  border-right-width: 0px;
-  border-left-width: 2px;
-}
-
-.Control-button:hover {
-  background-color: var(--hover);
-}
-
-#Dropdown,
-#Dropdown:hover,
-#Dropdown:focus {
-  position: relative;
-  z-index: 9;
-  color: black;
-  background: transparent;
-  background-color: transparent;
-  box-shadow: none;
-  outline: none;
-  border: transparent;
-  border-style: outset;
-}
-
-.dropdown-toggle::after {
-  display: none !important;
-}
-
-#dropdownMenu {
-  color: black !important;
-  margin: 0px 10px;
-  outline: none;
-}
-
-#Dropdown-button,
-#Dropdown-button:focus {
-  background: none;
-  color: black;
-  border: transparent !important;
-  border-style: outset;
-  outline: none;
-}
-
-#Dropdown-button:active {
-  border-style: outset;
-}
-
-#Dropdown-item,
-#Dropdown-item:active,
-#Dropdown-focus {
-  border-style: outset;
-  outline: none;
-  color: none;
-}
-
-/*
-.Dropdown-menu{
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.Dropdown-item {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-} */
-
-.Output-box {
-  margin: 4px;
-  padding: 4px;
-  flex-basis: 45%;
-  border-radius: 4px;
-  white-space: pre-line;
-  overflow: auto;
-  max-height: 42vh;
-  min-height: 42vh;
-}
-
-.Code-box {
-  margin: 4px;
-}
-
-.Visual-box {
-  margin: 4px;
-  padding: 50px;
-  flex-basis: 100%;
   border-radius: 4px;
 }
 

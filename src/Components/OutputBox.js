@@ -1,9 +1,11 @@
 import React from 'react';
 
-const Output_box = ({ output, output_box_ref }) => {
+import './OutputBox.css';
+
+const OutputBox = ({ output, output_box_ref }) => {
   return (
     <div
-      className="Output-box"
+      className="Output-box Border"
       data-testid="output-box"
       aria-label="Output"
       ref={output_box_ref}
@@ -13,4 +15,4 @@ const Output_box = ({ output, output_box_ref }) => {
   );
 };
 
-export default Output_box;
+export default OutputBox;

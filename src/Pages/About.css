@@ -1,0 +1,15 @@
+.About-content {
+  margin: 8px;
+  padding: 8px;
+  border-width: 2px;
+  border-color: var(--dark);
+  border-style: solid;
+  border-radius: 4px;
+}
+
+.About-title {
+  margin-top: 0px;
+  margin-left: 0px;
+  font-size: 1.3em;
+  font-weight: 600;
+}
