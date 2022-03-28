@@ -1,8 +1,20 @@
 import { v4 as uuidv4 } from 'uuid';
 
-let nodes;
-let edges;
+// Colors
+const var_col_1 = 'bisque4';
+const var_col_2 = 'beige';
+const arrow_col_1 = 'lightsteelblue4';
+const arrow_col_2 = 'lightsteelblue3';
+const immutable_col_1 = 'seashell4';
+const immutable_col_2 = 'seashell';
+const indexable_col_1 = 'mistyrose4';
+const indexable_col_2 = 'mistyrose';
+const indexable_col_3 = 'mistyrose2';
 
+let nodes; // To represent variables and objects
+let edges; // To represent references
+
+// Generates a string containing nodes and edges as a representation of variables and objects
 const generate_dot = (refs) => {
   nodes = '#Nodes:\n';
   edges = '\n#Edges:\n';
@@ -16,9 +28,13 @@ const generate_dot = (refs) => {
       var_id +
       '" [label=' +
       v.name +
-      ' shape=ellipse color=bisque4 fillcolor=beige style=filled];\n';
+      ' shape=ellipse color=' +
+      var_col_1 +
+      ' fillcolor=' +
+      var_col_2 +
+      ' style=filled];\n';
     // add edge from variable to the referenced object
-    edges += '"' + var_id + '" ' + '->' + ' "' + v.ref + '"[color=lightsteelblue4];\n';
+    edges += '"' + var_id + '" ' + '->' + ' "' + v.ref + '"[color=' + arrow_col_1 + '];\n';
   });
 
   // objects
@@ -46,7 +62,11 @@ const generate_dot = (refs) => {
         o.id +
         '" [label=' +
         label +
-        ' style="rounded, filled" fillcolor=seashell color=seashell4];\n';
+        ' style="rounded, filled" fillcolor=' +
+        immutable_col_2 +
+        ' color=' +
+        immutable_col_1 +
+        '];\n';
     }
   });
   let res = 'digraph structs { node [shape=box]\n' + nodes + edges + '}';
@@ -67,8 +87,14 @@ const set_indexable_object = (o, start_bracket, end_bracket) => {
   nodes +=
     '##Indexable object:\n"' +
     o.id +
-    '" [shape=plaintext label=<\n<TABLE BGCOLOR="mistyrose" COLOR="mistyrose4" BORDER="0" CELLBORDER="1" CELLSPACING="0">' +
-    '\n\t<TR>\n\t\t<TD BGCOLOR="mistyrose2" COLSPAN="' +
+    '" [shape=plaintext label=<\n<TABLE BGCOLOR="' +
+    indexable_col_2 +
+    '" COLOR="' +
+    indexable_col_1 +
+    '" BORDER="0" CELLBORDER="1" CELLSPACING="0">' +
+    '\n\t<TR>\n\t\t<TD BGCOLOR="' +
+    indexable_col_3 +
+    '" COLSPAN="' +
     o.value.length +
     '"><I>' +
     o.type +
@@ -97,7 +123,7 @@ const set_indexable_object = (o, start_bracket, end_bracket) => {
         default:
       }
       nodes += 'PORT="' + count + '">' + index;
-      edges += '"' + o.id + '":"' + count + '" -> "' + to + '"[color=lightsteelblue3];\n';
+      edges += '"' + o.id + '":"' + count + '" -> "' + to + '"[color=' + arrow_col_2 + '];\n';
 
       // check if one more key is added after this one
       count++;

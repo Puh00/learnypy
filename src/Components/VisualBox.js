@@ -76,7 +76,7 @@ const VisualBox = ({ data }) => {
   };
 
   return (
-    <div className={styles['visual-box']} tabIndex={0}>
+    <div className={styles['Visual-box']} tabIndex={0}>
       <Graph graph={graph} options={options} />
     </div>
   );

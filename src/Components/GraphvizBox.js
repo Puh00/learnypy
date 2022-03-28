@@ -6,10 +6,11 @@ import generate_dot from '../util/dotGenerator';
 const VisualBox = ({ data }) => {
   const [graph, setGraph] = useState({ dot: 'graph {}' });
 
+  //TODO screen reader + tab
+
   useEffect(() => {
     const dot = generate_dot(data);
     setGraph(dot);
-    //TODO screen reader + tab
   }, [data]);
 
   useEffect(() => {
