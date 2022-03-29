@@ -102,7 +102,7 @@ const Home = () => {
             code={code}
             runit={runit_callback}
             step={step_callback}
-            restart={clear}
+            restart={restart}
             drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
           />
