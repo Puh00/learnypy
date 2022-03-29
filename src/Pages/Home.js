@@ -7,7 +7,7 @@ import OutputBox from '../Components/OutputBox';
 import VisualBox from '../Components/VisualBox';
 import Header from '../Components/Header';
 
-import { func, start, step, runit } from '../SkulptWrapper/skulptWrapper';
+import { func, start, step, runit, update_breakpoints } from '../SkulptWrapper/skulptWrapper';
 
 import styles from './Home.module.css';
 
@@ -19,11 +19,16 @@ const Home = () => {
   const [code, setCode] = useState('a=1\nb=1\nc=b');
   const [line, setLine] = useState(-1);
   const [stepped, setStepped] = useState(false);
+  const [breakpoints, setBreakpoints] = useState([]);
 
   const drop_down_menu_ref = useRef(null);
   const output_box_ref = useRef(null);
 
   let latest_output = '';
+
+  useEffect(() => {
+    update_breakpoints(breakpoints);
+  }, [breakpoints]);
 
   // callback function sent to the debugger
   const callback = (globals, locals) => {
@@ -113,6 +118,12 @@ const Home = () => {
             line={line}
             drop_down_menu_ref={drop_down_menu_ref}
             output_box_ref={output_box_ref}
+            add_breakpoint={(line_number) =>
+              setBreakpoints((breakpoints) => [...breakpoints, line_number])
+            }
+            remove_breakpoint={(line_number) =>
+              setBreakpoints((breakpoints) => [...breakpoints].filter((e) => e !== line_number))
+            }
           />
           <OutputBox output={output} output_box_ref={output_box_ref} />
         </div>
