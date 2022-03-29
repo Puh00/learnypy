@@ -1,9 +1,4 @@
-:root {
-  --background: white;
-  --components: #d6e0f0;
-  --dark: #393b44;
-  --hover: #cedaee;
-}
+@import "rootStyles.css";
 
 html,
 body {

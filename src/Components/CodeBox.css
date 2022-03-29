@@ -1,5 +1,35 @@
+@import "/src/rootStyles.css";
+
 .mark {
-  background-color: gold;
+  background-color: var(--components);
 }
+
+.breakpoints{
+  width: 14px;
+  justify-content: center;
+  margin: 2px;
+}
+
+.CodeMirror-linenumber{
+  padding-right: 4px;
+}
+
+.marker-node .breakpoint-node{
+  display: inline-block;
+}
+
+.marker-node{
+  color: var(--dark);
+}
+
+.breakpoint-node{
+  color: red;
+}
+
+.breakpoint-node:hover{
+  cursor: pointer;
+  color: rgb(255, 139, 139);
+}
+
 /* .CodeMirror { border: 3px solid black } */
 .CodeMirror-focused { border: 3px solid blue; outline-offset: 1px }
