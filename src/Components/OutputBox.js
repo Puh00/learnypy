@@ -1,9 +1,12 @@
 import React from 'react';
 
-const Output_box = ({ output, output_box_ref }) => {
+import styles from './OutputBox.module.css';
+import border from './Border.module.css';
+
+const OutputBox = ({ output, output_box_ref }) => {
   return (
     <div
-      className="Output-box"
+      className={`${styles.Container} ${border.Border}`}
       data-testid="output-box"
       aria-label="Output"
       ref={output_box_ref}
@@ -13,4 +16,4 @@ const Output_box = ({ output, output_box_ref }) => {
   );
 };
 
-export default Output_box;
+export default OutputBox;
