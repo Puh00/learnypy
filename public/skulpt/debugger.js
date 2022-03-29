@@ -3,8 +3,6 @@
  */
 
 var Sk = Sk || {}; //jshint ignore:line
-let variables = [];
-let objects = [];
 // Return a string representing the current status.
 
 function dbgHasOwnProperty(obj, prop) {
@@ -193,8 +191,7 @@ Sk.Debugger.prototype.set_suspension = function (suspension) {
 
   // Pop the last suspension of the stack if there is more than 0
   if (this.suspension_stack.length > 0) {
-    this.suspension_stack.pop();
-    this.current_suspension -= 1;
+    this.pop_suspension_stack();
   }
 
   // Unroll the stack to get each suspension.
@@ -218,10 +215,22 @@ Sk.Debugger.prototype.add_breakpoint = function (filename, lineno, colno, tempor
   }
 };
 
-Sk.Debugger.prototype.suspension_handler = function (susp) {
+Sk.Debugger.prototype.suspension_handler = function (susp1) {
   return new Promise(function (resolve, reject) {
     try {
-      resolve(susp.resume());
+      var susp2 = susp1.resume();
+
+      // Whenever there is a fork into a function
+      // save the child and parent to use in the hack in resume()
+
+      if (susp2 && susp2.child && susp2.child.$isSuspension) {
+        self.parentSuspension = susp2;
+        self.childSuspension = susp2.child;
+      } else {
+        self.parentSuspension = null;
+        self.childSuspension = null;
+      }
+      resolve(susp2); 
     } catch (e) {
       reject(e);
     }
@@ -230,10 +239,20 @@ Sk.Debugger.prototype.suspension_handler = function (susp) {
 
 Sk.Debugger.prototype.resume = function () {
   // Reset the suspension stack to the topmost
-  this.current_suspension = this.suspension_stack.length - 1;
+  console.log(this.suspension_stack);
+
+  // hack to force debugger to use the 'parent' suspsension
+  // when there is a child suspension
+  // to fix resuming from the end of a function
+  if (self.childSuspension) {
+    this.suspension_stack[this.current_suspension] = self.parentSuspension;
+
+  } else {
+    this.current_suspension = this.suspension_stack.length - 1;
+  }
 
   if (this.suspension_stack.length === 0) {
-    this.print('No running program');
+    this.print('No suspensions to resume');
   } else {
     var promise = this.suspension_handler(this.get_active_suspension());
     promise.then(this.success.bind(this), this.error.bind(this));

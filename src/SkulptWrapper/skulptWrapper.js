@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { parse_globals, parse_locals } from './skulptParser';
 
 // instantiate the globals since undefined in JavaScript is a atrocious
@@ -16,46 +17,6 @@ function outf(text) {
   mypre.setAttribute('aria-label', 'Output from code');
   mypre.innerHTML = mypre.innerHTML + text;
 }
-
-let suspension_handlerNew = function (susp1) {
-  return new Promise(function (resolve, reject) {
-    try {
-      var susp2 = susp1.resume();
-
-      // Whenever there is a fork into a function
-      // save the child and parent to use in the hack in resume()
-      if (susp2 && susp2.child && susp2.child.$isSuspension) {
-        self.parentSuspension = susp2;
-        self.childSuspension = susp2.child;
-      } else {
-        self.parentSuspension = null;
-        self.childSuspension = null;
-      }
-      resolve(susp2);
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
-
-let resumeNew = function () {
-  // Reset the suspension stack to the topmost
-  this.current_suspension = this.suspension_stack.length - 1;
-
-  // hack to force debugger to use the 'parent' suspsension
-  // when there is a child suspension
-  // to fix resuming from the end of a function
-  if (self.childSuspension) {
-    this.suspension_stack[this.current_suspension] = self.parentSuspension;
-  }
-
-  if (this.suspension_stack.length === 0) {
-    this.print('No suspensions to resume');
-  } else {
-    var promise = this.suspension_handler(this.get_active_suspension());
-    promise.then(this.success.bind(this), this.error.bind(this));
-  }
-};
 
 // export this object to dynamically "override" the builtin functions
 const func = {
@@ -97,8 +58,6 @@ const init_debugger = () => {
     success: () => func.success(),
     error: (e) => func.error(e)
   });
-  dbg.resume = resumeNew;
-  dbg.suspension_handler = suspension_handlerNew;
   return;
 };
 
