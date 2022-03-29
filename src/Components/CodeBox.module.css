@@ -1,5 +1,5 @@
 .Line-highlight {
-  background-color: gold;
+  background-color: var(--components);
 }
 
 .Container {
@@ -7,4 +7,21 @@
   margin-top: 0;
   height: 100%;
   position: relative;
+}
+
+.marker-node .breakpoint-node{
+  display: inline-block;
+}
+
+.marker-node{
+  color: var(--dark);
+}
+
+.breakpoint-node{
+  color: red;
+}
+
+.breakpoint-node:hover{
+  cursor: pointer;
+  color: rgb(255, 139, 139);
 }
