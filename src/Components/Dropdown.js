@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
 
+import './Dropdown.css';
+
 const code_examples = [
   { name: 'Example 1', code: 'a=[]\nb=a\nb.append(3)\nprint(b)' },
   { name: 'Example 2', code: 'a=2\nb=1\nc=b' },

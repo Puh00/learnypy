@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { graphviz } from 'd3-graphviz';
 import generate_dot from '../util/dotGenerator';
 
+import styles from './VisualBox.module.css';
+import border from './Border.module.css';
+
 const VisualBox = ({ data }) => {
   const [graph, setGraph] = useState({ dot: 'graph {}' });
 
@@ -17,7 +20,7 @@ const VisualBox = ({ data }) => {
     graphviz(`#graph-body`).renderDot(graph.dot);
   }, [graph]);
 
-  return <div className={'Visual-box'} id="graph-body"></div>;
+  return <div className={`${styles.Container} ${border.Border}`} id="graph-body"></div>;
 };
 
 export default VisualBox;

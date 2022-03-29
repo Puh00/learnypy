@@ -1,0 +1,4 @@
+.dropdown-toggle::after {
+  /* disables the arrow */
+  display: none !important; 
+}

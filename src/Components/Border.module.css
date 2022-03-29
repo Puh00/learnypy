@@ -1,0 +1,6 @@
+.Border {
+  border-width: 2px;
+  border-color: var(--dark);
+  border-style: solid;
+  border-radius: 4px;
+}
