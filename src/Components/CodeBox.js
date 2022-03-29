@@ -25,7 +25,7 @@ const CodeBox = ({ code, setCode, line, drop_down_menu_ref, output_box_ref }) =>
       editor.setGutterMarker(line, lineMarkerGutterID, null);
     });
 
-    if (line > 0) {
+    if (line >= 0) {
       // Create line marker
       var marker_node = document.createElement('span');
       marker_node.className = 'marker-node';
@@ -39,7 +39,7 @@ const CodeBox = ({ code, setCode, line, drop_down_menu_ref, output_box_ref }) =>
   };
 
   const setBreakpoint = (lineNumber) => {
-    console.log('setBreakpont on line ' + (lineNumber + 1));
+    console.log('setBreakpont on line ' + lineNumber);
     var breakpoint_node = document.createElement('span');
     breakpoint_node.className = 'breakpoint-node';
     breakpoint_node.innerHTML =
@@ -53,7 +53,7 @@ const CodeBox = ({ code, setCode, line, drop_down_menu_ref, output_box_ref }) =>
   };
 
   const clearBreakpoint = (lineNumber) => {
-    console.log('clearBreakpont on line ' + (lineNumber + 1));
+    console.log('clearBreakpont on line ' + lineNumber);
 
     // Remove breakpoint functionality
     clear_breakpoint(lineNumber);

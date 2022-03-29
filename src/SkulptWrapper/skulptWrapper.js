@@ -89,9 +89,11 @@ const start_debugger = (prog, callback) => {
 
 //Loop through break_points and add a breakpoint at every line
 const init_break_points = () => {
+  console.log('init breakpoints');
   dbg.clear_all_breakpoints();
   for (let break_point of break_points) {
     dbg.add_breakpoint('<stdin>.py', break_point + 1, 0, false);
+    console.log('Added breakpoint ' + break_point);
   }
 };
 
@@ -136,8 +138,10 @@ const step = (prog, callback) => {
 };
 
 function runit(prog, callback) {
+  console.log('Runit');
   if (dbg == null) {
     dbg = init_debugger();
+    console.log('Init debugger');
   }
 
   init_break_points();
