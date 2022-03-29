@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
 
+import './Dropdown.css';
+
 const code_examples = [
   { name: 'Example 1', code: 'a=[]\nb=a\nb.append(3)\nprint(b)' },
   {
@@ -15,7 +17,7 @@ const code_examples = [
 
 function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref, button_border }) {
   return (
-    <Dropdown style={button_border} as={ButtonGroup} data-toggle="tooltip" title="Code examples">
+    <Dropdown style={button_border} as={ButtonGroup}>
       <Dropdown.Toggle variant="light" id="dropdown-basic" ref={drop_down_menu_ref}>
         {logo}
       </Dropdown.Toggle>

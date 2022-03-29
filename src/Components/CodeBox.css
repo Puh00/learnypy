@@ -1,5 +1,28 @@
-.mark {
-  background-color: gold;
+/* CodeMirror related css */
+
+.CodeMirror-focused {
+  border: 3px solid blue;
+  outline-offset: 1px
 }
+
+.CodeMirror {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+
+.breakpoints{
+  width: 14px;
+  justify-content: center;
+  margin: 2px;
+}
+
+.CodeMirror-linenumber{
+  padding-right: 4px;
+}
+
 /* .CodeMirror { border: 3px solid black } */
 .CodeMirror-focused { border: 3px solid blue; outline-offset: 1px }
