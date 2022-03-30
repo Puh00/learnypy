@@ -26,10 +26,6 @@ const Home = () => {
 
   let latest_output = '';
 
-  useEffect(() => {
-    update_breakpoints(breakpoints);
-  }, [breakpoints]);
-
   // callback function sent to the debugger
   const callback = (globals, locals) => {
     setGlobals(globals);
@@ -91,6 +87,10 @@ const Home = () => {
       func.outf(e);
     };
   }, []);
+
+  useEffect(() => {
+    update_breakpoints(breakpoints);
+  }, [breakpoints]);
 
   const navItems = [
     {

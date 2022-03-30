@@ -20,7 +20,9 @@ const VisualBox = ({ data }) => {
     graphviz(`#graph-body`).renderDot(graph.dot);
   }, [graph]);
 
-  return <div className={`${styles.Container} ${border.Border}`} id="graph-body"></div>;
+  return (
+    <div className={`${styles.Container} ${border.Border}`} id="graph-body" tabIndex={0}></div>
+  );
 };
 
 export default VisualBox;
