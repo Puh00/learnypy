@@ -26,32 +26,35 @@ const Home = () => {
 
   let latest_output = '';
 
+  const restart = (prog) =>
+    start(prog, false, () => {
+      clear();
+    });
+
+  // highlights and stops at the first line of the code
+  const stop_at_first_line = (prog) => {
+    restart(prog);
+    setStepped(true);
+    setLine(0);
+  };
+
   // callback function sent to the debugger
   const callback = (globals, locals) => {
     setGlobals(globals);
     setLocals(locals);
   };
 
-  const restart = (prog) =>
-    start(prog, false, () => {
-      clear();
-    });
-
-  // instantiate with setRefs as the callback function
   const runit_callback = (prog) => {
+    // hack for stopping at the first row if the condition is satisfied
+    if (!stepped && breakpoints.includes(0)) return stop_at_first_line(prog);
+
     clear();
     setStepped(true);
     runit(prog, callback);
   };
 
   const step_callback = (prog) => {
-    if (!stepped) {
-      // reset the program to allow continous stepping
-      restart(prog);
-      setStepped(true);
-      setLine(0);
-      return;
-    }
+    if (!stepped) return stop_at_first_line(prog);
 
     step(prog, callback);
   };
