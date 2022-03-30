@@ -12,8 +12,10 @@ import './CodeBox.css';
 import styles from './CodeBox.module.css';
 import border from './Border.module.css';
 
-import breakpoint_logo from './Icons/breakpoint-node';
-import marker_logo from './Icons/marker-node';
+import raw from 'raw.macro';
+
+const marker_logo = raw('./Icons/marker-node.svg');
+const breakpoint_logo = raw('./Icons/breakpoint-node.svg');
 
 const CodeBox = ({
   code,
@@ -26,15 +28,17 @@ const CodeBox = ({
 }) => {
   const [next, setNext] = useState(null);
 
-  // To prevent error caused by typos
-  const breakpointGutterID = 'breakpoints';
-  const lineMarkerGutterID = 'lineMarker';
+  useEffect(() => {
+    if (next === null) return;
+    // calling next() to force an editorDidConfigure event
+    next();
+  }, [line]);
 
   const set_highlighted_row = (editor) => {
     // remove all previous highlighted lines and line markers
     editor.eachLine((line) => {
       editor.removeLineClass(line, 'wrap', styles['Line-highlight']);
-      editor.setGutterMarker(line, lineMarkerGutterID, null);
+      editor.setGutterMarker(line, 'lineMarker', null);
     });
 
     if (line >= 0) {
@@ -45,7 +49,7 @@ const CodeBox = ({
 
       // highlight the current execution row
       editor.addLineClass(line, 'wrap', styles['Line-highlight']);
-      editor.setGutterMarker(line, lineMarkerGutterID, marker_node);
+      editor.setGutterMarker(line, 'lineMarker', marker_node);
     }
   };
 
@@ -71,16 +75,10 @@ const CodeBox = ({
     //Set or clear breakpoint from clicked line
     editor.setGutterMarker(
       lineNumber,
-      breakpointGutterID,
+      'breakpoints',
       info.gutterMarkers ? clear_breakpoint(lineNumber) : set_breakpoint(lineNumber)
     );
   };
-
-  useEffect(() => {
-    if (next === null) return;
-    // calling next() to force an editorDidConfigure event
-    next();
-  }, [line]);
 
   return (
     <div className={`${styles.Container} ${border.Border}`}>
@@ -94,7 +92,7 @@ const CodeBox = ({
           theme: 'neat',
           autoCloseBrackets: true,
           autoCloseTags: true,
-          gutters: [breakpointGutterID, lineMarkerGutterID, 'CodeMirror-linenumbers']
+          gutters: ['breakpoints', 'lineMarker', 'CodeMirror-linenumbers']
         }}
         onGutterClick={(editor, lineNumber) => {
           handle_breakpoints(editor, lineNumber);
