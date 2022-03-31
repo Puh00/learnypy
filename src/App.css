@@ -1,12 +1,15 @@
-@import "rootStyles.css";
+@import 'rootStyles.css';
 
 html,
 body {
   height: 100%;
   margin: 0;
-  overflow: hidden; /* to hide the scrollbar */
+  overflow: auto; /* scrollbar only visible when needed*/
   overflow-x: hidden;
 }
 
 /* if !important is not on then the react-bootstrap components won't be affected */
-*:focus {outline:3px solid blue !important; outline-offset: none !important;}
+*:focus {
+  outline: 3px solid blue !important;
+  outline-offset: none !important;
+}

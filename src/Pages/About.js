@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Header from '../Components/Header';
 
@@ -22,7 +23,7 @@ const About = () => {
     <div>
       <Header navItems={navItems} />
       <div className={styles.Content}>
-        <h2 className={styles.Title}>About {appName}</h2>
+        <h2 className={styles.heading_title}>About {appName}</h2>
         <p>
           {appName} is a free site of{' '}
           <a href="https://www.python.org/" target="_blank" rel="noreferrer">
@@ -46,7 +47,7 @@ const About = () => {
           .
         </p>
 
-        <h2 className={styles.Title}>The Team</h2>
+        <h3 className={styles.Title}>The Team</h3>
         <ul>
           <li>Moa Berglund</li>
           <li>Saga Hassellöf</li>
@@ -56,7 +57,7 @@ const About = () => {
           <li>Yenan Wang</li>
         </ul>
 
-        <h2 className={styles.Title}>Special Thanks</h2>
+        <h3 className={styles.Title}>Special Thanks</h3>
         <dl>
           <dt>
             <a href="https://skulpt.org/" target="_blank" rel="noreferrer">
@@ -74,6 +75,10 @@ const About = () => {
           </dt>
           <dd>- For being our supervisor during this project and giving us great support.</dd>
         </dl>
+        <h3 className={styles.Title}>Accessibility of {appName} </h3>
+        <p>
+          Read more at our <Link to="/Accessibility"> accessibility page</Link>
+        </p>
       </div>
     </div>
   );

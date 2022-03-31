@@ -1,6 +1,6 @@
 .Content {
   margin: 8px;
-  padding: 8px;
+  padding: 20px;
   border-width: 2px;
   border-color: var(--dark);
   border-style: solid;
@@ -10,6 +10,13 @@
 .Title {
   margin-top: 0px;
   margin-left: 0px;
-  font-size: 1.3em;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.heading_title {
+  margin-top: 0px;
+  margin-left: 0px;
+  font-size: 1.5em;
   font-weight: 600;
 }
