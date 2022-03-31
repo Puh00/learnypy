@@ -29,11 +29,11 @@ const CodeBox = ({
 }) => {
   const [editor, setEditor] = useState(null);
 
-  const set_highlighted_row = (editor) => {
+  const set_highlighted_row = (_editor) => {
     // remove all previous highlighted lines and line markers
-    editor.eachLine((line) => {
-      editor.removeLineClass(line, 'wrap', styles['Line-highlight']);
-      editor.setGutterMarker(line, 'lineMarker', null);
+    _editor.eachLine((line) => {
+      _editor.removeLineClass(line, 'wrap', styles['Line-highlight']);
+      _editor.setGutterMarker(line, 'lineMarker', null);
     });
 
     if (line >= 0) {
@@ -43,8 +43,8 @@ const CodeBox = ({
       marker_node.innerHTML = marker_logo;
 
       // highlight the current execution row
-      editor.addLineClass(line, 'wrap', styles['Line-highlight']);
-      editor.setGutterMarker(line, 'lineMarker', marker_node);
+      _editor.addLineClass(line, 'wrap', styles['Line-highlight']);
+      _editor.setGutterMarker(line, 'lineMarker', marker_node);
     }
   };
 
