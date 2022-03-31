@@ -11,7 +11,6 @@ var text;
 
 const VisualBox = ({ data }) => {
   const [graph, setGraph] = useState({ dot: 'graph {}' });
-  //TODO tab
 
   useEffect(() => {
     const dot = generate_dot(data);
