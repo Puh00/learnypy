@@ -1,25 +1,6 @@
 <!-- CREDITS TO Best-README-Template for the template -->
 <div id="top"></div>
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Netlify Status][netlify-shield]][netlify-url]
-<!-- TODO: add these once the repo is going public
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
--->
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -30,7 +11,25 @@
   -->
 
   <h1 align="center">Python Chutor</h1>
-
+    
+  <!-- PROJECT SHIELDS -->
+  <!--
+  *** I'm using markdown "reference style" links for readability.
+  *** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+  *** See the bottom of this document for the declaration of the reference variables
+  *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+  *** https://www.markdownguide.org/basic-syntax/#reference-style-links
+  -->
+  [![Netlify Status][netlify-shield]][netlify-url]
+  <!-- TODO: add these once the repo is going public
+  [![Contributors][contributors-shield]][contributors-url]
+  [![Forks][forks-shield]][forks-url]
+  [![Stargazers][stars-shield]][stars-url]
+  [![Issues][issues-shield]][issues-url]
+  [![MIT License][license-shield]][license-url]
+  [![LinkedIn][linkedin-shield]][linkedin-url]
+  -->
+  
   <p align="center">
     A serverless tool for teaching the dynamic memory model of Python.
     <br />
@@ -74,7 +73,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://python-chutor.netlify.app/)
 
-Python Chutor is a free site of Python visualisation tool with the aim to help novice programmers to understand the underlying structure of Python's memory model. It offers simple graph visualisations of the relations between objects and the solution is based on vanilla JavaScript which means no server is used, thereby offering lagless user experience and less risk for server-side errors.
+Python Chutor is a free site providing a Python visualisation tool with the aim of helping novice programmers understand the underlying structure of Python's memory model. It offers simple graph visualisation of the relations between objects and variables. The solution is based on vanilla JavaScript which means no server is used, thereby offering lagless user experience and less risk for server-side errors.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
