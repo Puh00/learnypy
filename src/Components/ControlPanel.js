@@ -2,6 +2,7 @@ import React from 'react';
 import { ReactComponent as Play_logo } from './Icons/play.svg';
 import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
 import { ReactComponent as Stop_logo } from './Icons/stop.svg';
+import { ReactComponent as Clear_breakpoints_logo } from './Icons/minus-circle-f.svg';
 import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg';
 import DropdownLocal from './Dropdown';
 
@@ -11,7 +12,15 @@ const button_border = {
   border: '1px solid'
 };
 
-const ControlPanel = ({ code, runit, step, restart, setCode, drop_down_menu_ref }) => {
+const ControlPanel = ({
+  code,
+  runit,
+  step,
+  restart,
+  clear_breakpoints,
+  setCode,
+  drop_down_menu_ref
+}) => {
   const create_button = (func, tooltip_text, logo) => (
     <Button
       style={button_border}
@@ -46,6 +55,13 @@ const ControlPanel = ({ code, runit, step, restart, setCode, drop_down_menu_ref 
         },
         'Stop execution',
         <Stop_logo />
+      )}
+      {create_button(
+        () => {
+          clear_breakpoints();
+        },
+        'Clear all breakpoints',
+        <Clear_breakpoints_logo />
       )}
       <DropdownLocal
         logo={<Menu_logo />}
