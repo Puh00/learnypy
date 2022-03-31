@@ -24,7 +24,11 @@ const VisualBox = ({ data }) => {
   }, [graph]);
 
   return (
-    <div className={`${styles.Container} ${border.Border}`} id="graph-body" aria-label={text}></div>
+    <div
+      className={`${styles.Container} ${border.Border}`}
+      id="graph-body"
+      tabIndex={0}
+      aria-label={text}></div>
   );
 };
 

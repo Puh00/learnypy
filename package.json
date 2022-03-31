@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "codemirror": "^5.65.2",
     "graphviz-react": "^1.2.0",
+    "raw.macro": "^0.4.2",
     "react": "^17.0.2",
     "react-bootstrap": "^2.2.1",
     "react-codemirror2-react-17": "^1.0.0",

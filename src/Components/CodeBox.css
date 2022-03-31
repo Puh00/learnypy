@@ -24,5 +24,4 @@
   padding-right: 4px;
 }
 
-/* .CodeMirror { border: 3px solid black } */
 .CodeMirror-focused { border: 3px solid blue; outline-offset: 1px }
