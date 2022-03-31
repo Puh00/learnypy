@@ -23,11 +23,13 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
+  <!-- logo area
   <a href="https://github.com/Puh00/python-chutor">
     <img src="public/images/python-chutor-logo.png" alt="Logo" width="240" height="255">
   </a>
+  -->
 
-  <h2 align="center">Python Chutor</h2>
+  <h1 align="center">Python Chutor</h1>
 
   <p align="center">
     A serverless tool for teaching the dynamic memory model of Python.
