@@ -13,12 +13,28 @@ const parse_globals = () => parse_objects(window.Sk.globals);
 const parse_locals = () => parse_objects(window.Sk._frame?.locals);
 
 /**
+ * Retrieves the name of all of the user defined classes in entries
+ * @param {Object} entries Dictionary of all of the Skulpt variables and objects
+ * @returns The name of all of the user-defined classes
+ */
+const fetch_class_names = (entries) => {
+  const class_names = [];
+  entries.forEach(([key, value]) => {
+    if (Object.getPrototypeOf(value).tp$name == 'type') class_names.push(key);
+  });
+  return class_names;
+};
+
+/**
  * Parse the current status of {other} and return variables and objects
  * @param {Object} other Generally globals or locals
  * @param {Array} filter Irrelevant python attributes that are filtered out
  * @returns Variables and objects from {other}
  */
 const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__package__']) => {
+  const skulpt_entries = Object.entries(other);
+  const user_defined_class_names = fetch_class_names(skulpt_entries);
+
   const variables = [];
   const objects = [];
 
@@ -27,13 +43,17 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
     // Must be from Sk.globals and not Sk.builtin.globals, since the latter creates an entirely
     // new dictionary which renders the '===' operator useless for reference checking (which is
     // used in retrieve_object_id(...))
-    for (const [key, value] of Object.entries(other)) {
-      // skip if it's an Python attribute or a function
-      if (filter.includes(key) || Object.getPrototypeOf(value).tp$name == 'function') continue;
+    for (const [key, value] of skulpt_entries) {
+      // skip if it's an Python attribute, a function or a class (which is signified by 'type')
+      if (
+        filter.includes(key) ||
+        ['function', 'type'].includes(Object.getPrototypeOf(value).tp$name)
+      )
+        continue;
 
       variables.push({
         name: key,
-        ref: retrieve_object_id(objects, value)
+        ref: retrieve_object_id(objects, value, user_defined_class_names)
       });
     }
   }
@@ -54,34 +74,45 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
  * }
  * @param {Array} objects List of the parsed objects
  * @param {Object} js_object The Javascript representation of the Python object
+ * @param {Array} class_names List of user-defined class names
  * @returns The newly created object
  */
-const create_object = (objects, js_object) => {
+const create_object = (objects, js_object, class_names) => {
   let obj = {
     id: uuidv4(),
     value: null,
-    type: js_object.tp$name,
+    // need to manually assign 'class' type since tp$name of a class gives the name of
+    // the class and not the type
+    type: js_object?.hp$type ? 'class' : js_object.tp$name,
     js_object: js_object
   };
   objects.push(obj);
 
-  let value = null;
+  // inline function for creating a dictionary
+  const create_dictionary = (entries) => {
+    const _value = [];
+    entries.forEach((entr) =>
+      _value.push({ key: entr.lhs.v, val: retrieve_object_id(objects, entr.rhs, class_names) })
+    );
+    return _value;
+  };
+
+  let value;
   if (js_object.tp$name === 'list' || js_object.tp$name === 'tuple') {
     value = [];
     for (const v of js_object.v) {
       value.push({ ref: retrieve_object_id(v) });
     }
-  } else if (js_object.tp$name === 'dict') {
-    value = [];
-    const entries = Object.values(js_object.entries);
-    for (const entr of entries) {
-      value.push({ key: entr.lhs.v, val: retrieve_object_id(objects, entr.rhs) });
-    }
-    // Add more types here
-  } else {
-    // Immutables
-    value = js_object.v;
+  } else if (js_object.tp$name === 'dict' && !js_object?.hp$type) {
+    // the second condition is required because otherwise a user-defined class
+    // named 'dict' will bypass the condition
+    value = create_dictionary(Object.values(js_object.entries));
+  } else if (class_names.includes(js_object.tp$name)) {
+    // User-defined class (the internal structure is the same as a dictionary)
+    value = create_dictionary(Object.values(js_object.$d.entries));
   }
+  // Immutables
+  else value = js_object.v;
 
   obj.value = value;
   return obj;
@@ -93,9 +124,10 @@ const create_object = (objects, js_object) => {
  * id is returned.
  * @param {Array} objects List of the parsed objects
  * @param {Object} js_object The Javascript representation of the Python object
+ * @param {Array} class_names List of user-defined class names
  * @returns The id of the object with a matching value
  */
-const retrieve_object_id = (objects, js_object) => {
+const retrieve_object_id = (objects, js_object, class_names) => {
   var obj;
   for (const obj of objects) {
     // '===' returns true only if the objects have the same reference
@@ -104,11 +136,11 @@ const retrieve_object_id = (objects, js_object) => {
   //small int objects is not created more than once
   if (js_object.tp$name === 'int' && js_object.v <= 256 && js_object.v >= -5) {
     var small_int_id = retrieve_small_int_object_id(objects, js_object);
-    if (!small_int_id) obj = create_object(objects, js_object);
+    if (!small_int_id) obj = create_object(objects, js_object, class_names);
     else return small_int_id;
   }
   // If the object doesn't exist yet add it and return new id
-  else obj = create_object(objects, js_object);
+  else obj = create_object(objects, js_object, class_names);
 
   return obj.id;
 };
