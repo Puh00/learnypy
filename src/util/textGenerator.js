@@ -14,7 +14,9 @@ const set_text = (data_objects, variables) => {
         graph_text = graph_text.concat(' ' + v.name + ' points to ');
         if (o.type === 'list' || o.type === 'tuple' || o.type === 'dict') {
           graph_text = graph_text.concat(get_text_for_indexable_objects(o, v.name, true));
-          pointers[o.id].push(v.name);
+          if (!pointers[o.id].includes(v.name)) {
+            pointers[o.id].push(v.name);
+          }
         } else {
           graph_text = graph_text.concat(o.value + '.');
         }
@@ -72,9 +74,13 @@ const get_text_for_indexable_objects = (o, variable_name, is_root) => {
       if (val.ref === ob.id || val.val === ob.id) {
         //if there are nestled non-primitive objects this method needs to be called recursively
         if (ob.type === 'list' || ob.type === 'tuple' || ob.type === 'dict') {
-          //this is to avoid stack overflow for lists that appends themselves
+          //this is for objects with self-references
           if (o.id === ob.id) {
-            text = text.concat(' ' + variable_name + '.');
+            pointers[o.id].push(variable_name);
+            let t = text_for_many_pointers_at_the_same_object(pointers[ob.id]);
+            text = text.concat(
+              'the same ' + o.type + ' of size ' + o.value.length + ' as ' + t + '.'
+            );
           } else {
             text = text.concat(get_text_for_indexable_objects(ob, variable_name, false));
           }
@@ -93,7 +99,7 @@ const get_description_of_outer_object = (o) => {
 
   if (pointers[o.id].length >= 1) {
     let t = text_for_many_pointers_at_the_same_object(pointers[o.id]);
-    text = text.concat('the same ' + o.type + ' of size ' + o.value.length + ' as' + t + '.');
+    text = text.concat('the same ' + o.type + ' of size ' + o.value.length + ' as ' + t + '.');
   } else {
     text = text.concat('a ' + o.type + ' of size ' + o.value.length + '.');
   }
@@ -102,7 +108,7 @@ const get_description_of_outer_object = (o) => {
 };
 
 const text_for_many_pointers_at_the_same_object = (names) => {
-  let text = ' ';
+  let text = '';
   for (let n = 0; n < names.length; n++) {
     text = text.concat(names[n]);
     if (n < names.length - 1) {
