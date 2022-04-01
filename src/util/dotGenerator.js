@@ -48,7 +48,7 @@ const generate_dot = (data) => {
     } else {
       // immutables
       let label = o.value.toString();
-      if (o.type === 'str') {
+      if (o.type === 'string') {
         label = '"&#34;' + label + '&#34;"';
       } else if (o.type === 'float' && o.value % 1 === 0) {
         label = label + '.0';

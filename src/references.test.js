@@ -277,7 +277,7 @@ a[["self_ref"] = a`;
   const self_ref = a_obj.value.find((entry) => entry.key === 'self_ref');
 
   const a_key_val = getObjectById(refs.objects, a_key.val);
-  expect(a_key_val.type).toEqual('str');
+  expect(a_key_val.type).toEqual('string');
   expect(a_key_val.value).toEqual('a_value');
 
   const self_ref_val = getObjectById(refs.objects, self_ref.val);
