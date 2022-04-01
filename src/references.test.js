@@ -392,7 +392,7 @@ d = {{"test", a, True}`;
   expect(d_obj.type).toEqual('set');
   expect(d_obj.value).toHaveLength(3);
   const d_obj_0 = getObjectById(refs.objects, d_obj.value[0].ref);
-  expect(d_obj_0.value).toEqual("test");
+  expect(d_obj_0.value).toEqual('test');
   expect(d_obj.value[1].ref).toEqual(a.ref);
   const d_obj_2 = getObjectById(refs.objects, d_obj.value[2].ref);
   expect(d_obj_2.value).toEqual(1);
