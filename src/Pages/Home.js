@@ -34,13 +34,13 @@ const Home = () => {
     setLocals(locals);
   };
 
-  const restart_callback = (prog) => skulpt.restart(prog, clear);
+  const restart_callback = (prog) => skulpt.restart(prog, clear_visuals);
 
   const run_callback = (prog) => {
     // hack for stopping at the first row if the condition is satisfied
     if (!stepped && breakpoints.includes(0)) return stop_at_first_line(prog);
 
-    clear();
+    clear_visuals();
     setStepped(true);
     skulpt.run(prog, callback);
   };
@@ -58,12 +58,16 @@ const Home = () => {
     setLine(0);
   };
 
-  const clear = () => {
+  const clear_visuals = () => {
     setOutput({ text: '' });
     setGlobals({ objects: [], variables: [] });
     setLocals({ objects: [], variables: [] });
     setLine(-1);
     setStepped(false);
+  };
+
+  const clear_breakpoints = () => {
+    setBreakpoints(() => []);
   };
 
   skulpt.configure({
@@ -107,6 +111,7 @@ const Home = () => {
             runit={run_callback}
             step={step_callback}
             restart={restart_callback}
+            clear_breakpoints={clear_breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
           />
@@ -114,6 +119,7 @@ const Home = () => {
             code={code}
             setCode={setCode}
             line={line}
+            breakpoints={breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
             output_box_ref={output_box_ref}
             add_breakpoint={(line_number) =>

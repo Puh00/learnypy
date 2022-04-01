@@ -70,10 +70,14 @@ const create_object = (js_object) => {
   } else if (js_object.tp$name === 'dict') {
     value = [];
     const entries = Object.values(js_object.entries);
-    for (const entr of entries) {
-      value.push({ key: entr.lhs.v, val: retrieve_object_id(entr.rhs) });
+    for (const entry of entries) {
+      value.push({ key: entry.lhs.v, val: retrieve_object_id(entry.rhs) });
     }
-
+  } else if (js_object.tp$name === 'set') {
+    value = [];
+    for (const entry of Object.values(js_object.v.entries)) {
+      value.push({ ref: retrieve_object_id(entry.lhs) });
+    }
     // Add more types here
   } else {
     // Immutables
