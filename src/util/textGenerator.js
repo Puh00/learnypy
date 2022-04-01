@@ -34,9 +34,6 @@ const initialize_pointers_dict = () => {
   for (const o of objects) {
     if (o.type == 'list' || o.type == 'tuple' || o.type == 'dict') {
       pointers[o.id] = [];
-      for (const val of o.value) {
-        pointers[val.ref] = [];
-      }
     }
   }
   return pointers;
