@@ -39,22 +39,22 @@ const generate_dot = (refs) => {
 
   // objects
   refs.objects.forEach((o) => {
-    if (o.type === 'tuple') {
+    if (o.info.type === 'tuple') {
       set_indexable_object(o, '(', ')');
-    } else if (o.type === 'list') {
+    } else if (o.info.type === 'list') {
       set_indexable_object(o, '[', ']');
-    } else if (['dict', 'class'].includes(o.type)) {
+    } else if (['dict', 'class'].includes(o.info.type)) {
       set_indexable_object(o, '{', '}');
     } else {
       // immutables
       let label = o.value.toString();
-      if (o.type === 'str') {
+      if (o.info.type === 'str') {
         label = '"&#34;' + label + '&#34;"';
-      } else if (o.type === 'float' && o.value % 1 === 0) {
+      } else if (o.info.type === 'float' && o.value % 1 === 0) {
         label = label + '.0';
-      } else if (o.type === 'bool' && o.value === 0) {
+      } else if (o.info.type === 'bool' && o.value === 0) {
         label = 'False';
-      } else if (o.type === 'bool' && o.value === 1) {
+      } else if (o.info.type === 'bool' && o.value === 1) {
         label = 'True';
       }
       nodes +=
@@ -76,12 +76,12 @@ const generate_dot = (refs) => {
   };
 };
 
-// Used for tuple, list and dict
+// Used for tuple, list, dict and class
 const set_indexable_object = (o, start_bracket, end_bracket) => {
-  const get_node_description = (type) =>
-    type == 'class'
-      ? 'Name of the class' + '<BR/><I>' + type + '</I>'
-      : type + '</I><BR/>' + start_bracket + 'size: ' + o.value.length + end_bracket;
+  const get_node_description = () =>
+    o.info.type == 'class'
+      ? o.info.class_name + '<BR/><I>' + o.info.type + '</I>'
+      : '<I>' + o.info.type + '</I><BR/>' + start_bracket + 'size: ' + o.value.length + end_bracket;
 
   let count = 0;
   let index = '';
@@ -100,7 +100,7 @@ const set_indexable_object = (o, start_bracket, end_bracket) => {
     '" COLSPAN="' +
     o.value.length +
     '">' +
-    get_node_description(o.type) +
+    get_node_description() +
     '</TD>\n\t</TR>\n';
 
   if (o.value.length > 0) {
@@ -108,7 +108,7 @@ const set_indexable_object = (o, start_bracket, end_bracket) => {
 
     // set value for index and add arrow to object
     o.value.forEach((item) => {
-      switch (o.type) {
+      switch (o.info.type) {
         case 'tuple':
         case 'list':
           index = count;

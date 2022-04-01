@@ -141,9 +141,14 @@ const create_object = (objects, js_object, class_names) => {
   let obj = {
     id: uuidv4(),
     value: null,
-    // manually assign 'class' type since tp$name of a class gives the name of
-    // the class and not the type
-    type: js_object?.hp$type ? 'class' : js_object.tp$name,
+    info: js_object?.hp$type // check if it's class or not
+      ? {
+          type: 'class',
+          class_name: js_object.tp$name
+        }
+      : {
+          type: js_object.tp$name
+        },
     js_object: js_object
   };
   objects.push(obj);
@@ -152,7 +157,7 @@ const create_object = (objects, js_object, class_names) => {
   if (js_object.tp$name === 'list' || js_object.tp$name === 'tuple') {
     value = [];
     for (const v of js_object.v) {
-      value.push({ ref: retrieve_object_id(v) });
+      value.push({ ref: retrieve_object_id(objects, v, class_names) });
     }
   } else if (js_object.tp$name === 'dict' && !js_object?.hp$type) {
     // the second condition is required because otherwise a user-defined class
