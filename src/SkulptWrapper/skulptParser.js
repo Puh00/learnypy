@@ -56,7 +56,7 @@ const create_object = (js_object) => {
   let obj = {
     id: uuidv4(),
     value: null,
-    type: js_object.tp$name,
+    type: js_object.tp$name === 'dict' ? 'dictionary' : js_object.tp$name,
     js_object: js_object
   };
   objects.push(obj);

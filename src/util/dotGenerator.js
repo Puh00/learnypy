@@ -43,7 +43,7 @@ const generate_dot = (data) => {
       set_collection_object(o, '(', ')');
     } else if (o.type === 'list') {
       set_collection_object(o, '[', ']');
-    } else if (o.type === 'dict' || o.type === 'set') {
+    } else if (o.type === 'dictionary' || o.type === 'set') {
       set_collection_object(o, '{', '}');
     } else {
       // immutables
@@ -122,7 +122,7 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
           index = count;
           to = item.ref;
           break;
-        case 'dict':
+        case 'dictionary':
           index = item.key;
           to = item.val;
           break;

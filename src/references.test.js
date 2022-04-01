@@ -241,7 +241,7 @@ a = {{"wow": [[1,2,3], "damn": {{"another_dict": 0}}`;
   expect(wow_val.value).toHaveLength(3);
 
   const damn_val = getObjectById(refs.objects, damn.val);
-  expect(damn_val.type).toEqual('dict');
+  expect(damn_val.type).toEqual('dictionary');
   expect(damn_val.value).toHaveLength(1);
   expect(damn_val.value[0].key).toEqual('another_dict');
 });
@@ -281,7 +281,7 @@ a[["self_ref"] = a`;
   expect(a_key_val.value).toEqual('a_value');
 
   const self_ref_val = getObjectById(refs.objects, self_ref.val);
-  expect(self_ref_val.type).toEqual('dict');
+  expect(self_ref_val.type).toEqual('dictionary');
   expect(self_ref_val.id).toEqual(a_obj.id);
 });
 
@@ -330,7 +330,7 @@ c = (b, {{"test": ""}, "")`;
 
   // get the dict {"test": ""}
   const tuple_ele_2 = getObjectById(refs.objects, c_obj.value[1].ref);
-  expect(tuple_ele_2.type).toEqual('dict');
+  expect(tuple_ele_2.type).toEqual('dictionary');
   expect(tuple_ele_2.value).toHaveLength(1);
 
   // get the empty string
