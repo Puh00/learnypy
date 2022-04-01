@@ -12,7 +12,7 @@ const set_text = (data_objects, variables) => {
   for (const v of variables) {
     for (const o of objects) {
       if (v.ref === o.id) {
-        graph_text = graph_text.concat(' ' + 'variable ' + v.name + ' points to ');
+        graph_text = graph_text.concat(' ' + 'variable "' + v.name + '" points to ');
         if (o.type === 'list' || o.type === 'tuple' || o.type === 'dict') {
           graph_text = graph_text.concat(get_text_for_indexable_objects(o, v.name, true));
           if (!pointers[o.id].includes(v.name)) {
@@ -63,10 +63,10 @@ const get_text_for_indexable_objects = (o, variable_name, is_root) => {
     } else {
       if (o.type === 'dict') {
         text = text.concat(
-          ' Key ' + o.value[index_number].key + ' of ' + variable_name + ' points to '
+          ' Key ' + o.value[index_number].key + ' of "' + variable_name + '" points to '
         );
       } else {
-        text = text.concat(' Index nr ' + index_number + ' of ' + variable_name + ' points to ');
+        text = text.concat(' Index nr ' + index_number + ' of "' + variable_name + '" points to ');
       }
     }
     //traverses all objects to find what object the index points to
