@@ -58,8 +58,6 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
     }
   }
 
-  console.log(objects, variables);
-
   return {
     objects: objects,
     variables: variables

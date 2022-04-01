@@ -43,7 +43,7 @@ const generate_dot = (refs) => {
       set_indexable_object(o, '(', ')');
     } else if (o.type === 'list') {
       set_indexable_object(o, '[', ']');
-    } else if (o.type === 'dict') {
+    } else if (['dict', 'class'].includes(o.type)) {
       set_indexable_object(o, '{', '}');
     } else {
       // immutables
@@ -71,8 +71,6 @@ const generate_dot = (refs) => {
   });
   let res = 'digraph structs { node [shape=box]\n' + nodes + edges + '}';
 
-  // use console.log to check for errors in dot language
-  //console.log(res);
   return {
     dot: res
   };
@@ -80,6 +78,11 @@ const generate_dot = (refs) => {
 
 // Used for tuple, list and dict
 const set_indexable_object = (o, start_bracket, end_bracket) => {
+  const get_node_description = (type) =>
+    type == 'class'
+      ? 'Name of the class' + '<BR/><I>' + type + '</I>'
+      : type + '</I><BR/>' + start_bracket + 'size: ' + o.value.length + end_bracket;
+
   let count = 0;
   let index = '';
   let to = '';
@@ -96,13 +99,8 @@ const set_indexable_object = (o, start_bracket, end_bracket) => {
     indexable_col_3 +
     '" COLSPAN="' +
     o.value.length +
-    '"><I>' +
-    o.type +
-    '</I><BR/>' +
-    start_bracket +
-    'size: ' +
-    o.value.length +
-    end_bracket +
+    '">' +
+    get_node_description(o.type) +
     '</TD>\n\t</TR>\n';
 
   if (o.value.length > 0) {
@@ -117,6 +115,7 @@ const set_indexable_object = (o, start_bracket, end_bracket) => {
           to = item.ref;
           break;
         case 'dict':
+        case 'class':
           index = item.key;
           to = item.val;
           break;
