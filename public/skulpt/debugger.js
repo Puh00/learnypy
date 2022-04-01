@@ -182,12 +182,7 @@ Sk.Debugger.prototype.print_suspension_info = function (suspension) {
 
 Sk.Debugger.prototype.set_suspension = function (suspension) {
   var parent = null;
-  if (
-    !dbgHasOwnProperty(suspension, 'filename') &&
-    suspension.child instanceof Sk.misceval.Suspension
-  ) {
-    suspension = suspension.child;
-  }
+  
 
   // Pop the last suspension of the stack if there is more than 0
   if (this.suspension_stack.length > 0) {
@@ -215,53 +210,31 @@ Sk.Debugger.prototype.add_breakpoint = function (filename, lineno, colno, tempor
   }
 };
 
-Sk.Debugger.prototype.suspension_handler = function (susp1) {
-  return new Promise(function (resolve, reject) {
-    try {
-      var susp2 = susp1.resume();
-
-      // Whenever there is a fork into a function
-      // save the child and parent to use in the hack in resume()
-
-      if (susp2 && susp2.child && susp2.child.$isSuspension) {
-        self.parentSuspension = susp2;
-        self.childSuspension = susp2.child;
-      } else {
-        self.parentSuspension = null;
-        self.childSuspension = null;
+Sk.Debugger.prototype.suspension_handler = function(susp) {
+  return new Promise(function(resolve, reject) {
+      try {
+          resolve(susp.resume());
+      } catch(e) {
+          reject(e);
       }
-      resolve(susp2); 
-    } catch (e) {
-      reject(e);
-    }
   });
 };
 
-Sk.Debugger.prototype.resume = function () {
+Sk.Debugger.prototype.resume = function() {
   // Reset the suspension stack to the topmost
-  console.log(this.suspension_stack);
-
-  // hack to force debugger to use the 'parent' suspsension
-  // when there is a child suspension
-  // to fix resuming from the end of a function
-  if (self.childSuspension) {
-    this.suspension_stack[this.current_suspension] = self.parentSuspension;
-
-  } else {
-    this.current_suspension = this.suspension_stack.length - 1;
-  }
-
+  this.current_suspension = this.suspension_stack.length - 1;
+  
   if (this.suspension_stack.length === 0) {
-    this.print('No suspensions to resume');
+      this.print("No running program");
   } else {
-    var promise = this.suspension_handler(this.get_active_suspension());
-    promise.then(this.success.bind(this), this.error.bind(this));
+      var promise = this.suspension_handler(this.get_active_suspension());
+      promise.then(this.success.bind(this), this.error.bind(this));
   }
 };
 
-Sk.Debugger.prototype.pop_suspension_stack = function () {
-  this.suspension_stack.pop();
-  this.current_suspension -= 1;
+Sk.Debugger.prototype.pop_suspension_stack = function() {
+    this.suspension_stack.pop();
+    this.current_suspension -= 1;
 };
 
 Sk.Debugger.prototype.success = function (r) {
@@ -279,12 +252,12 @@ Sk.Debugger.prototype.success = function (r) {
       }
 
       var parent_suspension = this.get_active_suspension();
-      // The child has completed the execution. So override the child's resume
-      // so we can continue the execution.
-      parent_suspension.child.resume = function () {
-        return r;
-      };
-      this.resume();
+            // The child has completed the execution. So override the child's resume
+            // so we can continue the execution.
+            parent_suspension.child.resume = function() {
+                return r;
+            };
+            this.resume();
     } else {
       this.print('Program execution complete 2');
     }
