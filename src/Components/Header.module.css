@@ -17,8 +17,8 @@
 }
 
 .Nav-menu {
-  margin-right: 12px;
-  margin-top: 8px;
+  margin-right: 16px;
+  margin-top: 16px;
 
   display: flex;
   flex-direction: row;
@@ -34,5 +34,5 @@
 }
 
 .Nav-item:hover {
-  color: var(--hover);
+  color: black;
 }
