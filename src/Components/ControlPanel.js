@@ -79,7 +79,7 @@ const ControlPanel = ({ code, runit, step, restart, setCode, drop_down_menu_ref 
           data-toggle="tooltip"
           title="Code Examples"
           drop_down_menu_ref={drop_down_menu_ref}
-          // button_border={{ border: '1px solid', borderRadius: '5px' }}
+          button_border={{ borderLeft: '2px solid' }}
         />
       </ButtonGroup>
     </ButtonGroup>
