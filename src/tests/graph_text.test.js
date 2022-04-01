@@ -47,8 +47,8 @@ a = 1
 b = 1
 c = b`;
 
-  // ? why the leading space?
-  const expected = ' a points to 1. b points to 1. c points to 1.';
+  const expected =
+    'Variable "a" points to the int value 1. Variable "b" points to the int value 1. Variable "c" points to the int value 1. ';
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
@@ -76,7 +76,7 @@ b = a
 b.append(3)`;
 
   const expected =
-    ' a points to a list of size 3. Index nr 0 of a points to 1. Index nr 1 of a points to 2. Index nr 2 of a points to 3. b points to the same list of size 3 as a. Index nr 0 of b points to 1. Index nr 1 of b points to 2. Index nr 2 of b points to 3.';
+    'Variable "a" points to a list of size 3. Index nr 0 of "a" points to the int value 1. Index nr 1 of "a" points to the int value 2. Index nr 2 of "a" points to the int value 3. Variable "b" points to the same list of size 3 as variable a. ';
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
@@ -104,7 +104,7 @@ b = a
 b[[2] = "a new value"`;
 
   const expected =
-    ' a points to a dict of size 2. Key key of a points to a value. Key 2 of a points to a new value. b points to the same dict of size 2 as a. Key key of b points to a value. Key 2 of b points to a new value.';
+    'Variable "a" points to a dict of size 2. Key key of "a" points to the str value a value. Key 2 of "a" points to the str value a new value. Variable "b" points to the same dict of size 2 as variable a. ';
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
@@ -130,7 +130,7 @@ test('deeply nested lists', () => {
 a = [[ [[ [[ [[ [[ ]]]]]`; // the same as `a = [[[[[]]]]]`
 
   const expected =
-    ' a points to a list of size 1. Index nr 0 of a points to a list of size 1. Index nr 0 of this list points to a list of size 1. Index nr 0 of this list points to a list of size 1. Index nr 0 of this list points to a list of size 0.';
+    'Variable "a" points to a list of size 1. Index nr 0 of "a" points to a list of size 1. Index nr 0 of this list points to a list of size 1. Index nr 0 of this list points to a list of size 1. Index nr 0 of this list points to a list of size 0. ';
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
@@ -159,7 +159,7 @@ b = a
 b[["b"] = b`;
 
   const expected =
-    ' a points to a dict of size 2. Key a of a points to the same dict of size 2 as a. Key b of a points to the same dict of size 2 as a & a. b points to the same dict of size 2 as a & a. Key a of b points to the same dict of size 2 as a & a & b. Key b of b points to the same dict of size 2 as a & a & b & b.';
+    'Variable "a" points to a dict of size 2. Key a of "a" points to the same dict of size 2 as variable a. Key b of "a" points to the same dict of size 2 as variable a & a\'s key a. Variable "b" points to the same dict of size 2 as variable a & a\'s key a & a\'s key b. ';
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
