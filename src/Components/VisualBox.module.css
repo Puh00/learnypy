@@ -5,6 +5,7 @@
   display: block;
   overflow: hidden;
   margin: 0;
+  background-color: white;
 }
 
 .Container svg {

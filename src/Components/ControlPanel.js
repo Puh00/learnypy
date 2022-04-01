@@ -4,17 +4,39 @@ import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
 import { ReactComponent as Stop_logo } from './Icons/stop.svg';
 import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg';
 import DropdownLocal from './Dropdown';
+import styles from './ControlPanel.module.css';
 
 import { Button, ButtonGroup } from 'react-bootstrap';
 
-const button_border = {
-  border: '1px solid'
+const btng_style = {
+  border: '2px solid',
+  borderRadius: '4px',
+  borderColor: 'var(--dark)',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'flex-start',
+  backgroundColor: 'var(--components)',
+  boxShadow: 'var(--shadow)'
+};
+
+const btng_left = {
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'flex-start',
+  flexBasis: 'contents'
+};
+
+const btng_right = {
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'flex-end',
+  flexBasis: '100%'
 };
 
 const ControlPanel = ({ code, runit, step, restart, setCode, drop_down_menu_ref }) => {
   const create_button = (func, tooltip_text, logo) => (
     <Button
-      style={button_border}
+      className={`${styles.Container}`}
       variant="light"
       onClick={func}
       data-toggle="tooltip"
@@ -25,37 +47,41 @@ const ControlPanel = ({ code, runit, step, restart, setCode, drop_down_menu_ref 
   );
 
   return (
-    <ButtonGroup style={{ border: '1px solid', borderRadius: '5px' }}>
-      {create_button(
-        () => {
-          runit(code);
-        },
-        'Run code (until next breakpoint)',
-        <Play_logo />
-      )}
-      {create_button(
-        () => {
-          step(code);
-        },
-        'Run next line',
-        <Next_logo />
-      )}
-      {create_button(
-        () => {
-          restart(code);
-        },
-        'Stop execution',
-        <Stop_logo />
-      )}
-      <DropdownLocal
-        logo={<Menu_logo />}
-        setCode={setCode}
-        restart={restart}
-        data-toggle="tooltip"
-        title="Code Examples"
-        drop_down_menu_ref={drop_down_menu_ref}
-        button_border={button_border}
-      />
+    <ButtonGroup style={btng_style}>
+      <ButtonGroup style={btng_left}>
+        {create_button(
+          () => {
+            runit(code);
+          },
+          'Run code (until next breakpoint)',
+          <Play_logo />
+        )}
+        {create_button(
+          () => {
+            step(code);
+          },
+          'Run next line',
+          <Next_logo />
+        )}
+        {create_button(
+          () => {
+            restart(code);
+          },
+          'Stop execution',
+          <Stop_logo />
+        )}
+      </ButtonGroup>
+      <ButtonGroup style={btng_right}>
+        <DropdownLocal
+          logo={<Menu_logo />}
+          setCode={setCode}
+          restart={restart}
+          data-toggle="tooltip"
+          title="Code Examples"
+          drop_down_menu_ref={drop_down_menu_ref}
+          // button_border={{ border: '1px solid', borderRadius: '5px' }}
+        />
+      </ButtonGroup>
     </ButtonGroup>
   );
 };

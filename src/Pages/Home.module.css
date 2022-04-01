@@ -4,6 +4,7 @@
   display: grid;
   grid-template-rows: 60px;
   padding-bottom: 5px;
+  background-color: var(--background);
 }
 
 .Content-body {
@@ -12,6 +13,7 @@
   /* So the left- and right-body doesn't collide */
   grid-template-columns: repeat(auto-fit, minmax(220px, 40%)) 60%;
   margin: 3px;
+  background-color: var(--background);
 }
 
 .Left-body {
@@ -19,4 +21,5 @@
   grid-template-rows: 50px 60%;
   row-gap: 10px;
   margin: 5px;
+  background-color: var(--background);
 }

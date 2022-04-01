@@ -1,6 +1,8 @@
 :root {
-    --background: white;
-    --components: #D6E0F0;
+    --background: rgb(224, 224, 224);
+    --components: #f7f7f7;
+    /* --components: #D6E0F0; */
     --dark: #393B44;
     --hover: #cedaee;
-  }
+    --shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  } 
