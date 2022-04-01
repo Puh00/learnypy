@@ -65,7 +65,6 @@ class Skulpt {
    * - success: Called when the program finished running in the debugger.
    * - error: Called when the program threw an error in the debugger.
    */
-  //{ read_builtin, outf, current_line, print, success, error }
   configure(config) {
     if (!config) return;
 
