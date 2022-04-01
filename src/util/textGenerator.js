@@ -3,6 +3,7 @@ var objects;
 // keeps track of all variables that points to the same non-primitve object. key:object id, val:list of variables that points directly to it
 var pointers = {};
 
+// Generates a string describing the structure of the graph (variables and objects, and how the relate to each other)
 const set_text = (data_objects, variables) => {
   objects = data_objects;
   pointers = initialize_pointers_dict();
@@ -11,7 +12,7 @@ const set_text = (data_objects, variables) => {
   for (const v of variables) {
     for (const o of objects) {
       if (v.ref === o.id) {
-        graph_text = graph_text.concat(' ' + v.name + ' points to ');
+        graph_text = graph_text.concat(' ' + 'variable ' + v.name + ' points to ');
         if (o.type === 'list' || o.type === 'tuple' || o.type === 'dict') {
           graph_text = graph_text.concat(get_text_for_indexable_objects(o, v.name, true));
           if (!pointers[o.id].includes(v.name)) {
