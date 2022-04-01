@@ -100,13 +100,8 @@ const init_break_points = () => {
   }
 };
 
-const add_breakpoint = (bp) => {
-  break_points.push(bp);
-};
-
-const clear_breakpoint = (bp) => {
-  const index = break_points.indexOf(bp);
-  if (index > -1) break_points.splice(index, 1);
+const update_breakpoints = (bp) => {
+  break_points = [...bp];
 };
 
 const start = (prog, step_mode = false, callback) => {
@@ -185,4 +180,4 @@ init_debugger();
 let break_points = [];
 // -----------------------------------------------------------------------------
 
-export { func, start, step, runit, add_breakpoint, clear_breakpoint };
+export { func, start, step, runit, update_breakpoints };

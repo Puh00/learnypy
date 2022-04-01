@@ -7,7 +7,7 @@ import OutputBox from '../Components/OutputBox';
 import VisualBox from '../Components/VisualBox';
 import Header from '../Components/Header';
 
-import { func, start, step, runit } from '../SkulptWrapper/skulptWrapper';
+import { func, start, step, runit, update_breakpoints } from '../SkulptWrapper/skulptWrapper';
 
 import styles from './Home.module.css';
 
@@ -19,11 +19,24 @@ const Home = () => {
   const [code, setCode] = useState('a=1\nb=1\nc=b');
   const [line, setLine] = useState(-1);
   const [stepped, setStepped] = useState(false);
+  const [breakpoints, setBreakpoints] = useState([]);
 
   const drop_down_menu_ref = useRef(null);
   const output_box_ref = useRef(null);
 
   let latest_output = '';
+
+  const restart = (prog) =>
+    start(prog, false, () => {
+      clear_visuals();
+    });
+
+  // highlights and stops at the first line of the code
+  const stop_at_first_line = (prog) => {
+    restart(prog);
+    setStepped(true);
+    setLine(0);
+  };
 
   // callback function sent to the debugger
   const callback = (globals, locals) => {
@@ -31,36 +44,31 @@ const Home = () => {
     setLocals(locals);
   };
 
-  const restart = (prog) =>
-    start(prog, false, () => {
-      clear();
-    });
-
-  // instantiate with setRefs as the callback function
   const runit_callback = (prog) => {
-    clear();
+    // hack for stopping at the first row if the condition is satisfied
+    if (!stepped && breakpoints.includes(0)) return stop_at_first_line(prog);
+
+    clear_visuals();
     setStepped(true);
     runit(prog, callback);
   };
 
   const step_callback = (prog) => {
-    if (!stepped) {
-      // reset the program to allow continous stepping
-      restart(prog);
-      setStepped(true);
-      setLine(0);
-      return;
-    }
+    if (!stepped) return stop_at_first_line(prog);
 
     step(prog, callback);
   };
 
-  const clear = () => {
+  const clear_visuals = () => {
     setOutput({ text: '' });
     setGlobals({ objects: [], variables: [] });
     setLocals({ objects: [], variables: [] });
     setLine(-1);
     setStepped(false);
+  };
+
+  const clear_breakpoints = () => {
+    setBreakpoints(() => []);
   };
 
   func.outf = (text) => {
@@ -87,6 +95,10 @@ const Home = () => {
     };
   }, []);
 
+  useEffect(() => {
+    update_breakpoints(breakpoints);
+  }, [breakpoints]);
+
   const navItems = [
     {
       name: 'about',
@@ -104,6 +116,7 @@ const Home = () => {
             runit={runit_callback}
             step={step_callback}
             restart={restart}
+            clear_breakpoints={clear_breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
           />
@@ -111,8 +124,15 @@ const Home = () => {
             code={code}
             setCode={setCode}
             line={line}
+            breakpoints={breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
             output_box_ref={output_box_ref}
+            add_breakpoint={(line_number) =>
+              setBreakpoints((breakpoints) => [...breakpoints, line_number])
+            }
+            remove_breakpoint={(line_number) =>
+              setBreakpoints((breakpoints) => [...breakpoints].filter((e) => e !== line_number))
+            }
           />
           <OutputBox output={output} output_box_ref={output_box_ref} />
         </div>
