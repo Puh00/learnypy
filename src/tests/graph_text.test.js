@@ -1,0 +1,1 @@
+test('assignment with integers', () => {});

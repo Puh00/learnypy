@@ -1,12 +1,12 @@
 /* eslint-disable no-undef */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from './App';
-import sleep from './util/sleep';
-import { getObjectById, getVariableByName, getRefs } from './util/testUtils';
+import App from '../App';
+import sleep from '../util/sleep';
+import { getObjectById, getVariableByName, getRefs } from '../util/testUtils';
 
 // mock these components since the imported libraries seem to break everything...
-jest.mock('./Components/VisualBox', () => {
+jest.mock('../Components/VisualBox', () => {
   return function VisualBox({ data }) {
     // js_object contains raw javascript object which makes it impossible to
     // stringify using JSON
@@ -19,7 +19,7 @@ jest.mock('./Components/VisualBox', () => {
   };
 });
 
-jest.mock('./Components/CodeBox', () => {
+jest.mock('../Components/CodeBox', () => {
   return function CodeBox({ code, setCode }) {
     return (
       <form className="Code-box">
