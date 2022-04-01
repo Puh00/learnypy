@@ -15,11 +15,11 @@ const set_text = (data_objects, variables) => {
         graph_text = graph_text.concat('Variable "' + v.name + '" points to ');
         if (o.type === 'list' || o.type === 'tuple' || o.type === 'dict') {
           graph_text = graph_text.concat(get_text_for_indexable_objects(o, v.name, true));
-          if (!pointers[o.id].includes(v.name)) {
-            pointers[o.id].push(v.name);
+          if (!pointers[o.id].includes('variable ' + v.name)) {
+            pointers[o.id].push('variable ' + v.name);
           }
         } else {
-          graph_text = graph_text.concat(o.value + '. ');
+          graph_text = graph_text.concat('the ' + o.type + ' value ' + o.value + '. ');
         }
       }
     }
@@ -34,6 +34,9 @@ const initialize_pointers_dict = () => {
   for (const o of objects) {
     if (o.type == 'list' || o.type == 'tuple' || o.type == 'dict') {
       pointers[o.id] = [];
+      for (const val of o.value) {
+        pointers[val.ref] = [];
+      }
     }
   }
   return pointers;
@@ -44,68 +47,85 @@ const initialize_pointers_dict = () => {
 const get_text_for_indexable_objects = (o, variable_name, is_root) => {
   let text = '';
 
-  // description of the object (not it's indices)
-  text = text.concat(get_description_of_outer_object(o));
+  // index 0: description of the object (not it's indices)
+  // index 1: boolean. if a variable points to the same object as another, the referenced object will not be explained again
+  let outer_object_description = get_description_of_outer_object(o);
 
-  let index_number = 0;
+  text = text.concat(outer_object_description[0]);
 
-  //traverses all indices
-  for (const val of o.value) {
-    //if this is the root object we want to write the variables name pointing to the object, otherwise refer to the object as "this"
-    if (!is_root) {
-      if (o.type === 'dict') {
-        text = text.concat(
-          'Key ' + o.value[index_number].key + ' of ' + 'this ' + o.type + ' points to '
-        );
-      } else {
-        text = text.concat('Index nr ' + index_number + ' of ' + 'this ' + o.type + ' points to ');
-      }
-    } else {
-      if (o.type === 'dict') {
-        text = text.concat(
-          'Key ' + o.value[index_number].key + ' of "' + variable_name + '" points to '
-        );
-      } else {
-        text = text.concat('Index nr ' + index_number + ' of "' + variable_name + '" points to ');
-      }
-    }
-    //traverses all objects to find what object the index points to
-    for (const ob of objects) {
-      //val.ref works for lists and tuples, val.val works for dictionarys
-      if (val.ref === ob.id || val.val === ob.id) {
-        //if there are nestled non-primitive objects this method needs to be called recursively
-        if (ob.type === 'list' || ob.type === 'tuple' || ob.type === 'dict') {
-          //this is for objects with self-references
-          if (o.id === ob.id) {
-            pointers[o.id].push(variable_name);
-            let t = text_for_many_pointers_at_the_same_object(pointers[ob.id]);
-            text = text.concat(
-              'the same ' + o.type + ' of size ' + o.value.length + ' as ' + t + '. '
-            );
-          } else {
-            text = text.concat(get_text_for_indexable_objects(ob, variable_name, false));
-          }
+  let explain_object = outer_object_description[1];
+  if (explain_object) {
+    let index_number = 0;
+
+    //traverses all indices
+    for (const val of o.value) {
+      //if this is the root object we want to write the variables name pointing to the object, otherwise refer to the object as "this"
+      if (!is_root) {
+        if (o.type === 'dict') {
+          text = text.concat(
+            'Key ' + o.value[index_number].key + ' of ' + 'this ' + o.type + ' points to '
+          );
         } else {
-          text = text.concat(ob.value + '. ');
+          text = text.concat(
+            'Index nr ' + index_number + ' of ' + 'this ' + o.type + ' points to '
+          );
+        }
+      } else {
+        if (o.type === 'dict') {
+          text = text.concat(
+            'Key ' + o.value[index_number].key + ' of "' + variable_name + '" points to '
+          );
+        } else {
+          text = text.concat('Index nr ' + index_number + ' of "' + variable_name + '" points to ');
         }
       }
+      //traverses all objects to find what object the index points to
+      for (const ob of objects) {
+        //val.ref works for lists and tuples, val.val works for dictionarys
+        if (val.ref === ob.id || val.val === ob.id) {
+          //if there are nestled non-primitive objects this method needs to be called recursively
+          if (ob.type === 'list' || ob.type === 'tuple' || ob.type === 'dict') {
+            //this is for objects with self-references
+            if (o.id === ob.id) {
+              if (!pointers[o.id].includes('variable ' + variable_name)) {
+                pointers[o.id].push('variable ' + variable_name);
+              }
+              let t = text_for_many_pointers_at_the_same_object(pointers[ob.id]);
+              text = text.concat(
+                'the same ' + o.type + ' of size ' + o.value.length + ' as ' + t + '. '
+              );
+            } else {
+              text = text.concat(get_text_for_indexable_objects(ob, variable_name, false));
+            }
+            //save keys / indices that points to the object
+            if (o.type === 'dict') {
+              pointers[ob.id].push(variable_name + "'s key " + o.value[index_number].key);
+            } else if (o.type === 'list') {
+              pointers[ob.id].push(variable_name + "'s index " + index_number);
+            }
+          } else {
+            text = text.concat('the ' + ob.type + ' value ' + ob.value + '. ');
+          }
+        }
+      }
+      index_number++;
     }
-    index_number++;
   }
   return text;
 };
 
 const get_description_of_outer_object = (o) => {
   let text = '';
-
+  let explain_object = true;
   if (pointers[o.id].length >= 1) {
     let t = text_for_many_pointers_at_the_same_object(pointers[o.id]);
     text = text.concat('the same ' + o.type + ' of size ' + o.value.length + ' as ' + t + '. ');
+    explain_object = false;
   } else {
     text = text.concat('a ' + o.type + ' of size ' + o.value.length + '. ');
   }
 
-  return text;
+  return [text, explain_object];
 };
 
 const text_for_many_pointers_at_the_same_object = (names) => {
