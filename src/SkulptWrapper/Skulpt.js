@@ -67,6 +67,8 @@ class Skulpt {
    */
   //{ read_builtin, outf, current_line, print, success, error }
   configure(config) {
+    if (!config) return;
+
     this.read_builtin = config.read_builtin ? config.read_builtin : this.read_builtin;
     this.outf = config.outf ? config.outf : this.outf;
     this.current_line = config.current_line ? config.current_line : this.current_line;
@@ -82,12 +84,20 @@ class Skulpt {
    */
   create_debugger() {
     return new window.Sk.Debugger('<stdin>', {
-      print: this.print,
+      print: () => {
+        this.print();
+      },
       // this function is not being used but needs to be initialised to not cause errors.
       get_source_line: (lineno) => `Line: ${lineno}`,
-      current_line: this.current_line,
-      success: this.success,
-      error: this.error
+      current_line: (lineno) => {
+        this.current_line(lineno);
+      },
+      success: () => {
+        this.success();
+      },
+      error: () => {
+        this.error();
+      }
     });
   }
 
