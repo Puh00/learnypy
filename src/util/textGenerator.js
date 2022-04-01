@@ -12,14 +12,14 @@ const set_text = (data_objects, variables) => {
   for (const v of variables) {
     for (const o of objects) {
       if (v.ref === o.id) {
-        graph_text = graph_text.concat(' ' + 'variable "' + v.name + '" points to ');
+        graph_text = graph_text.concat('Variable "' + v.name + '" points to ');
         if (o.type === 'list' || o.type === 'tuple' || o.type === 'dict') {
           graph_text = graph_text.concat(get_text_for_indexable_objects(o, v.name, true));
           if (!pointers[o.id].includes(v.name)) {
             pointers[o.id].push(v.name);
           }
         } else {
-          graph_text = graph_text.concat(o.value + '.');
+          graph_text = graph_text.concat(o.value + '. ');
         }
       }
     }
@@ -55,18 +55,18 @@ const get_text_for_indexable_objects = (o, variable_name, is_root) => {
     if (!is_root) {
       if (o.type === 'dict') {
         text = text.concat(
-          ' Key ' + o.value[index_number].key + ' of ' + 'this ' + o.type + ' points to '
+          'Key ' + o.value[index_number].key + ' of ' + 'this ' + o.type + ' points to '
         );
       } else {
-        text = text.concat(' Index nr ' + index_number + ' of ' + 'this ' + o.type + ' points to ');
+        text = text.concat('Index nr ' + index_number + ' of ' + 'this ' + o.type + ' points to ');
       }
     } else {
       if (o.type === 'dict') {
         text = text.concat(
-          ' Key ' + o.value[index_number].key + ' of "' + variable_name + '" points to '
+          'Key ' + o.value[index_number].key + ' of "' + variable_name + '" points to '
         );
       } else {
-        text = text.concat(' Index nr ' + index_number + ' of "' + variable_name + '" points to ');
+        text = text.concat('Index nr ' + index_number + ' of "' + variable_name + '" points to ');
       }
     }
     //traverses all objects to find what object the index points to
@@ -80,13 +80,13 @@ const get_text_for_indexable_objects = (o, variable_name, is_root) => {
             pointers[o.id].push(variable_name);
             let t = text_for_many_pointers_at_the_same_object(pointers[ob.id]);
             text = text.concat(
-              'the same ' + o.type + ' of size ' + o.value.length + ' as ' + t + '.'
+              'the same ' + o.type + ' of size ' + o.value.length + ' as ' + t + '. '
             );
           } else {
             text = text.concat(get_text_for_indexable_objects(ob, variable_name, false));
           }
         } else {
-          text = text.concat(ob.value + '.');
+          text = text.concat(ob.value + '. ');
         }
       }
     }
@@ -100,9 +100,9 @@ const get_description_of_outer_object = (o) => {
 
   if (pointers[o.id].length >= 1) {
     let t = text_for_many_pointers_at_the_same_object(pointers[o.id]);
-    text = text.concat('the same ' + o.type + ' of size ' + o.value.length + ' as ' + t + '.');
+    text = text.concat('the same ' + o.type + ' of size ' + o.value.length + ' as ' + t + '. ');
   } else {
-    text = text.concat('a ' + o.type + ' of size ' + o.value.length + '.');
+    text = text.concat('a ' + o.type + ' of size ' + o.value.length + '. ');
   }
 
   return text;
