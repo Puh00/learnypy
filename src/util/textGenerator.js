@@ -18,6 +18,8 @@ const set_text = (data_objects, variables) => {
           if (!pointers[o.id].includes('variable ' + v.name)) {
             pointers[o.id].push('variable ' + v.name);
           }
+        } else if (o.value === '') {
+          graph_text = graph_text.concat('an empty ' + o.type + '. ');
         } else {
           graph_text = graph_text.concat('the ' + o.type + ' value ' + o.value + '. ');
         }
@@ -100,6 +102,8 @@ const get_text_for_indexable_objects = (o, variable_name, is_root) => {
             } else if (o.type === 'list') {
               pointers[ob.id].push(variable_name + "'s index " + index_number);
             }
+          } else if (ob.value === '') {
+            text = text.concat('an empty ' + ob.type + '. ');
           } else {
             text = text.concat('the ' + ob.type + ' value ' + ob.value + '. ');
           }
