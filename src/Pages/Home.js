@@ -28,7 +28,7 @@ const Home = () => {
 
   const restart = (prog) =>
     start(prog, false, () => {
-      clear();
+      clear_visuals();
     });
 
   // highlights and stops at the first line of the code
@@ -48,7 +48,7 @@ const Home = () => {
     // hack for stopping at the first row if the condition is satisfied
     if (!stepped && breakpoints.includes(0)) return stop_at_first_line(prog);
 
-    clear();
+    clear_visuals();
     setStepped(true);
     runit(prog, callback);
   };
@@ -59,12 +59,16 @@ const Home = () => {
     step(prog, callback);
   };
 
-  const clear = () => {
+  const clear_visuals = () => {
     setOutput({ text: '' });
     setGlobals({ objects: [], variables: [] });
     setLocals({ objects: [], variables: [] });
     setLine(-1);
     setStepped(false);
+  };
+
+  const clear_breakpoints = () => {
+    setBreakpoints(() => []);
   };
 
   func.outf = (text) => {
@@ -112,6 +116,7 @@ const Home = () => {
             runit={runit_callback}
             step={step_callback}
             restart={restart}
+            clear_breakpoints={clear_breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
           />
@@ -119,6 +124,7 @@ const Home = () => {
             code={code}
             setCode={setCode}
             line={line}
+            breakpoints={breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
             output_box_ref={output_box_ref}
             add_breakpoint={(line_number) =>
