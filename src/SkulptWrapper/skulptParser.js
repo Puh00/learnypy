@@ -166,6 +166,8 @@ const create_object = (objects, js_object, class_names) => {
   } else if (class_names.includes(js_object.tp$name)) {
     // User-defined class
     value = parse_class_values(js_object);
+  } else if (js_object.tp$name === 'set') {
+    value = parse_dictionary_values(Object.values(js_object.v.entries));
   }
   // Immutables
   else value = js_object.v;
