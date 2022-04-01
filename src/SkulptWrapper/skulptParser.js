@@ -58,6 +58,8 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
     }
   }
 
+  console.log(objects, variables);
+
   return {
     objects: objects,
     variables: variables
@@ -78,24 +80,75 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
  * @returns The newly created object
  */
 const create_object = (objects, js_object, class_names) => {
+  /**
+   * Parses the values from a Skulpt dictionary
+   * @param {Object} values The values from a Skulpt dictionary
+   * @returns A parsed version of the values from the dicitonary
+   */
+  const parse_dictionary_values = (values) => {
+    const _values = [];
+    values.forEach((val) =>
+      _values.push({ key: val.lhs.v, val: retrieve_object_id(objects, val.rhs, class_names) })
+    );
+    return _values;
+  };
+
+  /**
+   * Parses the class and instance variables from a Skulpt class
+   * @param {Object} js_object The Javascript representation of the Python object
+   * @returns The parsed values from the class
+   */
+  const parse_class_values = (js_object) => {
+    const irrelevant_skulpt_attributes = [
+      'tp$name',
+      'ob$type',
+      '__init__',
+      '__module__',
+      'hp$type',
+      '$r',
+      'tp$setattr',
+      'tp$str',
+      'tp$length',
+      'tp$call',
+      'tp$getitem',
+      'tp$setitem',
+      'tp$getattr'
+    ];
+    // Instance variables
+    const values = parse_dictionary_values(Object.values(js_object.$d.entries));
+
+    const instance_variables_names = new Set();
+    values.forEach((v) => instance_variables_names.add(v.key));
+
+    // Class variables
+    for (const [key, value] of Object.entries(Object.getPrototypeOf(js_object))) {
+      if (
+        // Skip if an instance variable is shadowing the class variable
+        instance_variables_names.has(key) ||
+        irrelevant_skulpt_attributes.includes(key) ||
+        // Skip functions declared inside of a class
+        Object.getPrototypeOf(value).tp$name == 'function'
+      )
+        continue;
+
+      values.push({
+        key: key,
+        val: retrieve_object_id(objects, value, class_names)
+      });
+    }
+    return values;
+  };
+
+  // Create initial object without a value assigned
   let obj = {
     id: uuidv4(),
     value: null,
-    // need to manually assign 'class' type since tp$name of a class gives the name of
+    // manually assign 'class' type since tp$name of a class gives the name of
     // the class and not the type
     type: js_object?.hp$type ? 'class' : js_object.tp$name,
     js_object: js_object
   };
   objects.push(obj);
-
-  // inline function for creating a dictionary
-  const create_dictionary = (entries) => {
-    const _value = [];
-    entries.forEach((entr) =>
-      _value.push({ key: entr.lhs.v, val: retrieve_object_id(objects, entr.rhs, class_names) })
-    );
-    return _value;
-  };
 
   let value;
   if (js_object.tp$name === 'list' || js_object.tp$name === 'tuple') {
@@ -106,10 +159,10 @@ const create_object = (objects, js_object, class_names) => {
   } else if (js_object.tp$name === 'dict' && !js_object?.hp$type) {
     // the second condition is required because otherwise a user-defined class
     // named 'dict' will bypass the condition
-    value = create_dictionary(Object.values(js_object.entries));
+    value = parse_dictionary_values(Object.values(js_object.entries));
   } else if (class_names.includes(js_object.tp$name)) {
-    // User-defined class (the internal structure is the same as a dictionary)
-    value = create_dictionary(Object.values(js_object.$d.entries));
+    // User-defined class
+    value = parse_class_values(js_object);
   }
   // Immutables
   else value = js_object.v;
