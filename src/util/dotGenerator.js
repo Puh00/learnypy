@@ -40,11 +40,11 @@ const generate_dot = (data) => {
   // objects
   data.objects.forEach((o) => {
     if (o.type === 'tuple') {
-      set_indexable_object(o, '(', ')');
+      set_collection_object(o, '(', ')');
     } else if (o.type === 'list') {
-      set_indexable_object(o, '[', ']');
+      set_collection_object(o, '[', ']');
     } else if (o.type === 'dict' || o.type === 'set') {
-      set_indexable_object(o, '{', '}');
+      set_collection_object(o, '{', '}');
     } else {
       // immutables
       let label = o.value.toString();
@@ -78,8 +78,8 @@ const generate_dot = (data) => {
   };
 };
 
-// Used for tuple, list and dict
-const set_indexable_object = (o, start_bracket, end_bracket) => {
+// Used for tuple, list, dict and set
+const set_collection_object = (o, start_bracket, end_bracket) => {
   let count = 0;
   let index = '';
   let to = '';
