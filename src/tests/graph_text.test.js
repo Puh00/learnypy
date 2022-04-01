@@ -156,7 +156,7 @@ test('self referencing dictionaries', () => {
 a = {{}
 a[["a"] = a
 b = a
-b[["b"] = b`; // the same as `a = [[[[[]]]]]`
+b[["b"] = b`;
 
   const expected =
     ' a points to a dict of size 2. Key a of a points to the same dict of size 2 as a. Key b of a points to the same dict of size 2 as a & a. b points to the same dict of size 2 as a & a. Key a of b points to the same dict of size 2 as a & a & b. Key b of b points to the same dict of size 2 as a & a & b & b.';
