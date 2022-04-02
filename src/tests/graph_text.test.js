@@ -173,3 +173,45 @@ b[["b"] = b`;
 
   expect(text).toEqual(expected);
 });
+
+test('linked list', () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const code = `
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+  
+class LinkedList:
+    def __init__(self):
+        self.head = None
+    def create_list(self):
+      self.head = Node(1)
+      second = Node(2)
+      third = Node(3)
+      self.head.next = second
+      second.next = third
+
+llist = LinkedList()
+llist.create_list()`;
+
+  const expected =
+    'Variable "llist" points to a class of size 1. Attribute head of "llist" points to a class of size 2. Attribute data of this class points to the integer value 1. Attribute next of this class points to a class of size 2. Attribute data of this class points to the integer value 2. Attribute next of this class points to a class of size 2. Attribute data of this class points to the integer value 3. Attribute next of this class points to the NoneType value None. ';
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  // execute the code
+  userEvent.click(runButton);
+
+  // get the objects and variables, and generate text from these
+  const refs = getRefs(visualBox);
+  const text = set_text(refs.objects, refs.variables);
+
+  expect(text).toEqual(expected);
+});

@@ -362,7 +362,6 @@ d = {{"test", a, True}`;
   userEvent.click(runButton);
 
   const refs = getRefs(visualBox);
-  console.log(refs);
 
   const a = getVariableByName(refs.variables, 'a');
 
@@ -397,4 +396,59 @@ d = {{"test", a, True}`;
   const d_obj_2 = getObjectById(refs.objects, d_obj.value[2].ref);
   expect(d_obj_2.value).toEqual(1);
   expect(d_obj_2.info.type).toEqual('bool');
+});
+
+test('classes with references', () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const code = `
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+a = Node(1)
+b = Node(2)
+c = Node(3)
+
+a.next = b
+b.next = c
+`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+  userEvent.click(runButton);
+
+  const refs = getRefs(visualBox);
+
+  const a = getVariableByName(refs.variables, 'a');
+  const a_obj = getObjectById(refs.objects, a.ref);
+  const b = getVariableByName(refs.variables, 'b');
+  const b_obj = getObjectById(refs.objects, b.ref);
+  const c = getVariableByName(refs.variables, 'c');
+  const c_obj = getObjectById(refs.objects, c.ref);
+
+  // a.next == b
+  expect(a_obj.value.find((entry) => entry.key == 'next').val).toEqual(b_obj.id);
+  // b.next == c
+  expect(b_obj.value.find((entry) => entry.key == 'next').val).toEqual(c_obj.id);
+
+  // c.data
+  const c_data = getObjectById(
+    refs.objects,
+    c_obj.value.find((entry) => entry.key == 'data').val
+  ).value;
+  // b.next
+  const b_next = getObjectById(refs.objects, b_obj.value.find((entry) => entry.key == 'next').val);
+  // b.next.data
+  const b_next_data = getObjectById(
+    refs.objects,
+    b_next.value.find((entry) => entry.key == 'data').val
+  ).value;
+  // b.next.data == c.data
+  expect(b_next_data).toEqual(c_data);
 });
