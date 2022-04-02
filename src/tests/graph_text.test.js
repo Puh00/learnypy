@@ -201,7 +201,7 @@ llist = LinkedList()
 llist.create_list()`;
 
   const expected =
-    'Variable "llist" points to a class of size 1. Attribute head of "llist" points to a class of size 2. Attribute data of this class points to the integer value 1. Attribute next of this class points to a class of size 2. Attribute data of this class points to the integer value 2. Attribute next of this class points to a class of size 2. Attribute data of this class points to the integer value 3. Attribute next of this class points to the NoneType value None. ';
+    'Variable "llist" points to a class named "LinkedList" with 1 attribute. Attribute head of "llist" points to a class named "Node" with 2 attributes. Attribute data of this class points to the integer value 1. Attribute next of this class points to a class named "Node" with 2 attributes. Attribute data of this class points to the integer value 2. Attribute next of this class points to a class named "Node" with 2 attributes. Attribute data of this class points to the integer value 3. Attribute next of this class points to the NoneType value None. ';
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);

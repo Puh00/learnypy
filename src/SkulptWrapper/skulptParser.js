@@ -181,7 +181,7 @@ const create_object = (objects, js_object, class_names) => {
 
 /**
  * Returns the full name of the type given a shorthand notation
- * @param {String}} js_object_type The shorthand notation of the type
+ * @param {String} js_object_type The shorthand notation of the type
  * @returns The full name of the type
  */
 const retrieve_full_type_name = (js_object_type) => {

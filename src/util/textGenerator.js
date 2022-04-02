@@ -124,16 +124,23 @@ const get_text_for_indexable_objects = (o, variable_name, is_root) => {
 };
 
 const get_description_of_outer_object = (o) => {
+  const size_description =
+    o.info.type == 'class'
+      ? ' named "' +
+        o.info.class_name +
+        '" with ' +
+        o.value.length +
+        (o.value.length > 1 ? ' attributes' : ' attribute')
+      : ' of size ' + o.value.length;
+
   let text = '';
   let explain_object = true;
   if (pointers[o.id].length >= 1) {
     let t = text_for_many_pointers_at_the_same_object(pointers[o.id]);
-    text = text.concat(
-      'the same ' + o.info.type + ' of size ' + o.value.length + ' as ' + t + '. '
-    );
+    text = text.concat('the same ' + o.info.type + size_description + ' as ' + t + '. ');
     explain_object = false;
   } else {
-    text = text.concat('a ' + o.info.type + ' of size ' + o.value.length + '. ');
+    text = text.concat('a ' + o.info.type + size_description + '. ');
   }
 
   return [text, explain_object];
