@@ -91,7 +91,7 @@ const get_text_for_indexable_objects = (o, variable_name, is_root) => {
         //val.ref works for lists and tuples, val.val works for dictionarys
         if (val.ref === ob.id || val.val === ob.id) {
           //if there are nestled non-primitive objects this method needs to be called recursively
-          if (['list', 'tuple', 'class'].includes(ob.info.type)) {
+          if (['list', 'tuple', 'dictionary', 'class'].includes(ob.info.type)) {
             //this is for objects with self-references
             if (o.id === ob.id) {
               if (!pointers[o.id].includes('variable ' + variable_name)) {
