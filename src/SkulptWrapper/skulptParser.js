@@ -81,13 +81,16 @@ const create_object = (objects, js_object, class_names) => {
   /**
    * Parses the values from a Skulpt dictionary
    * @param {Array} values The values from a Skulpt dictionary
+   * @param {Boolean} set Indicates if the dictionary is a set instead of a map
    * @returns A parsed version of the values from the dicitonary
    */
-  const parse_dictionary_values = (values) => {
+  const parse_dictionary_values = (values, set = false) => {
     const _values = [];
-    values.forEach((val) =>
-      _values.push({ key: val.lhs.v, val: retrieve_object_id(objects, val.rhs, class_names) })
-    );
+    values.forEach((val) => {
+      if (!set)
+        _values.push({ key: val.lhs.v, val: retrieve_object_id(objects, val.rhs, class_names) });
+      else _values.push({ ref: retrieve_object_id(objects, val.lhs, class_names) });
+    });
     return _values;
   };
 
@@ -167,7 +170,7 @@ const create_object = (objects, js_object, class_names) => {
     // User-defined class
     value = parse_class_values(js_object);
   } else if (js_object.tp$name === 'set') {
-    value = parse_dictionary_values(Object.values(js_object.v.entries));
+    value = parse_dictionary_values(Object.values(js_object.v.entries), true);
   }
   // Immutables
   else value = js_object.tp$name == 'NoneType' ? 'None' : js_object.v;
@@ -230,7 +233,7 @@ const retrieve_object_id = (objects, js_object, class_names) => {
  */
 const retrieve_small_int_object_id = (objects, js_object) => {
   for (const obj of objects) {
-    if (obj.type === 'integer' && obj.js_object.v === js_object.v) {
+    if (obj.info.type === 'integer' && obj.js_object.v === js_object.v) {
       return obj.id;
     }
   }
