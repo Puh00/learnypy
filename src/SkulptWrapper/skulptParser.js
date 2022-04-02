@@ -32,14 +32,14 @@ const fetch_class_names = (entries) => {
  * @returns Variables and objects from {other}
  */
 const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__package__']) => {
-  const skulpt_entries = Object.entries(other);
-  const user_defined_class_names = fetch_class_names(skulpt_entries);
-
   const variables = [];
   const objects = [];
 
   // there's a risk for locals being undefined
   if (other) {
+    const skulpt_entries = Object.entries(other);
+    const user_defined_class_names = fetch_class_names(skulpt_entries);
+
     // Must be from Sk.globals and not Sk.builtin.globals, since the latter creates an entirely
     // new dictionary which renders the '===' operator useless for reference checking (which is
     // used in retrieve_object_id(...))
@@ -176,6 +176,11 @@ const create_object = (objects, js_object, class_names) => {
   return obj;
 };
 
+/**
+ * Returns the full name of the type given a shorthand notation
+ * @param {String}} js_object_type The shorthand notation of the type
+ * @returns The full name of the type
+ */
 const retrieve_full_type_name = (js_object_type) => {
   switch (js_object_type) {
     case 'str':
