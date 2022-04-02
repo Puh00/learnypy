@@ -25,8 +25,6 @@ const set_text = (data_objects, variables) => {
       }
     }
   }
-  console.log(graph_text);
-
   return graph_text;
 };
 

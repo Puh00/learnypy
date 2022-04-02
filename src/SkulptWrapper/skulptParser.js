@@ -80,7 +80,7 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
 const create_object = (objects, js_object, class_names) => {
   /**
    * Parses the values from a Skulpt dictionary
-   * @param {Object} values The values from a Skulpt dictionary
+   * @param {Array} values The values from a Skulpt dictionary
    * @returns A parsed version of the values from the dicitonary
    */
   const parse_dictionary_values = (values) => {
