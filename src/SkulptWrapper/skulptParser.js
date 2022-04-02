@@ -56,7 +56,7 @@ const create_object = (js_object) => {
   let obj = {
     id: uuidv4(),
     value: null,
-    type: js_object.tp$name,
+    type: retrieve_full_type_name(js_object.tp$name),
     js_object: js_object
   };
   objects.push(obj);
@@ -88,6 +88,19 @@ const create_object = (js_object) => {
   return obj;
 };
 
+const retrieve_full_type_name = (js_object_type) => {
+  switch (js_object_type) {
+    case 'str':
+      return 'string';
+    case 'dict':
+      return 'dictionary';
+    case 'int':
+      return 'integer';
+    default:
+      return js_object_type;
+  }
+};
+
 // Retrieve the object id for the given value.
 // If the value already exists the id to the already existing object is returned.
 // Otherwise a new object is created and this id is returned.
@@ -117,7 +130,7 @@ const retrieve_object_id = (js_object) => {
 // otherwise false is returned.
 const retrieve_small_int_object_id = (js_object) => {
   for (const obj of objects) {
-    if (obj.type === 'int' && obj.js_object.v === js_object.v) {
+    if (obj.type === 'integer' && obj.js_object.v === js_object.v) {
       return obj.id;
     }
   }
