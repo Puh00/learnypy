@@ -56,7 +56,7 @@ const create_object = (js_object) => {
   let obj = {
     id: uuidv4(),
     value: null,
-    type: js_object.tp$name,
+    type: retrieve_full_type_name(js_object.tp$name),
     js_object: js_object
   };
   objects.push(obj);
@@ -70,10 +70,14 @@ const create_object = (js_object) => {
   } else if (js_object.tp$name === 'dict') {
     value = [];
     const entries = Object.values(js_object.entries);
-    for (const entr of entries) {
-      value.push({ key: entr.lhs.v, val: retrieve_object_id(entr.rhs) });
+    for (const entry of entries) {
+      value.push({ key: entry.lhs.v, val: retrieve_object_id(entry.rhs) });
     }
-
+  } else if (js_object.tp$name === 'set') {
+    value = [];
+    for (const entry of Object.values(js_object.v.entries)) {
+      value.push({ ref: retrieve_object_id(entry.lhs) });
+    }
     // Add more types here
   } else {
     // Immutables
@@ -82,6 +86,19 @@ const create_object = (js_object) => {
 
   obj.value = value;
   return obj;
+};
+
+const retrieve_full_type_name = (js_object_type) => {
+  switch (js_object_type) {
+    case 'str':
+      return 'string';
+    case 'dict':
+      return 'dictionary';
+    case 'int':
+      return 'integer';
+    default:
+      return js_object_type;
+  }
 };
 
 // Retrieve the object id for the given value.
@@ -113,7 +130,7 @@ const retrieve_object_id = (js_object) => {
 // otherwise false is returned.
 const retrieve_small_int_object_id = (js_object) => {
   for (const obj of objects) {
-    if (obj.type === 'int' && obj.js_object.v === js_object.v) {
+    if (obj.type === 'integer' && obj.js_object.v === js_object.v) {
       return obj.id;
     }
   }

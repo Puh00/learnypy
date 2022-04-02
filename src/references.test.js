@@ -241,12 +241,12 @@ a = {{"wow": [[1,2,3], "damn": {{"another_dict": 0}}`;
   expect(wow_val.value).toHaveLength(3);
 
   const damn_val = getObjectById(refs.objects, damn.val);
-  expect(damn_val.type).toEqual('dict');
+  expect(damn_val.type).toEqual('dictionary');
   expect(damn_val.value).toHaveLength(1);
   expect(damn_val.value[0].key).toEqual('another_dict');
 });
 
-test('dictionary that conatins itself', () => {
+test('dictionary that contains itself', () => {
   render(<App />);
 
   const codebox = screen.getByRole('textbox');
@@ -277,11 +277,11 @@ a[["self_ref"] = a`;
   const self_ref = a_obj.value.find((entry) => entry.key === 'self_ref');
 
   const a_key_val = getObjectById(refs.objects, a_key.val);
-  expect(a_key_val.type).toEqual('str');
+  expect(a_key_val.type).toEqual('string');
   expect(a_key_val.value).toEqual('a_value');
 
   const self_ref_val = getObjectById(refs.objects, self_ref.val);
-  expect(self_ref_val.type).toEqual('dict');
+  expect(self_ref_val.type).toEqual('dictionary');
   expect(self_ref_val.id).toEqual(a_obj.id);
 });
 
@@ -330,7 +330,7 @@ c = (b, {{"test": ""}, "")`;
 
   // get the dict {"test": ""}
   const tuple_ele_2 = getObjectById(refs.objects, c_obj.value[1].ref);
-  expect(tuple_ele_2.type).toEqual('dict');
+  expect(tuple_ele_2.type).toEqual('dictionary');
   expect(tuple_ele_2.value).toHaveLength(1);
 
   // get the empty string
@@ -340,4 +340,61 @@ c = (b, {{"test": ""}, "")`;
   expect(c_obj.value[0].ref).toEqual(b_obj.id);
   expect(c_obj.value[1].ref).toEqual(tuple_ele_2.id);
   expect(c_obj.value[2].ref).toEqual(tuple_ele_3.id);
+});
+
+test('creating basic sets', () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const code = `
+a = 2
+b = set()
+c = {{a, 3}
+d = {{"test", a, True}`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  // execute the code
+  userEvent.click(runButton);
+
+  const refs = getRefs(visualBox);
+  console.log(refs);
+
+  const a = getVariableByName(refs.variables, 'a');
+
+  // b = {}
+  const b = getVariableByName(refs.variables, 'b');
+  const b_obj = getObjectById(refs.objects, b.ref);
+  expect(b.ref).toEqual(b_obj.id);
+  expect(b_obj.type).toEqual('set');
+  expect(b_obj.value).toHaveLength(0);
+
+  // c = {a, 2}
+  const c = getVariableByName(refs.variables, 'c');
+  const c_obj = getObjectById(refs.objects, c.ref);
+  expect(c.ref).toEqual(c_obj.id);
+  expect(c_obj.type).toEqual('set');
+  expect(c_obj.value).toHaveLength(2);
+  expect(c_obj.value[0].ref).toEqual(a.ref);
+  const c_obj_0 = getObjectById(refs.objects, c_obj.value[0].ref);
+  expect(c_obj_0.value).toEqual(2);
+  const c_obj_1 = getObjectById(refs.objects, c_obj.value[1].ref);
+  expect(c_obj_1.value).toEqual(3);
+
+  // d = {"test", a, True}
+  const d = getVariableByName(refs.variables, 'd');
+  const d_obj = getObjectById(refs.objects, d.ref);
+  expect(d.ref).toEqual(d_obj.id);
+  expect(d_obj.type).toEqual('set');
+  expect(d_obj.value).toHaveLength(3);
+  const d_obj_0 = getObjectById(refs.objects, d_obj.value[0].ref);
+  expect(d_obj_0.value).toEqual('test');
+  expect(d_obj.value[1].ref).toEqual(a.ref);
+  const d_obj_2 = getObjectById(refs.objects, d_obj.value[2].ref);
+  expect(d_obj_2.value).toEqual(1);
+  expect(d_obj_2.type).toEqual('bool');
 });
