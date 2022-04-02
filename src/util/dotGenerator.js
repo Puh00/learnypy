@@ -76,7 +76,7 @@ const generate_dot = (data) => {
   };
 };
 
-// Used for tuple, list, dict and set
+// Used for tuple, list, dict, set and class
 const set_collection_object = (o, start_bracket, end_bracket) => {
   const get_node_description = () =>
     o.info.type == 'class'
