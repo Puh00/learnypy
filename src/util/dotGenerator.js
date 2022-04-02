@@ -43,12 +43,12 @@ const generate_dot = (data) => {
       set_collection_object(o, '(', ')');
     } else if (o.info.type === 'list') {
       set_collection_object(o, '[', ']');
-    } else if (['dict', 'set', 'class'].includes(o.info.type)) {
+    } else if (['dictionary', 'set', 'class'].includes(o.info.type)) {
       set_collection_object(o, '{', '}');
     } else {
       // immutables
       let label = o.value.toString();
-      if (o.info.type === 'str') {
+      if (o.info.type === 'string') {
         label = '"&#34;' + label + '&#34;"';
       } else if (o.info.type === 'float' && o.value % 1 === 0) {
         label = label + '.0';
@@ -102,7 +102,7 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
     get_node_description() +
     '</TD>\n\t</TR>\n';
 
-  if (o.type === 'set') {
+  if (o.info.type === 'set') {
     // Sets are unordered => edges are not connected to an index
     o.value.forEach((item) => {
       edges += '"' + o.id + '":"base" -> "' + item.ref + '"[color=' + arrow_col_2 + '];\n';
@@ -119,7 +119,7 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
           index = count;
           to = item.ref;
           break;
-        case 'dict':
+        case 'dictionary':
         case 'class':
           index = item.key;
           to = item.val;

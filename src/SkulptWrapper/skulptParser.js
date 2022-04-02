@@ -147,7 +147,7 @@ const create_object = (objects, js_object, class_names) => {
           class_name: js_object.tp$name
         }
       : {
-          type: js_object.tp$name
+          type: retrieve_full_type_name(js_object.tp$name)
         },
     js_object: js_object
   };
@@ -170,10 +170,23 @@ const create_object = (objects, js_object, class_names) => {
     value = parse_dictionary_values(Object.values(js_object.v.entries));
   }
   // Immutables
-  else value = js_object.v;
+  else value = js_object.tp$name == 'NoneType' ? 'None' : js_object.v;
 
   obj.value = value;
   return obj;
+};
+
+const retrieve_full_type_name = (js_object_type) => {
+  switch (js_object_type) {
+    case 'str':
+      return 'string';
+    case 'dict':
+      return 'dictionary';
+    case 'int':
+      return 'integer';
+    default:
+      return js_object_type;
+  }
 };
 
 /**
@@ -212,7 +225,7 @@ const retrieve_object_id = (objects, js_object, class_names) => {
  */
 const retrieve_small_int_object_id = (objects, js_object) => {
   for (const obj of objects) {
-    if (obj.type === 'int' && obj.js_object.v === js_object.v) {
+    if (obj.type === 'integer' && obj.js_object.v === js_object.v) {
       return obj.id;
     }
   }
