@@ -79,6 +79,13 @@ const ControlPanel = ({
           'Stop execution',
           <Stop_logo />
         )}
+        {create_button(
+          () => {
+            clear_breakpoints();
+          },
+          'Clear all breakpoints',
+          <Clear_breakpoints_logo />
+        )}
       </ButtonGroup>
       <ButtonGroup style={btng_right}>
         <DropdownLocal
