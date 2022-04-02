@@ -13,11 +13,13 @@ const set_text = (data_objects, variables) => {
     for (const o of objects) {
       if (v.ref === o.id) {
         graph_text = graph_text.concat('Variable "' + v.name + '" points to ');
-        if (o.type === 'list' || o.type === 'tuple' || o.type === 'dict') {
+        if (o.type === 'list' || o.type === 'tuple' || o.type === 'dictionary') {
           graph_text = graph_text.concat(get_text_for_indexable_objects(o, v.name, true));
           if (!pointers[o.id].includes('variable ' + v.name)) {
             pointers[o.id].push('variable ' + v.name);
           }
+        } else if (o.value === '') {
+          graph_text = graph_text.concat('an empty ' + o.type + '. ');
         } else {
           graph_text = graph_text.concat('the ' + o.type + ' value ' + o.value + '. ');
         }
@@ -32,7 +34,7 @@ const set_text = (data_objects, variables) => {
 const initialize_pointers_dict = () => {
   let pointers = {};
   for (const o of objects) {
-    if (o.type == 'list' || o.type == 'tuple' || o.type == 'dict') {
+    if (o.type == 'list' || o.type == 'tuple' || o.type == 'dictionary') {
       pointers[o.id] = [];
     }
   }
@@ -58,7 +60,7 @@ const get_text_for_indexable_objects = (o, variable_name, is_root) => {
     for (const val of o.value) {
       //if this is the root object we want to write the variables name pointing to the object, otherwise refer to the object as "this"
       if (!is_root) {
-        if (o.type === 'dict') {
+        if (o.type === 'dictionary') {
           text = text.concat(
             'Key ' + o.value[index_number].key + ' of ' + 'this ' + o.type + ' points to '
           );
@@ -68,7 +70,7 @@ const get_text_for_indexable_objects = (o, variable_name, is_root) => {
           );
         }
       } else {
-        if (o.type === 'dict') {
+        if (o.type === 'dictionary') {
           text = text.concat(
             'Key ' + o.value[index_number].key + ' of "' + variable_name + '" points to '
           );
@@ -81,7 +83,7 @@ const get_text_for_indexable_objects = (o, variable_name, is_root) => {
         //val.ref works for lists and tuples, val.val works for dictionarys
         if (val.ref === ob.id || val.val === ob.id) {
           //if there are nestled non-primitive objects this method needs to be called recursively
-          if (ob.type === 'list' || ob.type === 'tuple' || ob.type === 'dict') {
+          if (ob.type === 'list' || ob.type === 'tuple' || ob.type === 'dictionary') {
             //this is for objects with self-references
             if (o.id === ob.id) {
               if (!pointers[o.id].includes('variable ' + variable_name)) {
@@ -95,11 +97,13 @@ const get_text_for_indexable_objects = (o, variable_name, is_root) => {
               text = text.concat(get_text_for_indexable_objects(ob, variable_name, false));
             }
             //save keys / indices that points to the object
-            if (o.type === 'dict') {
+            if (o.type === 'dictionary') {
               pointers[ob.id].push(variable_name + "'s key " + o.value[index_number].key);
             } else if (o.type === 'list') {
               pointers[ob.id].push(variable_name + "'s index " + index_number);
             }
+          } else if (ob.value === '') {
+            text = text.concat('an empty ' + ob.type + '. ');
           } else {
             text = text.concat('the ' + ob.type + ' value ' + ob.value + '. ');
           }
