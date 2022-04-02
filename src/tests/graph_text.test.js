@@ -48,7 +48,7 @@ b = 1
 c = b`;
 
   const expected =
-    'Variable "a" points to the int value 1. Variable "b" points to the int value 1. Variable "c" points to the int value 1. ';
+    'Variable "a" points to the integer value 1. Variable "b" points to the integer value 1. Variable "c" points to the integer value 1. ';
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
@@ -76,7 +76,7 @@ b = a
 b.append(3)`;
 
   const expected =
-    'Variable "a" points to a list of size 3. Index nr 0 of "a" points to the int value 1. Index nr 1 of "a" points to the int value 2. Index nr 2 of "a" points to the int value 3. Variable "b" points to the same list of size 3 as variable a. ';
+    'Variable "a" points to a list of size 3. Index nr 0 of "a" points to the integer value 1. Index nr 1 of "a" points to the integer value 2. Index nr 2 of "a" points to the integer value 3. Variable "b" points to the same list of size 3 as variable a. ';
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
@@ -104,7 +104,7 @@ b = a
 b[[2] = "a new value"`;
 
   const expected =
-    'Variable "a" points to a dict of size 2. Key key of "a" points to the str value a value. Key 2 of "a" points to the str value a new value. Variable "b" points to the same dict of size 2 as variable a. ';
+    'Variable "a" points to a dictionary of size 2. Key key of "a" points to the string value a value. Key 2 of "a" points to the string value a new value. Variable "b" points to the same dictionary of size 2 as variable a. ';
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
@@ -159,7 +159,7 @@ b = a
 b[["b"] = b`;
 
   const expected =
-    'Variable "a" points to a dict of size 2. Key a of "a" points to the same dict of size 2 as variable a. Key b of "a" points to the same dict of size 2 as variable a & a\'s key a. Variable "b" points to the same dict of size 2 as variable a & a\'s key a & a\'s key b. ';
+    'Variable "a" points to a dictionary of size 2. Key a of "a" points to the same dictionary of size 2 as variable a. Key b of "a" points to the same dictionary of size 2 as variable a & a\'s key a. Variable "b" points to the same dictionary of size 2 as variable a & a\'s key a & a\'s key b. ';
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
