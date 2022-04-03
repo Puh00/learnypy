@@ -222,6 +222,7 @@ Sk.Debugger.prototype.suspension_handler = function(susp) {
 
 Sk.Debugger.prototype.resume = function() {
   // Reset the suspension stack to the topmost
+  console.log(this.suspension_stack);
   this.current_suspension = this.suspension_stack.length - 1;
   
   if (this.suspension_stack.length === 0) {

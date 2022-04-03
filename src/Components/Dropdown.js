@@ -9,8 +9,8 @@ const code_examples = [
   {
     name: 'Example 2',
     code:
-      'def test():\n\tprint(2)\n\tanother_test()\n\tprint(4)\n\ndef another_test():' +
-      '\n\tprint(3)\n\nprint(1)\ntest()\nprint(5)'
+      'def test():\n  print(2)\n  another_test()\n  print(4)\n\ndef another_test():' +
+      '\n  print(3)\n\nprint(1)\ntest()\nprint(5)'
   },
   { name: 'Example 3', code: 'a=3\nb=1\nc=b' }
 ];
