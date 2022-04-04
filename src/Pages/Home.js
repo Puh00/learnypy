@@ -41,7 +41,7 @@ const Home = () => {
   const first_row_of_code = () => {
     const isSkippableLine = (row) => {
       // if the string is whitespace or a comment then it will be skipped
-      return row.trim().length == 0 || row.trim().startsWith('#');
+      return row.trim().length === 0 || row.trim().startsWith('#');
     };
 
     const rows = code.split('\n');
