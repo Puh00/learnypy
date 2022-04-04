@@ -6,7 +6,12 @@ import './Dropdown.css';
 
 const code_examples = [
   { name: 'Example 1', code: 'a=[]\nb=a\nb.append(3)\nprint(b)' },
-  { name: 'Example 2', code: 'a=2\nb=1\nc=b' },
+  {
+    name: 'Example 2',
+    code:
+      'def test():\n  print(2)\n  another_test()\n  print(4)\n\ndef another_test():' +
+      '\n  print(3)\n\nprint(1)\ntest()\nprint(5)'
+  },
   { name: 'Example 3', code: 'a=3\nb=1\nc=b' }
 ];
 
