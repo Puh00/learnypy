@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { parse_globals, parse_locals } from './skulptParser';
 
 // instantiate the globals since undefined in JavaScript is a atrocious
 window.Sk.globals = {};
+let dbg;
 
 //------------------------------Builtin functions-------------------------------
 function builtinRead(x) {
@@ -49,13 +51,14 @@ const init_debugger = () => {
     }
   };
 
-  return new window.Sk.Debugger('<stdin>', {
+  dbg = new window.Sk.Debugger('<stdin>', {
     print: (txt) => func.verbose_debug_output(txt),
     get_source_line: get_line_status,
     current_line: (lineno) => func.current_line(lineno),
     success: () => func.success(),
     error: (e) => func.error(e)
   });
+  return;
 };
 
 const start_debugger = (prog, callback) => {
@@ -172,7 +175,8 @@ function runit(prog, callback) {
 }
 
 // -----------------------------------------------------------------------------
-let dbg = init_debugger();
+init_debugger();
+
 let break_points = [];
 // -----------------------------------------------------------------------------
 
