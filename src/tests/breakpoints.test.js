@@ -128,7 +128,6 @@ print(5)`;
   expect(outputBox.textContent).toEqual('1\n2\n3\n4\n5\n');
 });
 
-// ! this is a bug and it's supposed to fail, fix please
 test('stopping on the first row of code but the first line is empty', async () => {
   render(<App />);
 
@@ -271,7 +270,6 @@ test('breakpoints in loops', async () => {
   }
 });
 
-// ! this should not work until Simon's branch is merged
 test('breakpoints with functions', async () => {
   render(<App />);
 
