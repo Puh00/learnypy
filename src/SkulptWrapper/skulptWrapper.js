@@ -176,4 +176,4 @@ let dbg = init_debugger();
 let break_points = [];
 // -----------------------------------------------------------------------------
 
-export { func, start, step, runit, update_breakpoints };
+export { func, runit, start, step, update_breakpoints };
