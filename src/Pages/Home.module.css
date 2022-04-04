@@ -12,7 +12,7 @@
   grid-row: 2;
   display: grid;
   /* So the left- and right-body doesn't collide */
-  grid-template-columns: repeat(auto-fit, minmax(220px, 40%)) 60%;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 40%)) 60%;
   margin: 16px;
   background-color: var(--background);
 }
