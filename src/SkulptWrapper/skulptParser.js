@@ -113,7 +113,11 @@ const create_object = (objects, js_object, class_names) => {
       'tp$call',
       'tp$getitem',
       'tp$setitem',
-      'tp$getattr'
+      'tp$getattr',
+      // The name 'constructor' seems to be reserved in Skulpt which only appears
+      // when inheritance is used. If a user-defined function in a class is named
+      // 'constructor' then it will be named 'constructor_$rw$' instead
+      'constructor'
     ];
     // Instance variables
     const values = parse_dictionary_values(Object.values(js_object.$d.entries));
