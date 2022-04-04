@@ -31,11 +31,25 @@ const Home = () => {
       clear_visuals();
     });
 
-  // highlights and stops at the first line of the code
-  const stop_at_first_line = (prog) => {
+  // highlights and stops at the specified line of the code
+  const stop_at = (prog, line = 0) => {
     restart(prog);
     setStepped(true);
-    setLine(0);
+    setLine(line);
+  };
+
+  const first_row_of_code = () => {
+    const isSkippableLine = (row) => {
+      // if the string is whitespace or a comment then it will be skipped
+      return row.trim().length == 0 || row.trim().startsWith('#');
+    };
+
+    const rows = code.split('\n');
+
+    for (let i = 0; i < rows.length; i++) {
+      if (!isSkippableLine(rows[i])) return i;
+    }
+    return -1;
   };
 
   // callback function sent to the debugger
@@ -45,8 +59,12 @@ const Home = () => {
   };
 
   const runit_callback = (prog) => {
-    // hack for stopping at the first row if the condition is satisfied
-    if (!stepped && breakpoints.includes(0)) return stop_at_first_line(prog);
+    // hack for stopping at the first row of the code if the condition is satisfied
+    const first_row = first_row_of_code();
+    if (!stepped && breakpoints.includes(first_row)) {
+      stop_at(prog, first_row);
+      return;
+    }
 
     clear_visuals();
     setStepped(true);
@@ -54,7 +72,10 @@ const Home = () => {
   };
 
   const step_callback = (prog) => {
-    if (!stepped) return stop_at_first_line(prog);
+    if (!stepped) {
+      stop_at(prog);
+      return;
+    }
 
     step(prog, callback);
   };
