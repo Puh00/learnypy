@@ -1,17 +1,17 @@
 /* eslint-disable no-undef */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from './App';
-import sleep from './util/sleep';
+import App from '../App';
+import sleep from '../util/sleep';
 
 // mock these components since the imported libraries seem to break everything...
-jest.mock('./Components/VisualBox', () => {
+jest.mock('../Components/VisualBox', () => {
   return function VisualBox({ data }) {
     return <div data-testid="visual-box">{JSON.stringify(data)}</div>;
   };
 });
 
-jest.mock('./Components/CodeBox', () => {
+jest.mock('../Components/CodeBox', () => {
   return function CodeBox({ code, setCode }) {
     return (
       <form className="Code-box">
