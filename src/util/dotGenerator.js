@@ -39,22 +39,22 @@ const generate_dot = (data) => {
 
   // objects
   data.objects.forEach((o) => {
-    if (o.type === 'tuple') {
+    if (o.info.type === 'tuple') {
       set_collection_object(o, '(', ')');
-    } else if (o.type === 'list') {
+    } else if (o.info.type === 'list') {
       set_collection_object(o, '[', ']');
-    } else if (o.type === 'dictionary' || o.type === 'set') {
+    } else if (['dictionary', 'set', 'class'].includes(o.info.type)) {
       set_collection_object(o, '{', '}');
     } else {
       // immutables
       let label = o.value.toString();
-      if (o.type === 'string') {
+      if (o.info.type === 'string') {
         label = '"&#34;' + label + '&#34;"';
-      } else if (o.type === 'float' && o.value % 1 === 0) {
+      } else if (o.info.type === 'float' && o.value % 1 === 0) {
         label = label + '.0';
-      } else if (o.type === 'bool' && o.value === 0) {
+      } else if (o.info.type === 'bool' && o.value === 0) {
         label = 'False';
-      } else if (o.type === 'bool' && o.value === 1) {
+      } else if (o.info.type === 'bool' && o.value === 1) {
         label = 'True';
       }
       nodes +=
@@ -71,15 +71,17 @@ const generate_dot = (data) => {
   });
   let res = 'digraph structs { node [shape=box]\n' + nodes + edges + '}';
 
-  // use console.log to check for errors in dot language
-  //console.log(res);
   return {
     dot: res
   };
 };
 
-// Used for tuple, list, dict and set
+// Used for tuple, list, dict, set and class
 const set_collection_object = (o, start_bracket, end_bracket) => {
+  const get_node_description = () =>
+    o.info.type == 'class'
+      ? o.info.class_name + '<BR/><I>' + o.info.type + '</I>'
+      : '<I>' + o.info.type + '</I><BR/>' + start_bracket + 'size: ' + o.value.length + end_bracket;
   let count = 0;
   let index = '';
   let to = '';
@@ -96,16 +98,11 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
     indexable_col_3 +
     '" COLSPAN="' +
     o.value.length +
-    '"><I>' +
-    o.type +
-    '</I><BR/>' +
-    start_bracket +
-    'size: ' +
-    o.value.length +
-    end_bracket +
+    '">' +
+    get_node_description() +
     '</TD>\n\t</TR>\n';
 
-  if (o.type === 'set') {
+  if (o.info.type === 'set') {
     // Sets are unordered => edges are not connected to an index
     o.value.forEach((item) => {
       edges += '"' + o.id + '":"base" -> "' + item.ref + '"[color=' + arrow_col_2 + '];\n';
@@ -116,13 +113,14 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
 
     // set value for index and add edge to object
     o.value.forEach((item) => {
-      switch (o.type) {
+      switch (o.info.type) {
         case 'tuple':
         case 'list':
           index = count;
           to = item.ref;
           break;
         case 'dictionary':
+        case 'class':
           index = item.key;
           to = item.val;
           break;
