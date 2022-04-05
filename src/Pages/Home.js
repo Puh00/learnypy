@@ -10,7 +10,7 @@ import styles from './Home.module.css';
 
 const Home = () => {
   const [globals, setGlobals] = useState({ objects: [], variables: [] });
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const [locals, setLocals] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
   const [code, setCode] = useState('a=1\nb=1\nc=b');

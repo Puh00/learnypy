@@ -12,7 +12,7 @@ jest.mock('../Components/VisualBox', () => {
     // js_object contains raw javascript object which makes it impossible to
     // stringify using JSON
     const fixed_data = {
-      // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line unused-imports/no-unused-vars
       objects: data.objects.map(({ js_object, ...rest }) => rest),
       variables: data.variables
     };

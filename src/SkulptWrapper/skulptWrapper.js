@@ -22,10 +22,10 @@ function outf(text) {
 const func = {
   builtinRead: builtinRead,
   outf: outf,
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line unused-imports/no-unused-vars
   current_line: (lineno) => {}, // called at each step
   success: () => {}, // called after a program has been executed,
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line unused-imports/no-unused-vars
   verbose_debug_output: (txt) => {}, // does nothing by default
   error: () => {} // called after a program has failed to execute
 };
