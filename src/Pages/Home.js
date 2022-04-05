@@ -5,7 +5,7 @@ import ControlPanel from '../Components/ControlPanel';
 import Header from '../Components/Header';
 import OutputBox from '../Components/OutputBox';
 import VisualBox from '../Components/VisualBox';
-import { func, runit, start, step, update_breakpoints } from '../SkulptWrapper/skulptWrapper';
+import Skulpt from '../SkulptWrapper/Skulpt';
 import styles from './Home.module.css';
 
 const Home = () => {
@@ -21,19 +21,9 @@ const Home = () => {
   const drop_down_menu_ref = useRef(null);
   const output_box_ref = useRef(null);
 
+  const skulpt = Skulpt.instance();
+
   let latest_output = '';
-
-  const restart = (prog) =>
-    start(prog, false, () => {
-      clear_visuals();
-    });
-
-  // highlights and stops at the first line of the code
-  const stop_at_first_line = (prog) => {
-    restart(prog);
-    setStepped(true);
-    setLine(0);
-  };
 
   // callback function sent to the debugger
   const callback = (globals, locals) => {
@@ -41,19 +31,28 @@ const Home = () => {
     setLocals(locals);
   };
 
-  const runit_callback = (prog) => {
+  const restart_callback = (prog) => skulpt.restart(prog, clear_visuals);
+
+  const run_callback = (prog) => {
     // hack for stopping at the first row if the condition is satisfied
     if (!stepped && breakpoints.includes(0)) return stop_at_first_line(prog);
 
     clear_visuals();
     setStepped(true);
-    runit(prog, callback);
+    skulpt.run(prog, callback);
   };
 
   const step_callback = (prog) => {
     if (!stepped) return stop_at_first_line(prog);
 
-    step(prog, callback);
+    skulpt.step(prog, callback);
+  };
+
+  // highlights and stops at the first line of the code
+  const stop_at_first_line = (prog) => {
+    restart_callback(prog);
+    setStepped(true);
+    setLine(0);
   };
 
   const clear_visuals = () => {
@@ -68,32 +67,28 @@ const Home = () => {
     setBreakpoints(() => []);
   };
 
-  func.outf = (text) => {
-    latest_output = latest_output + text;
-    setOutput({ text: latest_output });
-  };
-
-  // run these functions only once
-  useEffect(() => {
-    func.current_line = (lineno) => {
+  skulpt.configure({
+    outf: (text) => {
+      latest_output = latest_output + text;
+      setOutput({ text: latest_output });
+    },
+    current_line: (lineno) => {
       setLine(lineno);
-    };
-
-    func.success = () => {
+    },
+    success: () => {
       setLine(-1);
       setStepped(false);
-    };
-
-    func.error = (e) => {
+    },
+    error: (e) => {
       setGlobals({ objects: [], variables: [] });
       setLocals({ objects: [], variables: [] });
       setStepped(false);
-      func.outf(e);
-    };
-  }, []);
+      skulpt.outf(e);
+    }
+  });
 
   useEffect(() => {
-    update_breakpoints(breakpoints);
+    skulpt.update_breakpoints(breakpoints);
   }, [breakpoints]);
 
   const navItems = [
@@ -110,9 +105,9 @@ const Home = () => {
         <div className={styles['Left-body']}>
           <ControlPanel
             code={code}
-            runit={runit_callback}
+            runit={run_callback}
             step={step_callback}
-            restart={restart}
+            restart={restart_callback}
             clear_breakpoints={clear_breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
