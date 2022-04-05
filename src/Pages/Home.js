@@ -68,8 +68,13 @@ const Home = () => {
   };
 
   const step_callback = (prog) => {
+    const first_row = first_row_of_code();
     if (!stepped) {
-      stop_at(prog);
+      if (line === -1) {
+        stop_at(prog, first_row);
+      } else {
+        stop_at(prog);
+      }
       return;
     }
 
