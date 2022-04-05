@@ -156,3 +156,30 @@ print(a)`;
   await sleep(50);
   expect(outputBox.textContent).toBe('[1, 2, 3]\n[1, 2, 3, 4]\n[1, 2, 3, 4]\n');
 });
+
+test('syntax error outputs correctly', async () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const outputBox = screen.getByTestId('output-box');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+
+  // line 4 or 5 should yield an syntax error, missing closing parenthesis
+  const code = `
+a = [[1,2,3]
+b = a
+print(b
+a.append(4)
+print(b)
+print(a)`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  userEvent.click(runButton);
+  await sleep(50);
+
+  const expected = 'SyntaxError: bad input on line 5';
+
+  expect(outputBox.textContent).toEqual(expected);
+});
