@@ -51,7 +51,7 @@ const CodeBox = ({
   const handle_breakpoints = (_editor, lineNumber) => {
     let info = _editor.lineInfo(lineNumber);
 
-    if (info.gutterMarkers) {
+    if (info.gutterMarkers && info.gutterMarkers.breakpoints) {
       remove_breakpoint(lineNumber);
       return;
     }
@@ -63,6 +63,8 @@ const CodeBox = ({
     const breakpoint_node = document.createElement('span');
     breakpoint_node.className = styles['breakpoint-node'];
     breakpoint_node.innerHTML = breakpoint_logo;
+    breakpoint_node.setAttribute('data-toggle', 'tooltip');
+    breakpoint_node.setAttribute('title', 'Click to remove breakpoint');
     return breakpoint_node;
   };
 
@@ -75,11 +77,20 @@ const CodeBox = ({
       );
     });
   };
+  const set_tooltip_breakpoint_area = () => {
+    var breakpoint_area = document.getElementsByClassName('CodeMirror-gutters')[0];
+    breakpoint_area.setAttribute('data-toggle', 'tooltip');
+    breakpoint_area.setAttribute(
+      'title',
+      'Click next to the corresponding line to generate breakpoint'
+    );
+  };
 
   if (editor) {
     // update everything every time something rerenders
     update_breakpoints(editor);
     set_highlighted_row(editor);
+    set_tooltip_breakpoint_area();
   }
 
   return (
@@ -103,7 +114,10 @@ const CodeBox = ({
           setEditor(() => _editor);
         }}
         onBeforeChange={(_editor, data, value) => {
-          if (data.text[0] != '\t') setCode(value);
+          if (data.text[0] != '\t') {
+            setCode(value);
+            update_breakpoints(_editor);
+          }
         }}
         onKeyDown={(_editor, event) => {
           if (event.key === 'Tab') {
