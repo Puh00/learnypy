@@ -1,14 +1,11 @@
-import React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import ControlPanel from '../Components/ControlPanel';
 import CodeBox from '../Components/CodeBox';
+import ControlPanel from '../Components/ControlPanel';
+import Header from '../Components/Header';
 import OutputBox from '../Components/OutputBox';
 import VisualBox from '../Components/VisualBox';
-import Header from '../Components/Header';
-
-import { func, start, step, runit, update_breakpoints } from '../SkulptWrapper/skulptWrapper';
-
+import { func, runit, start, step, update_breakpoints } from '../SkulptWrapper/skulptWrapper';
 import styles from './Home.module.css';
 
 const Home = () => {
