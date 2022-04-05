@@ -51,7 +51,7 @@ const CodeBox = ({
   const handle_breakpoints = (_editor, lineNumber) => {
     let info = _editor.lineInfo(lineNumber);
 
-    if (info.gutterMarkers) {
+    if (info.gutterMarkers && info.gutterMarkers.breakpoints) {
       remove_breakpoint(lineNumber);
       return;
     }
