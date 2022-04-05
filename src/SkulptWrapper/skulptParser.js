@@ -88,7 +88,10 @@ const create_object = (objects, js_object, class_names) => {
     const _values = [];
     values.forEach((val) => {
       if (!set)
-        _values.push({ key: val.lhs.v, val: retrieve_object_id(objects, val.rhs, class_names) });
+        _values.push({
+          key: val.lhs.v,
+          val: retrieve_object_id(objects, val.rhs, class_names)
+        });
       else _values.push({ ref: retrieve_object_id(objects, val.lhs, class_names) });
     });
     return _values;
@@ -174,7 +177,7 @@ const create_object = (objects, js_object, class_names) => {
     // User-defined class
     value = parse_class_values(js_object);
   } else if (js_object.tp$name === 'set') {
-    value = parse_dictionary_values(Object.values(js_object.v.entries), true);
+    value = parse_dictionary_values(Object.values(js_object.v.entries));
   }
   // Immutables
   else value = js_object.tp$name == 'NoneType' ? 'None' : js_object.v;
@@ -211,37 +214,36 @@ const retrieve_full_type_name = (js_object_type) => {
  * @returns The id of the object with a matching value
  */
 const retrieve_object_id = (objects, js_object, class_names) => {
-  var obj;
-  for (const obj of objects) {
-    // '===' returns true only if the objects have the same reference
-    if (obj.js_object === js_object) return obj.id;
+  let obj;
+  if (is_immutable(js_object.tp$name)) {
+    // create unique object for each immutable
+    obj = create_object(objects, js_object, class_names);
+  } else {
+    for (const obj of objects) {
+      // '===' returns true only if the objects have the same reference
+      if (obj.js_object === js_object) return obj.id;
+    }
+    // If the object doesn't exist yet add it and return new id
+    obj = create_object(objects, js_object, class_names);
   }
-  //small int objects is not created more than once
-  if (js_object.tp$name === 'int' && js_object.v <= 256 && js_object.v >= -5) {
-    var small_int_id = retrieve_small_int_object_id(objects, js_object);
-    if (!small_int_id) obj = create_object(objects, js_object, class_names);
-    else return small_int_id;
-  }
-  // If the object doesn't exist yet add it and return new id
-  else obj = create_object(objects, js_object, class_names);
-
   return obj.id;
 };
 
 /**
- * If a small int value already exists then the id to the already existing object is
- * returned, otherwise false is returned
- * @param {Array} objects List of the parsed objects
- * @param {Object} js_object The Javascript representation of the Python object
- * @returns id or false.
+ * Check if a type is immutable.
+ * @param {String} type to check
+ * @returns true if immutable, otherwise false
  */
-const retrieve_small_int_object_id = (objects, js_object) => {
-  for (const obj of objects) {
-    if (obj.info.type === 'integer' && obj.js_object.v === js_object.v) {
-      return obj.id;
-    }
+const is_immutable = (type) => {
+  switch (type) {
+    case 'int':
+    case 'float':
+    case 'bool':
+    case 'str':
+      return true;
+    default:
+      return false;
   }
-  return false;
 };
 
 export { parse_globals, parse_locals };
