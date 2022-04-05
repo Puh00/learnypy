@@ -237,11 +237,11 @@ a = {{"wow": [[1,2,3], "damn": {{"another_dict": 0}}`;
   const damn = a_obj.value.find((entry) => entry.key === 'damn');
 
   const wow_val = getObjectById(refs.objects, wow.val);
-  expect(wow_val.type).toEqual('list');
+  expect(wow_val.info.type).toEqual('list');
   expect(wow_val.value).toHaveLength(3);
 
   const damn_val = getObjectById(refs.objects, damn.val);
-  expect(damn_val.type).toEqual('dictionary');
+  expect(damn_val.info.type).toEqual('dictionary');
   expect(damn_val.value).toHaveLength(1);
   expect(damn_val.value[0].key).toEqual('another_dict');
 });
@@ -277,11 +277,11 @@ a[["self_ref"] = a`;
   const self_ref = a_obj.value.find((entry) => entry.key === 'self_ref');
 
   const a_key_val = getObjectById(refs.objects, a_key.val);
-  expect(a_key_val.type).toEqual('string');
+  expect(a_key_val.info.type).toEqual('string');
   expect(a_key_val.value).toEqual('a_value');
 
   const self_ref_val = getObjectById(refs.objects, self_ref.val);
-  expect(self_ref_val.type).toEqual('dictionary');
+  expect(self_ref_val.info.type).toEqual('dictionary');
   expect(self_ref_val.id).toEqual(a_obj.id);
 });
 
@@ -308,7 +308,7 @@ c = (b, {{"test": ""}, "")`;
   const a = getVariableByName(refs.variables, 'a');
   const a_obj = getObjectById(refs.objects, a.ref);
   expect(a.ref).toEqual(a_obj.id);
-  expect(a_obj.type).toEqual('list');
+  expect(a_obj.info.type).toEqual('list');
   expect(a_obj.value).toHaveLength(1);
 
   // get the object of the number 1
@@ -317,7 +317,7 @@ c = (b, {{"test": ""}, "")`;
   const b = getVariableByName(refs.variables, 'b');
   const b_obj = getObjectById(refs.objects, b.ref);
   expect(b.ref).toEqual(b_obj.id);
-  expect(b_obj.type).toEqual('tuple');
+  expect(b_obj.info.type).toEqual('tuple');
   expect(b_obj.value).toHaveLength(2);
   expect(b_obj.value[0].ref).toEqual(a_obj.id);
   expect(b_obj.value[1].ref).toEqual(one.id);
@@ -325,12 +325,12 @@ c = (b, {{"test": ""}, "")`;
   const c = getVariableByName(refs.variables, 'c');
   const c_obj = getObjectById(refs.objects, c.ref);
   expect(c.ref).toEqual(c_obj.id);
-  expect(c_obj.type).toEqual('tuple');
+  expect(c_obj.info.type).toEqual('tuple');
   expect(c_obj.value).toHaveLength(3);
 
   // get the dict {"test": ""}
   const tuple_ele_2 = getObjectById(refs.objects, c_obj.value[1].ref);
-  expect(tuple_ele_2.type).toEqual('dictionary');
+  expect(tuple_ele_2.info.type).toEqual('dictionary');
   expect(tuple_ele_2.value).toHaveLength(1);
 
   // get the empty string
@@ -362,7 +362,6 @@ d = {{"test", a, True}`;
   userEvent.click(runButton);
 
   const refs = getRefs(visualBox);
-  console.log(refs);
 
   const a = getVariableByName(refs.variables, 'a');
 
@@ -370,14 +369,14 @@ d = {{"test", a, True}`;
   const b = getVariableByName(refs.variables, 'b');
   const b_obj = getObjectById(refs.objects, b.ref);
   expect(b.ref).toEqual(b_obj.id);
-  expect(b_obj.type).toEqual('set');
+  expect(b_obj.info.type).toEqual('set');
   expect(b_obj.value).toHaveLength(0);
 
   // c = {a, 2}
   const c = getVariableByName(refs.variables, 'c');
   const c_obj = getObjectById(refs.objects, c.ref);
   expect(c.ref).toEqual(c_obj.id);
-  expect(c_obj.type).toEqual('set');
+  expect(c_obj.info.type).toEqual('set');
   expect(c_obj.value).toHaveLength(2);
   expect(c_obj.value[0].ref).toEqual(a.ref);
   const c_obj_0 = getObjectById(refs.objects, c_obj.value[0].ref);
@@ -389,12 +388,67 @@ d = {{"test", a, True}`;
   const d = getVariableByName(refs.variables, 'd');
   const d_obj = getObjectById(refs.objects, d.ref);
   expect(d.ref).toEqual(d_obj.id);
-  expect(d_obj.type).toEqual('set');
+  expect(d_obj.info.type).toEqual('set');
   expect(d_obj.value).toHaveLength(3);
   const d_obj_0 = getObjectById(refs.objects, d_obj.value[0].ref);
   expect(d_obj_0.value).toEqual('test');
   expect(d_obj.value[1].ref).toEqual(a.ref);
   const d_obj_2 = getObjectById(refs.objects, d_obj.value[2].ref);
   expect(d_obj_2.value).toEqual(1);
-  expect(d_obj_2.type).toEqual('bool');
+  expect(d_obj_2.info.type).toEqual('bool');
+});
+
+test('classes with references', () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const code = `
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+a = Node(1)
+b = Node(2)
+c = Node(3)
+
+a.next = b
+b.next = c
+`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+  userEvent.click(runButton);
+
+  const refs = getRefs(visualBox);
+
+  const a = getVariableByName(refs.variables, 'a');
+  const a_obj = getObjectById(refs.objects, a.ref);
+  const b = getVariableByName(refs.variables, 'b');
+  const b_obj = getObjectById(refs.objects, b.ref);
+  const c = getVariableByName(refs.variables, 'c');
+  const c_obj = getObjectById(refs.objects, c.ref);
+
+  // a.next == b
+  expect(a_obj.value.find((entry) => entry.key == 'next').val).toEqual(b_obj.id);
+  // b.next == c
+  expect(b_obj.value.find((entry) => entry.key == 'next').val).toEqual(c_obj.id);
+
+  // c.data
+  const c_data = getObjectById(
+    refs.objects,
+    c_obj.value.find((entry) => entry.key == 'data').val
+  ).value;
+  // b.next
+  const b_next = getObjectById(refs.objects, b_obj.value.find((entry) => entry.key == 'next').val);
+  // b.next.data
+  const b_next_data = getObjectById(
+    refs.objects,
+    b_next.value.find((entry) => entry.key == 'data').val
+  ).value;
+  // b.next.data == c.data
+  expect(b_next_data).toEqual(c_data);
 });
