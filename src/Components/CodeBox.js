@@ -114,7 +114,10 @@ const CodeBox = ({
           setEditor(() => _editor);
         }}
         onBeforeChange={(_editor, data, value) => {
-          if (data.text[0] != '\t') setCode(value);
+          if (data.text[0] != '\t') {
+            setCode(value);
+            update_breakpoints(_editor);
+          }
         }}
         onKeyDown={(_editor, event) => {
           if (event.key === 'Tab') {
