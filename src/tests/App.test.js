@@ -35,11 +35,15 @@ jest.mock('../Components/CodeBox', () => {
  *   really possible to do with the setup in our website, it's always going to
  *   change state after the program finished runnning.
  *
+ * - App.test.js tests the UI, in other words the tests here try to mimic how
+ *   a user would use the program and check that everything works as intended.
+ *
  * - Don't think there is a way to test if the nodes/edges have been rendered
  *   correctly since the graph visualisation library does not want to work,
  *   the best we can do is to test if the parse() function parses correctly.
  *
- * - Can we at some point remove all the console.log()?
+ * - Similarly it can't test if breakpoints display correctly, but we can test
+ *   for instance if the program stops at the correct line.
  */
 
 test('render correctly', () => {
