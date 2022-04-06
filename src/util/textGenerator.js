@@ -56,6 +56,7 @@ const get_text_for_traversable_objects = (o, variable_name, is_root) => {
 
     //traverses all indices
     for (const val of o.value) {
+      //set are not indexable
       if (!['set'].includes(o.info.type)) {
         // If this is the root object we want to write the variables name pointing to the
         // object, otherwise refer to the object as "this"
