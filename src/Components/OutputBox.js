@@ -1,7 +1,7 @@
 import React from 'react';
 
-import styles from './OutputBox.module.css';
 import border from './Border.module.css';
+import styles from './OutputBox.module.css';
 
 const OutputBox = ({ output, output_box_ref }) => {
   return (

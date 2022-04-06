@@ -1,13 +1,14 @@
 import React from 'react';
-import { ReactComponent as Play_logo } from './Icons/play.svg';
-import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
-import { ReactComponent as Stop_logo } from './Icons/stop.svg';
-import { ReactComponent as Clear_breakpoints_logo } from './Icons/clear-breakpoints.svg';
-import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg';
-import DropdownLocal from './Dropdown';
-import styles from './ControlPanel.module.css';
-
 import { Button, ButtonGroup } from 'react-bootstrap';
+
+import DropdownLocal from './Dropdown';
+import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
+import { ReactComponent as Clear_breakpoints_logo } from './Icons/clear-breakpoints.svg';
+import { ReactComponent as Play_logo } from './Icons/play.svg';
+import { ReactComponent as Stop_logo } from './Icons/stop.svg';
+import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg';
+
+import styles from './ControlPanel.module.css';
 
 const btng_style = {
   border: '2px solid',
