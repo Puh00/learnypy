@@ -83,8 +83,8 @@ class Skulpt {
    */
   create_debugger() {
     return new window.Sk.Debugger('<stdin>', {
-      print: () => {
-        this.print();
+      print: (text) => {
+        this.print(text);
       },
       // this function is not being used but needs to be initialised to not cause errors.
       get_source_line: (lineno) => `Line: ${lineno}`,
@@ -94,8 +94,8 @@ class Skulpt {
       success: () => {
         this.success();
       },
-      error: () => {
-        this.error();
+      error: (e) => {
+        this.error(e);
       }
     });
   }
