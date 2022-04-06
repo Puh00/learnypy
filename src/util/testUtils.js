@@ -10,4 +10,4 @@ const getRefs = (visualBox) => {
   return JSON.parse(visualBox.textContent);
 };
 
-export { getObjectById, getVariableByName, getRefs };
+export { getObjectById, getRefs, getVariableByName };

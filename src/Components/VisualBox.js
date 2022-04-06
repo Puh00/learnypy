@@ -1,12 +1,11 @@
+import { graphviz } from 'd3-graphviz';
 import React, { useEffect, useState } from 'react';
 
-import { graphviz } from 'd3-graphviz';
 import generate_dot from '../util/dotGenerator';
-
 import set_text from '../util/textGenerator';
-
-import styles from './VisualBox.module.css';
 import border from './Border.module.css';
+import styles from './VisualBox.module.css';
+
 var text;
 
 const VisualBox = ({ data }) => {
