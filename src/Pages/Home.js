@@ -1,19 +1,16 @@
-import React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import ControlPanel from '../Components/ControlPanel';
 import CodeBox from '../Components/CodeBox';
+import ControlPanel from '../Components/ControlPanel';
+import Header from '../Components/Header';
 import OutputBox from '../Components/OutputBox';
 import VisualBox from '../Components/VisualBox';
-import Header from '../Components/Header';
-
-import styles from './Home.module.css';
-
 import Skulpt from '../SkulptWrapper/Skulpt';
+import styles from './Home.module.css';
 
 const Home = () => {
   const [globals, setGlobals] = useState({ objects: [], variables: [] });
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const [locals, setLocals] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
   const [code, setCode] = useState('a=1\nb=1\nc=b');
@@ -71,8 +68,13 @@ const Home = () => {
   };
 
   const step_callback = (prog) => {
+    const first_row = first_row_of_code();
     if (!stepped) {
-      stop_at(prog);
+      if (line === -1) {
+        stop_at(prog, first_row);
+      } else {
+        stop_at(prog);
+      }
       return;
     }
 
