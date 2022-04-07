@@ -35,7 +35,6 @@ jest.mock('../Components/CodeBox', () => {
   };
 });
 
-
 // This test might be useful later
 // Tests that test only the backend logic of the application should be put here,
 // normally you would want to use a different framework dedicated to the
