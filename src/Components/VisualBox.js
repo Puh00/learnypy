@@ -19,19 +19,12 @@ const VisualBox = ({ data }) => {
 
   useEffect(() => {
     graphviz(`#graph-body`)
-      .keyMode('id') // default keyMode is title, switch to id to avoid bugs
+      .keyMode('title') // default keyMode is title, switch to id to avoid bugs
       .attributer((d) => {
         if (d.tag === 'svg') {
           // hide the generated svg file from screen readers
           d.attributes['aria-hidden'] = true;
           return;
-        }
-
-        if (d.tag === 'title') {
-          // <title> should only have one child
-          // set the title text as blank to prevent it from showing up as tooltip
-          // otherwise it gives some pretty weird tooltips
-          d.children[0].text = '';
         }
       })
       .renderDot(graph.dot);
