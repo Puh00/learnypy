@@ -363,8 +363,6 @@ d = {{"test", a, True}`;
 
   const refs = getRefs(visualBox);
 
-  const a = getVariableByName(refs.variables, 'a');
-
   // b = {}
   const b = getVariableByName(refs.variables, 'b');
   const b_obj = getObjectById(refs.objects, b.ref);
