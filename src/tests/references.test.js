@@ -452,3 +452,92 @@ b.next = c
   // b.next.data == c.data
   expect(b_next_data).toEqual(c_data);
 });
+
+test('step through a global function and see if the state is updated correctly', async () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const stepButton = screen.getByTitle('Run next line');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const empty_state = { objects: [], variables: [] };
+
+  const code = `
+def test():
+  return 4
+num = test()`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  userEvent.click(stepButton); // no row executed
+  await sleep(50);
+  let refs = getRefs(visualBox);
+  expect(refs).toStrictEqual(empty_state);
+
+  userEvent.click(stepButton); // step through 'def test():'
+  await sleep(50);
+  refs = getRefs(visualBox);
+  expect(refs).toStrictEqual(empty_state);
+
+  userEvent.click(stepButton); // step into 'test()'
+  await sleep(50);
+  refs = getRefs(visualBox);
+  expect(refs).toStrictEqual(empty_state);
+
+  userEvent.click(stepButton); // step through 'return 4'
+  await sleep(50);
+  refs = getRefs(visualBox);
+
+  const num = getVariableByName(refs.variables, 'num');
+  const num_obj = getObjectById(refs.objects, num.ref);
+  expect(num_obj.value).toBe(4);
+});
+
+test('step through a class member function and see if the state is updated correctly', async () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const stepButton = screen.getByTitle('Run next line');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const empty_state = { objects: [], variables: [] };
+
+  const code = `
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+  
+a = Node(1)`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  userEvent.click(stepButton); // no row executed
+  await sleep(50);
+  let refs = getRefs(visualBox);
+  expect(refs).toStrictEqual(empty_state);
+
+  userEvent.click(stepButton); // step through 'class Node:'
+  await sleep(50);
+  refs = getRefs(visualBox);
+  expect(refs).toStrictEqual(empty_state);
+
+  userEvent.click(stepButton); // step into 'Node(1)'
+  await sleep(50);
+  refs = getRefs(visualBox);
+  expect(refs).toStrictEqual(empty_state);
+
+  userEvent.click(stepButton); // step through 'self.data = data'
+  await sleep(50);
+  refs = getRefs(visualBox);
+
+  userEvent.click(stepButton); // step through 'self.next = None'
+  await sleep(50);
+  refs = getRefs(visualBox);
+
+  const class_obj = refs.objects.find((entry) => entry.info.type == 'class');
+  const a = getVariableByName(refs.variables, 'a');
+  expect(a.ref).toBe(class_obj.id);
+});
