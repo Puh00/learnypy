@@ -21,7 +21,6 @@ const VisualBox = ({ data }) => {
   useEffect(() => {
     const removeTitle = (ele) => {
       if (ele.tagName === 'title') {
-        console.log(ele);
         ele.innerHTML = '';
         return;
       }
