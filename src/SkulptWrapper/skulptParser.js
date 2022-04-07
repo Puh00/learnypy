@@ -177,7 +177,7 @@ const create_object = (objects, js_object, class_names) => {
     // User-defined class
     value = parse_class_values(js_object);
   } else if (js_object.tp$name === 'set') {
-    value = parse_dictionary_values(Object.values(js_object.v.entries));
+    value = parse_dictionary_values(Object.values(js_object.v.entries), true);
   }
   // Immutables
   else value = js_object.tp$name == 'NoneType' ? 'None' : js_object.v;
