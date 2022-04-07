@@ -1,19 +1,16 @@
-import React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import ControlPanel from '../Components/ControlPanel';
 import CodeBox from '../Components/CodeBox';
+import ControlPanel from '../Components/ControlPanel';
+import Header from '../Components/Header';
 import OutputBox from '../Components/OutputBox';
 import VisualBox from '../Components/VisualBox';
-import Header from '../Components/Header';
-
-import styles from './Home.module.css';
-
 import Skulpt from '../SkulptWrapper/Skulpt';
+import styles from './Home.module.css';
 
 const Home = () => {
   const [globals, setGlobals] = useState({ objects: [], variables: [] });
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const [locals, setLocals] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
   const [code, setCode] = useState('a=1\nb=1\nc=b');
@@ -28,6 +25,27 @@ const Home = () => {
 
   let latest_output = '';
 
+  // highlights and stops at the specified line of the code
+  const stop_at = (prog, line = 0) => {
+    restart_callback(prog);
+    setStepped(true);
+    setLine(line);
+  };
+
+  const first_row_of_code = () => {
+    const isSkippableLine = (row) => {
+      // if the string is whitespace or a comment then it will be skipped
+      return row.trim().length === 0 || row.trim().startsWith('#');
+    };
+
+    const rows = code.split('\n');
+
+    for (let i = 0; i < rows.length; i++) {
+      if (!isSkippableLine(rows[i])) return i;
+    }
+    return -1;
+  };
+
   // callback function sent to the debugger
   const callback = (globals, locals) => {
     setGlobals(globals);
@@ -37,8 +55,12 @@ const Home = () => {
   const restart_callback = (prog) => skulpt.restart(prog, clear_visuals);
 
   const run_callback = (prog) => {
-    // hack for stopping at the first row if the condition is satisfied
-    if (!stepped && breakpoints.includes(0)) return stop_at_first_line(prog);
+    // hack for stopping at the first row of the code if the condition is satisfied
+    const first_row = first_row_of_code();
+    if (!stepped && breakpoints.includes(first_row)) {
+      stop_at(prog, first_row);
+      return;
+    }
 
     clear_visuals();
     setStepped(true);
@@ -46,16 +68,17 @@ const Home = () => {
   };
 
   const step_callback = (prog) => {
-    if (!stepped) return stop_at_first_line(prog);
+    const first_row = first_row_of_code();
+    if (!stepped) {
+      if (line === -1) {
+        stop_at(prog, first_row);
+      } else {
+        stop_at(prog);
+      }
+      return;
+    }
 
     skulpt.step(prog, callback);
-  };
-
-  // highlights and stops at the first line of the code
-  const stop_at_first_line = (prog) => {
-    restart_callback(prog);
-    setStepped(true);
-    setLine(0);
   };
 
   const clear_visuals = () => {

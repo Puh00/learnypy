@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/python/python';
 import 'codemirror/theme/neat.css';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
-import 'codemirror/addon/edit/closetag';
-import 'codemirror/addon/edit/closebrackets';
-import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
-
 import './CodeBox.css';
-import styles from './CodeBox.module.css';
-import border from './Border.module.css';
 
 import raw from 'raw.macro';
+import React, { useState } from 'react';
+import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
+
+import border from './Border.module.css';
+import styles from './CodeBox.module.css';
 
 const marker_logo = raw('./Icons/marker-node.svg');
 const breakpoint_logo = raw('./Icons/breakpoint-node.svg');
@@ -51,7 +49,7 @@ const CodeBox = ({
   const handle_breakpoints = (_editor, lineNumber) => {
     let info = _editor.lineInfo(lineNumber);
 
-    if (info.gutterMarkers) {
+    if (info.gutterMarkers && info.gutterMarkers.breakpoints) {
       remove_breakpoint(lineNumber);
       return;
     }

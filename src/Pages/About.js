@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Header from '../Components/Header';
-
 import styles from './About.module.css';
 
 const About = () => {

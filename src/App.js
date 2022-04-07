@@ -1,9 +1,10 @@
-import React from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 
-import Home from './Pages/Home';
+import React from 'react';
+import { HashRouter, Route, Routes } from 'react-router-dom';
+
 import About from './Pages/About';
+import Home from './Pages/Home';
 
 function App() {
   return (
