@@ -5,20 +5,11 @@
   border-color: var(--dark);
   border-style: solid;
   border-radius: 4px;
-  overflow-y: scroll;
-  height: 85vh; /*Pretty ugly, but does the job*/
 }
 
 .Title {
   margin-top: 0px;
   margin-left: 0px;
   font-size: 1.3em;
-  font-weight: 600;
-}
-
-.SubTitle {
-  margin-top: 0px;
-  margin-left: 0px;
-  font-size: 1.0em;
   font-weight: 600;
 }
