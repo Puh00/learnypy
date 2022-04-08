@@ -28,7 +28,7 @@ const generate_dot = (data) => {
       v.name +
       ' tooltip="' +
       node_tooltip +
-      '" shape=circle color=' +
+      '" shape=oval color=' +
       var_col +
       ' fillcolor=' +
       var_col +
