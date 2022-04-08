@@ -165,9 +165,9 @@ class Skulpt {
    * @param {String} prog The code of the program, as a string.
    * @param {Function} callback A callback function called with the current globals and locals as arguments.
    */
-  step(prog, callback) {
+  async step(prog, callback) {
     this.debugger.enable_step_mode();
-    this.debugger.resume.call(this.debugger);
+    await this.debugger.resume.call(this.debugger);
 
     // calls the callback function if it is a function
     if (typeof callback === 'function') {
