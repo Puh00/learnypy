@@ -214,10 +214,7 @@ const retrieve_object_id = (objects, js_object, class_names) => {
   var obj;
   for (const obj of objects) {
     // '===' returns true only if the objects have the same reference
-    if (
-      obj.js_object === js_object ||
-      (obj.info.type === 'integer' && obj.js_object.v === js_object.v)
-    )
+    if (obj.js_object === js_object || (obj.info.type === 'integer' && obj.value === js_object.v))
       return obj.id;
   }
   // If the object doesn't exist yet add it and return new id
