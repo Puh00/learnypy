@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 
 // Colors
-const var_col = 'deepskyblue1';
-const arrow_col = 'lightsteelblue4';
-const immutable_col = 'darkolivegreen2';
-const indexable_col_dark = 'cadetblue3';
-const indexable_col = 'cadetblue1';
+const arrow_col = 'dimgray';
+//Node colors from Brewer color schema [gnbu8] , Ref: https://graphviz.org/doc/info/colors.html
+const var_col = 5;
+const immutable_col = 4;
+const indexable_col = 1;
 
 let nodes; // To represent variables and objects
 let edges; // To represent references
@@ -83,7 +83,11 @@ const generate_dot = (data) => {
         '];\n';
     }
   });
-  let res = 'digraph structs { node [shape=box] [fontname="Segoe UI"]\n' + nodes + edges + '}';
+  let res =
+    'digraph structs { node [shape=box] [fontname="Segoe UI, Arial"] [colorscheme=gnbu8]\n' +
+    nodes +
+    edges +
+    '}';
 
   return {
     dot: res
@@ -114,8 +118,8 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
     '" label=<\n<TABLE BGCOLOR="' +
     indexable_col +
     '" COLOR="' +
-    indexable_col_dark +
-    '" BORDER="0" CELLBORDER="1" CELLSPACING="0">' +
+    indexable_col +
+    '" BORDER="5" CELLBORDER="3" CELLSPACING="1">' +
     '\n\t<TR>\n\t\t<TD PORT="base" BGCOLOR="' +
     indexable_col +
     '" COLSPAN="' +
