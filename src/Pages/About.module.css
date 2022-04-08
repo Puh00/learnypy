@@ -5,7 +5,7 @@
   border-color: var(--dark);
   border-style: solid;
   border-radius: 4px;
-  overflow-y: scroll;
+  overflow: auto;
   height: 85vh; /*Pretty ugly, but does the job*/
 }
 
