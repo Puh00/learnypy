@@ -91,9 +91,10 @@ const ControlPanel = ({
         <DropdownLocal
           logo={<Menu_logo />}
           setCode={setCode}
-          restart={restart}
-          data-toggle="tooltip"
-          title="Code Examples"
+          restart={(code) => {
+            restart(code);
+            clear_breakpoints();
+          }}
           drop_down_menu_ref={drop_down_menu_ref}
           button_border={{ borderLeft: '2px solid' }}
         />
