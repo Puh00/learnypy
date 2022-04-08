@@ -9,31 +9,6 @@ import { ReactComponent as Play_logo } from './Icons/play.svg';
 import { ReactComponent as Stop_logo } from './Icons/stop.svg';
 import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg';
 
-const btng_style = {
-  border: '2px solid',
-  borderRadius: '4px',
-  borderColor: 'var(--dark)',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'flex-start',
-  backgroundColor: 'var(--components)',
-  boxShadow: 'var(--shadow)'
-};
-
-const btng_left = {
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'flex-start',
-  flexBasis: 'contents'
-};
-
-const btng_right = {
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'flex-end',
-  flexBasis: '100%'
-};
-
 const ControlPanel = ({
   code,
   runit,
@@ -56,8 +31,8 @@ const ControlPanel = ({
   );
 
   return (
-    <ButtonGroup style={btng_style}>
-      <ButtonGroup style={btng_left}>
+    <ButtonGroup className={`${styles.Btng}`}>
+      <ButtonGroup className={`${styles.BtngLeft}`}>
         {create_button(
           () => {
             runit(code);
@@ -87,7 +62,7 @@ const ControlPanel = ({
           <Clear_breakpoints_logo />
         )}
       </ButtonGroup>
-      <ButtonGroup style={btng_right}>
+      <ButtonGroup className={`${styles.BtngRight}`}>
         <DropdownLocal
           logo={<Menu_logo />}
           setCode={setCode}

@@ -12,3 +12,28 @@
     background-color: var(--hover) !important;
     z-index: 0 !important;
 }
+
+.Btng{
+    border: 2px solid;
+    border-radius: 4px;
+    border-color: var(--dark);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    background-color: var(--components);
+    box-shadow: var(--shadow);
+}
+
+.BtngLeft{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-basis: contents;
+}
+
+.BtngRight{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-basis: 100%;
+}
