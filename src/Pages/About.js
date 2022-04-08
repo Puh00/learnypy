@@ -65,7 +65,7 @@ const About = () => {
           <li>Turtle graphics are not supported</li>
           <li>
             The only supported datatypes (for visualisation) are: integers, floats, doubles, strings, characters,
-            booleans, tuples, user-defined classes, lists and dictionaries.
+            booleans, tuples, user-defined classes, lists, sets and dictionaries.
           </li>
         </ul>
         <h1 className={styles.SubTitle}> Caused by Skulpt </h1>
