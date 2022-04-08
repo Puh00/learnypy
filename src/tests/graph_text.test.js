@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import App from '../App';
 import { getRefs } from '../util/testUtils';
 import set_text from '../util/textGenerator';
@@ -11,7 +12,7 @@ jest.mock('../Components/VisualBox', () => {
     // js_object contains raw javascript object which makes it impossible to
     // stringify using JSON
     const fixed_data = {
-      // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line unused-imports/no-unused-vars
       objects: data.objects.map(({ js_object, ...rest }) => rest),
       variables: data.variables
     };
@@ -77,6 +78,61 @@ b.append(3)`;
 
   const expected =
     'Variable "a" points to a list of size 3. Index nr 0 of "a" points to the integer value 1. Index nr 1 of "a" points to the integer value 2. Index nr 2 of "a" points to the integer value 3. Variable "b" points to the same list of size 3 as variable a. ';
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  // execute the code
+  userEvent.click(runButton);
+
+  // get the objects and variables, and generate text from these
+  const refs = getRefs(visualBox);
+  const text = set_text(refs.objects, refs.variables);
+
+  expect(text).toEqual(expected);
+});
+
+test('simple assignment with sets', () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const code = `
+a = {{"apple"}
+a.add("orange")`;
+
+  const expected =
+    'Variable "a" points to a set of size 2. This set points to the string value apple. This set also points to the string value orange. ';
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  // execute the code
+  userEvent.click(runButton);
+
+  // get the objects and variables, and generate text from these
+  const refs = getRefs(visualBox);
+  const text = set_text(refs.objects, refs.variables);
+
+  expect(text).toEqual(expected);
+});
+
+test('simple update with sets', () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const code = `
+set1 = {{"","b"}
+set2 = {{1,2}
+set1.update(set2)`;
+
+  const expected =
+    'Variable "set1" points to a set of size 4. This set points to an empty string. This set also points to the string value b. This set also points to the integer value 1. This set also points to the integer value 2. Variable "set2" points to a set of size 2. This set points to the integer value 1. This set also points to the integer value 2. ';
 
   userEvent.clear(codebox);
   userEvent.type(codebox, code);

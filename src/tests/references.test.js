@@ -1,9 +1,10 @@
 /* eslint-disable no-undef */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import App from '../App';
 import sleep from '../util/sleep';
-import { getObjectById, getVariableByName, getRefs } from '../util/testUtils';
+import { getObjectById, getRefs, getVariableByName } from '../util/testUtils';
 
 // mock these components since the imported libraries seem to break everything...
 jest.mock('../Components/VisualBox', () => {
@@ -11,7 +12,7 @@ jest.mock('../Components/VisualBox', () => {
     // js_object contains raw javascript object which makes it impossible to
     // stringify using JSON
     const fixed_data = {
-      // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line unused-imports/no-unused-vars
       objects: data.objects.map(({ js_object, ...rest }) => rest),
       variables: data.variables
     };
@@ -74,7 +75,7 @@ c = zero`;
   expect(c.ref).toEqual(zero.ref);
 });
 
-test('small integers have same references', () => {
+test('all integers have same references', () => {
   render(<App />);
 
   const codebox = screen.getByRole('textbox');
@@ -111,7 +112,7 @@ h = g + 1 - 1`;
   expect(a.ref).toEqual(b.ref);
   expect(c.ref).toEqual(d.ref);
   expect(e.ref).toEqual(f.ref);
-  expect(g.ref).not.toEqual(h.ref);
+  expect(g.ref).toEqual(h.ref);
 });
 
 test('assignment with lists that contains no mutable types', async () => {
@@ -451,4 +452,93 @@ b.next = c
   ).value;
   // b.next.data == c.data
   expect(b_next_data).toEqual(c_data);
+});
+
+test('step through a global function and see if the state is updated correctly', async () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const stepButton = screen.getByTitle('Run next line');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const empty_state = { objects: [], variables: [] };
+
+  const code = `
+def test():
+  return 4
+num = test()`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  userEvent.click(stepButton); // no row executed
+  await sleep(50);
+  let refs = getRefs(visualBox);
+  expect(refs).toStrictEqual(empty_state);
+
+  userEvent.click(stepButton); // step through 'def test():'
+  await sleep(50);
+  refs = getRefs(visualBox);
+  expect(refs).toStrictEqual(empty_state);
+
+  userEvent.click(stepButton); // step into 'test()'
+  await sleep(50);
+  refs = getRefs(visualBox);
+  expect(refs).toStrictEqual(empty_state);
+
+  userEvent.click(stepButton); // step through 'return 4'
+  await sleep(50);
+  refs = getRefs(visualBox);
+
+  const num = getVariableByName(refs.variables, 'num');
+  const num_obj = getObjectById(refs.objects, num.ref);
+  expect(num_obj.value).toBe(4);
+});
+
+test('step through a class member function and see if the state is updated correctly', async () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const stepButton = screen.getByTitle('Run next line');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const empty_state = { objects: [], variables: [] };
+
+  const code = `
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+  
+a = Node(1)`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  userEvent.click(stepButton); // no row executed
+  await sleep(50);
+  let refs = getRefs(visualBox);
+  expect(refs).toStrictEqual(empty_state);
+
+  userEvent.click(stepButton); // step through 'class Node:'
+  await sleep(50);
+  refs = getRefs(visualBox);
+  expect(refs).toStrictEqual(empty_state);
+
+  userEvent.click(stepButton); // step into 'Node(1)'
+  await sleep(50);
+  refs = getRefs(visualBox);
+  expect(refs).toStrictEqual(empty_state);
+
+  userEvent.click(stepButton); // step through 'self.data = data'
+  await sleep(50);
+  refs = getRefs(visualBox);
+
+  userEvent.click(stepButton); // step through 'self.next = None'
+  await sleep(50);
+  refs = getRefs(visualBox);
+
+  const class_obj = refs.objects.find((entry) => entry.info.type == 'class');
+  const a = getVariableByName(refs.variables, 'a');
+  expect(a.ref).toBe(class_obj.id);
 });

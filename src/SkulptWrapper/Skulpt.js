@@ -83,8 +83,8 @@ class Skulpt {
    */
   create_debugger() {
     return new window.Sk.Debugger('<stdin>', {
-      print: () => {
-        this.print();
+      print: (text) => {
+        this.print(text);
       },
       // this function is not being used but needs to be initialised to not cause errors.
       get_source_line: (lineno) => `Line: ${lineno}`,
@@ -94,8 +94,8 @@ class Skulpt {
       success: () => {
         this.success();
       },
-      error: () => {
-        this.error();
+      error: (e) => {
+        this.error(e);
       }
     });
   }
@@ -165,9 +165,9 @@ class Skulpt {
    * @param {String} prog The code of the program, as a string.
    * @param {Function} callback A callback function called with the current globals and locals as arguments.
    */
-  step(prog, callback) {
+  async step(prog, callback) {
     this.debugger.enable_step_mode();
-    this.debugger.resume.call(this.debugger);
+    await this.debugger.resume.call(this.debugger);
 
     // calls the callback function if it is a function
     if (typeof callback === 'function') {
