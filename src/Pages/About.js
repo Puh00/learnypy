@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 
 import Header from '../Components/Header';
@@ -53,6 +54,31 @@ const About = () => {
           <li>Alex Phu</li>
           <li>Vera Svensson</li>
           <li>Yenan Wang</li>
+        </ul>
+
+        <h2 className={styles.Title}>Known limitations</h2>
+        <h1 className={styles.SubTitle}> Caused by the app </h1>
+        <ul>
+          <li>Only Python is supported</li>
+
+          <li>Too many variables will make the visualisation unreadable</li>
+          <li>Turtle graphics are not supported</li>
+          <li>
+            The only supported datatypes (for visualisation) are: integers, floats, doubles, strings, characters,
+            booleans, tuples, user-defined classes, lists, sets and dictionaries.
+          </li>
+        </ul>
+        <h1 className={styles.SubTitle}> Caused by Skulpt </h1>
+        <ul>
+          <li>Too many iterations will make the website very slow</li>
+          <li>Only supports Python 3.7.3 grammar</li>
+          <li>
+            Very few Python libraries are supported. See the{' '}
+            <a href="https://github.com/skulpt/skulpt" target="_blank" rel="noreferrer">
+              Skulpt repo
+            </a>
+            {' '}for more information.
+          </li>
         </ul>
 
         <h2 className={styles.Title}>Special Thanks</h2>
