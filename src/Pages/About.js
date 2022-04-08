@@ -56,24 +56,6 @@ const About = () => {
           <li>Yenan Wang</li>
         </ul>
 
-        <h2 className={styles.Title}>Special Thanks</h2>
-        <dl>
-          <dt>
-            <a href="https://skulpt.org/" target="_blank" rel="noreferrer">
-              Skulpt
-            </a>
-          </dt>
-          <dd>
-            - For providing us with this amazing framework that allows us to execute Python code
-            directly in the browser.
-          </dd>
-          <dt>
-            <a href="http://www.cse.chalmers.se/~krasimir/" target="_blank" rel="noreferrer">
-              Krasimir Angelov
-            </a>
-          </dt>
-          <dd>- For being our supervisor during this project and giving us great support.</dd>
-        </dl>
         <h2 className={styles.Title}>Known limitations</h2>
         <h1 className={styles.SubTitle}> Caused by the app </h1>
         <ul>
@@ -98,6 +80,25 @@ const About = () => {
             {' '}for more information.
           </li>
         </ul>
+
+        <h2 className={styles.Title}>Special Thanks</h2>
+        <dl>
+          <dt>
+            <a href="https://skulpt.org/" target="_blank" rel="noreferrer">
+              Skulpt
+            </a>
+          </dt>
+          <dd>
+            - For providing us with this amazing framework that allows us to execute Python code
+            directly in the browser.
+          </dd>
+          <dt>
+            <a href="http://www.cse.chalmers.se/~krasimir/" target="_blank" rel="noreferrer">
+              Krasimir Angelov
+            </a>
+          </dt>
+          <dd>- For being our supervisor during this project and giving us great support.</dd>
+        </dl>
       </div>
     </div>
   );
