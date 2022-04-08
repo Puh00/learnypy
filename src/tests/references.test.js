@@ -75,7 +75,7 @@ c = zero`;
   expect(c.ref).toEqual(zero.ref);
 });
 
-test('small integers have same references', () => {
+test('all integers have same references', () => {
   render(<App />);
 
   const codebox = screen.getByRole('textbox');
@@ -112,7 +112,7 @@ h = g + 1 - 1`;
   expect(a.ref).toEqual(b.ref);
   expect(c.ref).toEqual(d.ref);
   expect(e.ref).toEqual(f.ref);
-  expect(g.ref).not.toEqual(h.ref);
+  expect(g.ref).toEqual(h.ref);
 });
 
 test('assignment with lists that contains no mutable types', async () => {
