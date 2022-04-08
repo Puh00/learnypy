@@ -92,6 +92,61 @@ b.append(3)`;
   expect(text).toEqual(expected);
 });
 
+test('simple assignment with sets', () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const code = `
+a = {{"apple"}
+a.add("orange")`;
+
+  const expected =
+    'Variable "a" points to a set of size 2. This set points to the string value apple. This set also points to the string value orange. ';
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  // execute the code
+  userEvent.click(runButton);
+
+  // get the objects and variables, and generate text from these
+  const refs = getRefs(visualBox);
+  const text = set_text(refs.objects, refs.variables);
+
+  expect(text).toEqual(expected);
+});
+
+test('simple update with sets', () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const code = `
+set1 = {{"","b"}
+set2 = {{1,2}
+set1.update(set2)`;
+
+  const expected =
+    'Variable "set1" points to a set of size 4. This set points to an empty string. This set also points to the string value b. This set also points to the integer value 1. This set also points to the integer value 2. Variable "set2" points to a set of size 2. This set points to the integer value 1. This set also points to the integer value 2. ';
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  // execute the code
+  userEvent.click(runButton);
+
+  // get the objects and variables, and generate text from these
+  const refs = getRefs(visualBox);
+  const text = set_text(refs.objects, refs.variables);
+
+  expect(text).toEqual(expected);
+});
+
 test('simple assignment with dictionaries', () => {
   render(<App />);
 
