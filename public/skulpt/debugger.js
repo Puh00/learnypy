@@ -220,7 +220,7 @@ Sk.Debugger.prototype.suspension_handler = function(susp) {
   });
 };
 
-Sk.Debugger.prototype.resume = function() {
+Sk.Debugger.prototype.resume = async function() {
   // Reset the suspension stack to the topmost
   this.current_suspension = this.suspension_stack.length - 1;
   
@@ -228,7 +228,7 @@ Sk.Debugger.prototype.resume = function() {
       this.print("No running program");
   } else {
       var promise = this.suspension_handler(this.get_active_suspension());
-      promise.then(this.success.bind(this), this.error.bind(this));
+      await promise.then(this.success.bind(this), this.error.bind(this));
   }
 };
 
