@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 
 // Colors
-const arrow_col = 'dimgray';
-//Node colors from Brewer color schema [gnbu8] , Ref: https://graphviz.org/doc/info/colors.html
-const var_col = 5;
-const immutable_col = 4;
-const indexable_col = 1;
+const line_col = 'dimgray';
+//Colors from X11 color scheme, Ref: https://www.w3schools.com/colors/colors_x11.asp
+const var_col = '	paleturquoise2';
+const immutable_col = 'darkseagreen2';
+const indexable_col = 'slategray1';
 
 let nodes; // To represent variables and objects
 let edges; // To represent references
@@ -29,7 +29,7 @@ const generate_dot = (data) => {
       ' tooltip="' +
       node_tooltip +
       '" shape=oval color=' +
-      var_col +
+      line_col +
       ' fillcolor=' +
       var_col +
       ' style=filled];\n';
@@ -42,7 +42,7 @@ const generate_dot = (data) => {
       '"' +
       v.ref +
       '"[color=' +
-      arrow_col +
+      line_col +
       '] [edgetooltip="' +
       edge_tooltip +
       '"];\n';
@@ -79,15 +79,12 @@ const generate_dot = (data) => {
         '" style="rounded, filled" fillcolor=' +
         immutable_col +
         ' color=' +
-        immutable_col +
+        line_col +
         '];\n';
     }
   });
   let res =
-    'digraph structs { node [shape=box] [fontname="Segoe UI, Arial"] [colorscheme=gnbu8]\n' +
-    nodes +
-    edges +
-    '}';
+    'digraph structs { node [shape=box] [fontname="Segoe UI, Arial"]\n' + nodes + edges + '}';
 
   return {
     dot: res
@@ -118,8 +115,8 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
     '" label=<\n<TABLE BGCOLOR="' +
     indexable_col +
     '" COLOR="' +
-    indexable_col +
-    '" BORDER="5" CELLBORDER="3" CELLSPACING="1">' +
+    line_col +
+    '" BORDER="1" CELLBORDER="0" CELLSPACING="8">' +
     '\n\t<TR>\n\t\t<TD PORT="base" BGCOLOR="' +
     indexable_col +
     '" COLSPAN="' +
@@ -131,7 +128,7 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
   if (o.info.type === 'set') {
     // Sets are unordered => edges are not connected to an index
     o.value.forEach((item) => {
-      edges += '"' + o.id + '":"base" -> "' + item.ref + '"[color=' + arrow_col + '];\n';
+      edges += '"' + o.id + '":"base" -> "' + item.ref + '"[color=' + line_col + '];\n';
     });
   } else if (o.value.length > 0) {
     // All types that are ordered => edges should be connected to an index
@@ -162,7 +159,7 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
         '" -> "' +
         to +
         '"[color=' +
-        arrow_col +
+        line_col +
         ' edgetooltip="' +
         edge_tooltip +
         '"];\n';
