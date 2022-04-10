@@ -39,6 +39,8 @@ const CodeBox = ({
       let marker_node = document.createElement('span');
       marker_node.className = styles['marker-node'];
       marker_node.innerHTML = marker_logo;
+      marker_node.setAttribute('data-toggle', 'tooltip');
+      marker_node.setAttribute('title', 'Next line to be executed');
 
       // highlight the current execution row
       _editor.addLineClass(line, 'wrap', styles['Line-highlight']);
