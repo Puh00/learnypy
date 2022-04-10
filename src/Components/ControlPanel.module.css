@@ -10,7 +10,12 @@
 
 .Container:hover{
     background-color: var(--hover) !important;
-    z-index: 0 !important;
+}
+
+.Container:focus{
+    border-right: white !important;
+    z-index: 2 !important;
+    margin-right: 2px !important;
 }
 
 .Btng{
