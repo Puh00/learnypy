@@ -38,6 +38,11 @@ const VisualBox = ({ data, share_methods }) => {
           return;
         }
       })
+      // i have no idea what this does, but it somehow adds some default
+      // transition to the graph even though nothing was listed on the doc,
+      // and this somehow fixes the problem where graph jumps around when
+      // zooming or panning, ...why
+      .transition()
       .renderDot(graph.dot);
 
     // remove title texts from all <title> tags, to prevent tooltips
