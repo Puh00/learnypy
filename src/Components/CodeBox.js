@@ -9,7 +9,6 @@ import raw from 'raw.macro';
 import React, { useState } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
 
-import border from './Border.module.css';
 import styles from './CodeBox.module.css';
 
 const marker_logo = raw('./Icons/marker-node.svg');
@@ -94,7 +93,7 @@ const CodeBox = ({
   }
 
   return (
-    <div className={`${styles.Container} ${border.Border}`}>
+    <div className={`${styles.Container}`}>
       <CodeMirror
         value={code}
         options={{
