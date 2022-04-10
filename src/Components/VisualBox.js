@@ -8,7 +8,7 @@ import styles from './VisualBox.module.css';
 
 var text;
 
-const VisualBox = ({ data }) => {
+const VisualBox = ({ data, share_methods }) => {
   const [graph, setGraph] = useState({ dot: 'graph {}' });
   const container = useRef(null);
 
@@ -44,6 +44,14 @@ const VisualBox = ({ data }) => {
     // after the graph has been rendered, this is a kinda scuffed...
     removeTitle(container.current.childNodes[0]);
   }, [graph]);
+
+  useEffect(() => {
+    share_methods({
+      resetGraphZoom: () => {
+        graphviz(`#graph-body`).resetZoom();
+      }
+    });
+  }, []);
 
   return (
     <div
