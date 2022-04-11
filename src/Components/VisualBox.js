@@ -10,6 +10,7 @@ var text;
 
 const VisualBox = ({ data, share_methods }) => {
   const [graph, setGraph] = useState({ dot: 'graph {}' });
+  const [zoomedIn, setZoomedIn] = useState(false);
   const container = useRef(null);
 
   useEffect(() => {
@@ -17,6 +18,18 @@ const VisualBox = ({ data, share_methods }) => {
     setGraph(dot);
     text = set_text(data.objects, data.variables);
   }, [data]);
+
+  useEffect(() => {
+    graphviz(`#graph-body`)
+      .attributer((d) => {
+        if (d.tag === 'svg') {
+          // hide the generated svg file from screen readers
+          d.attributes['aria-hidden'] = true;
+          return;
+        }
+      })
+      .renderDot(graph.dot);
+  }, [graph]);
 
   useEffect(() => {
     const removeTitle = (ele) => {
@@ -31,33 +44,33 @@ const VisualBox = ({ data, share_methods }) => {
     };
 
     graphviz(`#graph-body`)
-      .attributer((d) => {
-        if (d.tag === 'svg') {
-          // hide the generated svg file from screen readers
-          d.attributes['aria-hidden'] = true;
-          return;
-        }
+      .on('initEnd', () => {
+        share_methods({
+          resetGraphZoom: () => {
+            graphviz(`#graph-body`).resetZoom();
+            setZoomedIn(false);
+          }
+        });
       })
-      // i have no idea what this does, but it somehow adds some default
-      // transition to the graph even though nothing was listed on the doc,
-      // and this somehow fixes the problem where graph jumps around when
-      // zooming or panning, ...why
-      .transition()
-      .renderDot(graph.dot);
+      .on('end', () => {
+        // after the graph has been rendered, attach a zoom event listener
+        // do not put this in 'initEnd' event even if it might feel more intuitive,
+        // crazy stuff happens
+        graphviz(`#graph-body`)
+          .zoomBehavior()
+          .on('zoom.setZoomed', (event) => {
+            if (event.sourceEvent && !zoomedIn) {
+              // zoom caused by a user
+              setZoomedIn(true);
+            }
+          });
 
-    // remove title texts from all <title> tags, to prevent tooltips
-    // after the graph has been rendered, this is a kinda scuffed...
-    removeTitle(container.current.childNodes[0]);
-  }, [graph]);
-
-  useEffect(() => {
-    share_methods({
-      resetGraphZoom: () => {
-        graphviz(`#graph-body`).resetZoom();
-      }
-    });
+        // remove title tebeenxts from all <title> tags, to prevent tooltips
+        // after the graph has been rendered, this is a kinda scuffed...
+        removeTitle(container.current.childNodes[0]);
+      });
   }, []);
-
+  console.log(zoomedIn);
   return (
     <div
       ref={container}
