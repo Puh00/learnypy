@@ -93,7 +93,10 @@ const Home = () => {
     clear_visuals();
     setStepped(true);
     skulpt.run(prog, callback);
-    shared_methods.current.resetGraphZoom();
+
+    if (typeof shared_methods.current.resetGraphZoom === 'function') {
+      shared_methods.current.resetGraphZoom();
+    }
   };
 
   const step_callback = (prog) => {

@@ -6,17 +6,16 @@ import set_text from '../util/textGenerator';
 import border from './Border.module.css';
 import styles from './VisualBox.module.css';
 
-var text;
-
 const VisualBox = ({ data, share_methods }) => {
   const [graph, setGraph] = useState({ dot: 'graph {}' });
+  const [ariaLabel, setAriaLabel] = useState('');
   const [zoomedIn, setZoomedIn] = useState(false);
   const container = useRef(null);
 
   useEffect(() => {
     const dot = generate_dot(data);
     setGraph(dot);
-    text = set_text(data.objects, data.variables);
+    setAriaLabel(set_text(data.objects, data.variables));
   }, [data]);
 
   useEffect(() => {
@@ -77,7 +76,7 @@ const VisualBox = ({ data, share_methods }) => {
       className={`${styles.Container} ${border.Border}`}
       id="graph-body"
       tabIndex={0}
-      aria-label={text}></div>
+      aria-label={ariaLabel}></div>
   );
 };
 
