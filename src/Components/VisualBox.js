@@ -1,9 +1,11 @@
 import { graphviz } from 'd3-graphviz';
 import React, { useEffect, useRef, useState } from 'react';
+import { Button } from 'react-bootstrap';
 
 import generate_dot from '../util/dotGenerator';
 import set_text from '../util/textGenerator';
 import border from './Border.module.css';
+import { ReactComponent as Zoom_logo } from './Icons/magnifying-glass.svg';
 import styles from './VisualBox.module.css';
 
 const VisualBox = ({ data, share_methods }) => {
@@ -11,6 +13,28 @@ const VisualBox = ({ data, share_methods }) => {
   const [ariaLabel, setAriaLabel] = useState('');
   const [zoomedIn, setZoomedIn] = useState(false);
   const container = useRef(null);
+
+  const resetGraphZoom = () => {
+    graphviz(`#graph-body`).resetZoom();
+    setZoomedIn(false);
+  };
+
+  const resetZoomButton = (disabled) => {
+    const tooltip_text = `Reset zoom and panning ${disabled ? '(disabled)' : ''}`;
+
+    return (
+      <Button
+        className={styles.Button}
+        variant="light"
+        onClick={resetGraphZoom}
+        data-toggle="tooltip"
+        title={tooltip_text}
+        aria-label={tooltip_text}
+        disabled={disabled}>
+        <Zoom_logo />
+      </Button>
+    );
+  };
 
   useEffect(() => {
     const dot = generate_dot(data);
@@ -45,14 +69,11 @@ const VisualBox = ({ data, share_methods }) => {
     graphviz(`#graph-body`)
       .on('initEnd', () => {
         share_methods({
-          resetGraphZoom: () => {
-            graphviz(`#graph-body`).resetZoom();
-            setZoomedIn(false);
-          }
+          resetGraphZoom: resetGraphZoom
         });
       })
       .on('end', () => {
-        // after the graph has been rendered, attach a zoom event listener
+        // after the graph has been rendered, attach a zoom event listener,
         // do not put this in 'initEnd' event even if it might feel more intuitive,
         // crazy stuff happens
         graphviz(`#graph-body`)
@@ -69,14 +90,12 @@ const VisualBox = ({ data, share_methods }) => {
         removeTitle(container.current.childNodes[0]);
       });
   }, []);
-  console.log(zoomedIn);
+
   return (
-    <div
-      ref={container}
-      className={`${styles.Container} ${border.Border}`}
-      id="graph-body"
-      tabIndex={0}
-      aria-label={ariaLabel}></div>
+    <div className={`${styles.Container} ${border.Border}`} tabIndex={0} aria-label={ariaLabel}>
+      <div ref={container} id="graph-body"></div>
+      {resetZoomButton(!zoomedIn)}
+    </div>
   );
 };
 
