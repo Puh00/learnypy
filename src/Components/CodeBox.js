@@ -97,6 +97,9 @@ const CodeBox = ({
       <CodeMirror
         value={code}
         options={{
+          configureMouse: () => {
+            return { addNew: false };
+          },
           lineWrapping: true,
           lint: true,
           mode: 'python',
