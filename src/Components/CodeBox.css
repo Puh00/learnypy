@@ -12,13 +12,23 @@
 }
 
 .breakpoints{
-  width: 14px;
+  width: 13px;
   justify-content: center;
-  margin: 2px;
+  padding: 2px;
 }
 
-.CodeMirror-linenumber{
-  padding-right: 4px;
+.CodeMirror-linenumbers{
+  padding-right: 2px !important
+}
+
+.CodeMirror-gutter-elt{
+  padding: 2px !important;
+  text-align: right;
+}
+
+.lineMarker{
+  width: 16px;
+  padding: 2px;
 }
 
 .CodeMirror-focused {
