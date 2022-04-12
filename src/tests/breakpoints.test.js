@@ -306,3 +306,38 @@ b()`;
   // printed 2
   expect(outputBox.textContent).toEqual('1\n2\n');
 });
+
+test('choosing examples removes old breakpoints', async () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const outputBox = screen.getByTestId('output-box');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+  const dropDownButton = screen.getByTitle('Code Examples');
+
+  const code = `print(1)
+print(2)
+print(3)
+print(4)
+print(5)`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  // insert a breakpoint at `print(1)` and `print(3)`
+  set_breakpoints([0, 2]);
+
+  userEvent.click(dropDownButton);
+
+  const codeExampleOneButton = screen.getByText('Example 1');
+
+  userEvent.click(codeExampleOneButton);
+  await sleep(50);
+
+  expect(codebox.textContent).toEqual('a=[]\nb=a\nb.append(3)\nprint(b)');
+
+  userEvent.click(runButton);
+  await sleep(50);
+
+  expect(outputBox.textContent).toEqual('[3]\n');
+});
