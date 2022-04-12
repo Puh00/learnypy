@@ -6,7 +6,8 @@ body {
   margin: 0;
   overflow: hidden; /* to hide the scrollbar */
   overflow-x: hidden;
+  background-color: var(--background);
 }
 
 /* if !important is not on then the react-bootstrap components won't be affected */
-*:focus {outline:3px solid blue !important; outline-offset: none !important;}
+*:focus {outline:3px solid blue !important; outline-offset: 0px !important;}
