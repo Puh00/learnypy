@@ -2,3 +2,23 @@
   /* disables the arrow */
   display: none !important; 
 }
+
+.dropdown-toggle{
+  background-color: var(--components) !important;
+}
+
+.dropdown-toggle:hover{
+  background-color: var(--hover) !important;
+}
+
+.dropdown-item:hover{
+  background-color: var(--hover) !important;
+}
+
+.dropdown-menu{
+  padding: 0px !important;
+  box-shadow: var(--shadow);
+  color: var(--dark) !important;
+  /* border: 2px solid var(--dark); */
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}

@@ -9,7 +9,6 @@ import raw from 'raw.macro';
 import React, { useState } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
 
-import border from './Border.module.css';
 import styles from './CodeBox.module.css';
 
 const marker_logo = raw('./Icons/marker-node.svg');
@@ -39,6 +38,8 @@ const CodeBox = ({
       let marker_node = document.createElement('span');
       marker_node.className = styles['marker-node'];
       marker_node.innerHTML = marker_logo;
+      marker_node.setAttribute('data-toggle', 'tooltip');
+      marker_node.setAttribute('title', 'Next line to be executed');
 
       // highlight the current execution row
       _editor.addLineClass(line, 'wrap', styles['Line-highlight']);
@@ -92,7 +93,7 @@ const CodeBox = ({
   }
 
   return (
-    <div className={`${styles.Container} ${border.Border}`}>
+    <div className={`${styles.Container}`}>
       <CodeMirror
         value={code}
         options={{
