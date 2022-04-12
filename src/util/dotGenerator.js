@@ -83,8 +83,7 @@ const generate_dot = (data) => {
         '];\n';
     }
   });
-  let res =
-    'digraph structs { node [shape=box] [fontname="Segoe UI, Arial"]\n' + nodes + edges + '}';
+  let res = 'digraph structs { node [shape=box] [fontname="Arial"] \n' + nodes + edges + '}';
 
   return {
     dot: res
@@ -116,7 +115,7 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
     indexable_col +
     '" COLOR="' +
     line_col +
-    '" BORDER="1" CELLBORDER="0" CELLSPACING="8">' +
+    '" BORDER="0" CELLBORDER="1" CELLPADDING="5" CELLSPACING="0">' +
     '\n\t<TR>\n\t\t<TD PORT="base" BGCOLOR="' +
     indexable_col +
     '" COLSPAN="' +
