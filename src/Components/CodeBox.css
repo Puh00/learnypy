@@ -1,10 +1,5 @@
 /* CodeMirror related css */
 
-.CodeMirror-focused {
-  border: 3px solid blue;
-  outline-offset: 1px
-}
-
 .CodeMirror {
   position: absolute;
   top: 0;
@@ -12,16 +7,31 @@
   left: 0;
   right: 0;
   height: 100%;
+  border: 2px solid black;
+  border-radius: 5px;
 }
 
 .breakpoints{
-  width: 14px;
+  width: 13px;
   justify-content: center;
-  margin: 2px;
+  padding: 2px;
 }
 
-.CodeMirror-linenumber{
-  padding-right: 4px;
+.CodeMirror-linenumbers{
+  padding-right: 2px !important
 }
 
-.CodeMirror-focused { border: 3px solid blue; outline-offset: 1px }
+.CodeMirror-gutter-elt{
+  padding: 2px !important;
+  text-align: right;
+}
+
+.lineMarker{
+  width: 16px;
+  padding: 2px;
+}
+
+.CodeMirror-focused {
+  outline: 3px solid blue;
+  outline-offset: 0px;
+}

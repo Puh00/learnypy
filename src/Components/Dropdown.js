@@ -44,7 +44,12 @@ llist.traverse_list()`
 function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref, button_border }) {
   return (
     <Dropdown style={button_border} as={ButtonGroup}>
-      <Dropdown.Toggle variant="light" id="dropdown-basic" ref={drop_down_menu_ref}>
+      <Dropdown.Toggle
+        data-toggle="tooltip"
+        title="Code Examples"
+        variant="light"
+        id="dropdown-basic"
+        ref={drop_down_menu_ref}>
         {logo}
       </Dropdown.Toggle>
 
