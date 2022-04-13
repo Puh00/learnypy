@@ -216,7 +216,8 @@ const retrieve_object_id = (objects, js_object, class_names) => {
     // '===' returns true only if the objects have the same reference
     if (
       obj.js_object === js_object ||
-      (obj.info.type === 'integer' && obj.value === js_object.v && js_object.tp$name != 'float')
+      (obj.info.type === 'integer' && obj.value === js_object.v && js_object.tp$name != 'float') ||
+      (obj.info.type === 'float' && obj.value === js_object.v && js_object.tp$name != 'integer')
     )
       return obj.id;
   }
