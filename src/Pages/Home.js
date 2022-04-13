@@ -107,6 +107,10 @@ const Home = () => {
       } else {
         stop_at(prog);
       }
+      // reset the graph zoom at step if the program just restarted
+      if (typeof shared_methods.current.resetGraphZoom === 'function') {
+        shared_methods.current.resetGraphZoom();
+      }
       return;
     }
 
