@@ -17,6 +17,11 @@
 a {
   color: #006fe6;
 }
+li,
+p,
+dl {
+  font-size: 0.9em;
+}
 .Title {
   margin-top: 0px;
   margin-left: 0px;
