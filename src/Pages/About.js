@@ -23,7 +23,7 @@ const About = () => {
     <div>
       <Header navItems={navItems} />
       <div className={styles.Content}>
-        <h2 className={styles.heading_title}>About {appName}</h2>
+        <h1 className={styles.heading_title}>About {appName}</h1>
         <p>
           {appName} is a free site of{' '}
           <a href="https://www.python.org/" target="_blank" rel="noreferrer">
@@ -35,6 +35,7 @@ const About = () => {
           <a href="https://www.chalmers.se" target="_blank" rel="noreferrer">
             Chalmers University of Technology
           </a>
+          .
         </p>
         <p>
           The source code of this project can be found at{' '}
@@ -47,7 +48,7 @@ const About = () => {
           .
         </p>
 
-        <h3 className={styles.Title}>The Team</h3>
+        <h2 className={styles.Title}>The Team</h2>
         <ul>
           <li>Moa Berglund</li>
           <li>Saga Hassellöf</li>
@@ -57,8 +58,8 @@ const About = () => {
           <li>Yenan Wang</li>
         </ul>
 
-        <h3 className={styles.Title}>Known limitations</h3>
-        <h4 className={styles.SubTitle}> Caused by the app </h4>
+        <h2 className={styles.Title}>Known limitations</h2>
+        <h3 className={styles.SubTitle}> Caused by the app </h3>
         <ul>
           <li>Only Python is supported</li>
 
@@ -70,7 +71,7 @@ const About = () => {
             dictionaries.
           </li>
         </ul>
-        <h4 className={styles.SubTitle}> Caused by Skulpt </h4>
+        <h3 className={styles.SubTitle}> Caused by Skulpt </h3>
         <ul>
           <li>Too many iterations will make the website very slow</li>
           <li>Only supports Python 3.7.3 grammar</li>
@@ -83,7 +84,7 @@ const About = () => {
           </li>
         </ul>
 
-        <h3 className={styles.Title}>Special Thanks</h3>
+        <h2 className={styles.Title}>Special Thanks</h2>
         <dl>
           <dt>
             <a href="https://skulpt.org/" target="_blank" rel="noreferrer">
@@ -101,7 +102,7 @@ const About = () => {
           </dt>
           <dd>- For being our supervisor during this project and giving us great support.</dd>
         </dl>
-        <h3 className={styles.Title}>Accessibility of {appName} </h3>
+        <h2 className={styles.Title}>Accessibility of {appName} </h2>
         <p>
           Read more at our <Link to="/Accessibility"> accessibility page</Link>
         </p>
