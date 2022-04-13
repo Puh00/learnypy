@@ -9,19 +9,19 @@
   position: relative;
 }
 
-.marker-node .breakpoint-node{
+.marker-node .breakpoint-node {
   display: inline-block;
 }
 
-.marker-node{
+.marker-node {
   color: var(--dark);
 }
 
-.breakpoint-node{
-  color: red;
+.breakpoint-node {
+  color: #dc3545;
 }
 
-.breakpoint-node:hover{
+.breakpoint-node:hover {
   cursor: pointer;
   color: rgb(255, 139, 139);
 }

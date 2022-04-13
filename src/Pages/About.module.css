@@ -14,7 +14,9 @@
   overflow: auto;
   height: 85vh; /*Pretty ugly, but does the job*/
 }
-
+a {
+  color: #006fe6;
+}
 .Title {
   margin-top: 0px;
   margin-left: 0px;
