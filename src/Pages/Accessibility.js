@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Header from '../Components/Header';
-
 import styles from './About.module.css';
 
 const Accessibility = () => {
@@ -25,8 +24,11 @@ const Accessibility = () => {
         <h2 className={styles.heading_title}>Accessibility of {appName}</h2>
         <p>
           We want as many people as possible to be able to use it, and this document describes how
-          python-chutor.netlify.app/ complies with the accessibility regulations, any known
-          accessibility issues, and how you can report problems so that we can fix them.
+          <a href="python-chutor.netlify.app/" target="_blank" rel="noreferrer">
+            python-chutor.netlify.app/
+          </a>
+          complies with the accessibility regulations, any known accessibility issues, and how you
+          can report problems so that we can fix them.
         </p>
         <h3 className={styles.Title}>How accessible is the website?</h3>
         <p>
@@ -75,8 +77,8 @@ const Accessibility = () => {
         <h3 className={styles.Title}>How we tested this website</h3>
         <p>
           We have performed a self-assessment (internal testing) of some parts of {appName}. The
-          test included screen readers, navigating the page without mouse or keypad and testing
-          color contrast with [TODO].
+          test included using screen readers, navigating the page without mouse or keypad and color
+          contrast analyze.
         </p>
         <p>The website was published on TODO</p>
         <p>The statement was last updated on TODO</p>

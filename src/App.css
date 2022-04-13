@@ -4,7 +4,7 @@ html,
 body {
   height: 100%;
   margin: 0;
-  overflow: auto; /* scrollbar only visible when needed*/
+  overflow: hidden; /* to hide the scrollbar */
   overflow-x: hidden;
   background-color: var(--background);
 }
