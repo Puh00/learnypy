@@ -29,9 +29,9 @@ const About = () => {
           <a href="https://www.python.org/" target="_blank" rel="noreferrer">
             Python
           </a>{' '}
-          visualisation tool with the aim to help novice programmers to understand the underlying
-          structure of Python&apos;s memory model. {appName} is a project made as a Bachelor project
-          by six students from{' '}
+          visualisation tool with the aim to help novice programmers to understand the concept of
+          references in Python. {appName} is a project made as a Bachelor project by six students
+          from{' '}
           <a href="https://www.chalmers.se" target="_blank" rel="noreferrer">
             Chalmers University of Technology
           </a>
