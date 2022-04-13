@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Header from '../Components/Header';
 import styles from './About.module.css';
@@ -17,6 +17,12 @@ const About = () => {
   ];
 
   const appName = 'The Dynamic Memory Model';
+
+  useEffect(() => {
+    let title = 'About | ';
+    title = title.concat(appName);
+    document.title = title;
+  }, []);
 
   return (
     <div>
@@ -64,8 +70,9 @@ const About = () => {
           <li>Too many variables will make the visualisation unreadable</li>
           <li>Turtle graphics are not supported</li>
           <li>
-            The only supported datatypes (for visualisation) are: integers, floats, doubles, strings, characters,
-            booleans, tuples, user-defined classes, lists, sets and dictionaries.
+            The only supported datatypes (for visualisation) are: integers, floats, doubles,
+            strings, characters, booleans, tuples, user-defined classes, lists, sets and
+            dictionaries.
           </li>
         </ul>
         <h1 className={styles.SubTitle}> Caused by Skulpt </h1>
@@ -76,8 +83,8 @@ const About = () => {
             Very few Python libraries are supported. See the{' '}
             <a href="https://github.com/skulpt/skulpt" target="_blank" rel="noreferrer">
               Skulpt repo
-            </a>
-            {' '}for more information.
+            </a>{' '}
+            for more information.
           </li>
         </ul>
 
