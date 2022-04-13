@@ -6,10 +6,11 @@ body {
   margin: 0;
   overflow: auto; /* scrollbar only visible when needed*/
   overflow-x: hidden;
+  background-color: var(--background);
 }
 
 /* if !important is not on then the react-bootstrap components won't be affected */
 *:focus {
   outline: 3px solid blue !important;
-  outline-offset: none !important;
+  outline-offset: 0px !important;
 }

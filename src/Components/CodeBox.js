@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/python/python';
 import 'codemirror/theme/neat.css';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
-import 'codemirror/addon/edit/closetag';
-import 'codemirror/addon/edit/closebrackets';
-import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
-
 import './CodeBox.css';
-import styles from './CodeBox.module.css';
-import border from './Border.module.css';
 
 import raw from 'raw.macro';
+import React, { useState } from 'react';
+import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
+
+import styles from './CodeBox.module.css';
 
 const marker_logo = raw('./Icons/marker-node.svg');
 const breakpoint_logo = raw('./Icons/breakpoint-node.svg');
@@ -21,24 +18,19 @@ const CodeBox = ({
   code,
   setCode,
   line,
+  breakpoints,
   drop_down_menu_ref,
   output_box_ref,
   add_breakpoint,
   remove_breakpoint
 }) => {
-  const [next, setNext] = useState(null);
+  const [editor, setEditor] = useState(null);
 
-  useEffect(() => {
-    if (next === null) return;
-    // calling next() to force an editorDidConfigure event
-    next();
-  }, [line]);
-
-  const set_highlighted_row = (editor) => {
+  const set_highlighted_row = (_editor) => {
     // remove all previous highlighted lines and line markers
-    editor.eachLine((line) => {
-      editor.removeLineClass(line, 'wrap', styles['Line-highlight']);
-      editor.setGutterMarker(line, 'lineMarker', null);
+    _editor.eachLine((line) => {
+      _editor.removeLineClass(line, 'wrap', styles['Line-highlight']);
+      _editor.setGutterMarker(line, 'lineMarker', null);
     });
 
     if (line >= 0) {
@@ -46,45 +38,68 @@ const CodeBox = ({
       let marker_node = document.createElement('span');
       marker_node.className = styles['marker-node'];
       marker_node.innerHTML = marker_logo;
+      marker_node.setAttribute('data-toggle', 'tooltip');
+      marker_node.setAttribute('title', 'Next line to be executed');
 
       // highlight the current execution row
-      editor.addLineClass(line, 'wrap', styles['Line-highlight']);
-      editor.setGutterMarker(line, 'lineMarker', marker_node);
+      _editor.addLineClass(line, 'wrap', styles['Line-highlight']);
+      _editor.setGutterMarker(line, 'lineMarker', marker_node);
     }
   };
 
-  const set_breakpoint = (lineNumber) => {
-    let breakpoint_node = document.createElement('span');
-    breakpoint_node.className = styles['breakpoint-node'];
-    breakpoint_node.innerHTML = breakpoint_logo;
+  const handle_breakpoints = (_editor, lineNumber) => {
+    let info = _editor.lineInfo(lineNumber);
+
+    if (info.gutterMarkers && info.gutterMarkers.breakpoints) {
+      remove_breakpoint(lineNumber);
+      return;
+    }
 
     add_breakpoint(lineNumber);
-    // Set breakpoint icon
+  };
+
+  const breakpoint_node = () => {
+    const breakpoint_node = document.createElement('span');
+    breakpoint_node.className = styles['breakpoint-node'];
+    breakpoint_node.innerHTML = breakpoint_logo;
+    breakpoint_node.setAttribute('data-toggle', 'tooltip');
+    breakpoint_node.setAttribute('title', 'Click to remove breakpoint');
     return breakpoint_node;
   };
 
-  const clear_breakpoint = (lineNumber) => {
-    remove_breakpoint(lineNumber);
-    // Clear breakpoint icon
-    return null;
+  const update_breakpoints = (_editor) => {
+    _editor.eachLine((line) => {
+      _editor.setGutterMarker(
+        line,
+        'breakpoints',
+        breakpoints.includes(line.lineNo()) ? breakpoint_node() : null
+      );
+    });
   };
-
-  const handle_breakpoints = (editor, lineNumber) => {
-    let info = editor.lineInfo(lineNumber);
-
-    //Set or clear breakpoint from clicked line
-    editor.setGutterMarker(
-      lineNumber,
-      'breakpoints',
-      info.gutterMarkers ? clear_breakpoint(lineNumber) : set_breakpoint(lineNumber)
+  const set_tooltip_breakpoint_area = () => {
+    var breakpoint_area = document.getElementsByClassName('CodeMirror-gutters')[0];
+    breakpoint_area.setAttribute('data-toggle', 'tooltip');
+    breakpoint_area.setAttribute(
+      'title',
+      'Click next to the corresponding line to generate breakpoint'
     );
   };
 
+  if (editor) {
+    // update everything every time something rerenders
+    update_breakpoints(editor);
+    set_highlighted_row(editor);
+    set_tooltip_breakpoint_area();
+  }
+
   return (
-    <div className={`${styles.Container} ${border.Border}`}>
+    <div className={`${styles.Container}`}>
       <CodeMirror
         value={code}
         options={{
+          configureMouse: () => {
+            return { addNew: false };
+          },
           lineWrapping: true,
           lint: true,
           mode: 'python',
@@ -94,17 +109,17 @@ const CodeBox = ({
           autoCloseTags: true,
           gutters: ['breakpoints', 'lineMarker', 'CodeMirror-linenumbers']
         }}
-        onGutterClick={(editor, lineNumber) => {
-          handle_breakpoints(editor, lineNumber);
+        onGutterClick={(_editor, lineNumber) => {
+          handle_breakpoints(_editor, lineNumber);
         }}
-        editorDidMount={(_editor, _value, next) => {
-          setNext(() => next);
-        }}
-        editorDidConfigure={(editor) => {
-          set_highlighted_row(editor);
+        editorDidMount={(_editor) => {
+          setEditor(() => _editor);
         }}
         onBeforeChange={(_editor, data, value) => {
-          if (data.text[0] != '\t') setCode(value);
+          if (data.text[0] != '\t') {
+            setCode(value);
+            update_breakpoints(_editor);
+          }
         }}
         onKeyDown={(_editor, event) => {
           if (event.key === 'Tab') {

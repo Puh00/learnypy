@@ -1,19 +1,16 @@
-import React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import ControlPanel from '../Components/ControlPanel';
 import CodeBox from '../Components/CodeBox';
+import ControlPanel from '../Components/ControlPanel';
+import Header from '../Components/Header';
 import OutputBox from '../Components/OutputBox';
 import VisualBox from '../Components/VisualBox';
-import Header from '../Components/Header';
-
-import { func, start, step, runit, update_breakpoints } from '../SkulptWrapper/skulptWrapper';
-
+import Skulpt from '../SkulptWrapper/Skulpt';
 import styles from './Home.module.css';
 
 const Home = () => {
   const [globals, setGlobals] = useState({ objects: [], variables: [] });
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const [locals, setLocals] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
   const [code, setCode] = useState('a=1\nb=1\nc=b');
@@ -24,18 +21,29 @@ const Home = () => {
   const drop_down_menu_ref = useRef(null);
   const output_box_ref = useRef(null);
 
+  const skulpt = Skulpt.instance();
+
   let latest_output = '';
 
-  const restart = (prog) =>
-    start(prog, false, () => {
-      clear();
-    });
-
-  // highlights and stops at the first line of the code
-  const stop_at_first_line = (prog) => {
-    restart(prog);
+  // highlights and stops at the specified line of the code
+  const stop_at = (prog, line = 0) => {
+    restart_callback(prog);
     setStepped(true);
-    setLine(0);
+    setLine(line);
+  };
+
+  const first_row_of_code = () => {
+    const isSkippableLine = (row) => {
+      // if the string is whitespace or a comment then it will be skipped
+      return row.trim().length === 0 || row.trim().startsWith('#');
+    };
+
+    const rows = code.split('\n');
+
+    for (let i = 0; i < rows.length; i++) {
+      if (!isSkippableLine(rows[i])) return i;
+    }
+    return -1;
   };
 
   // callback function sent to the debugger
@@ -44,22 +52,36 @@ const Home = () => {
     setLocals(locals);
   };
 
-  const runit_callback = (prog) => {
-    // hack for stopping at the first row if the condition is satisfied
-    if (!stepped && breakpoints.includes(0)) return stop_at_first_line(prog);
+  const restart_callback = (prog) => skulpt.restart(prog, clear_visuals);
 
-    clear();
+  const run_callback = (prog) => {
+    // hack for stopping at the first row of the code if the condition is satisfied
+    const first_row = first_row_of_code();
+    if (!stepped && breakpoints.includes(first_row)) {
+      stop_at(prog, first_row);
+      return;
+    }
+
+    clear_visuals();
     setStepped(true);
-    runit(prog, callback);
+    skulpt.run(prog, callback);
   };
 
   const step_callback = (prog) => {
-    if (!stepped) return stop_at_first_line(prog);
+    const first_row = first_row_of_code();
+    if (!stepped) {
+      if (line === -1) {
+        stop_at(prog, first_row);
+      } else {
+        stop_at(prog);
+      }
+      return;
+    }
 
-    step(prog, callback);
+    skulpt.step(prog, callback);
   };
 
-  const clear = () => {
+  const clear_visuals = () => {
     setOutput({ text: '' });
     setGlobals({ objects: [], variables: [] });
     setLocals({ objects: [], variables: [] });
@@ -67,32 +89,32 @@ const Home = () => {
     setStepped(false);
   };
 
-  func.outf = (text) => {
-    latest_output = latest_output + text;
-    setOutput({ text: latest_output });
+  const clear_breakpoints = () => {
+    setBreakpoints(() => []);
   };
 
-  // run these functions only once
-  useEffect(() => {
-    func.current_line = (lineno) => {
+  skulpt.configure({
+    outf: (text) => {
+      latest_output = latest_output + text;
+      setOutput({ text: latest_output });
+    },
+    current_line: (lineno) => {
       setLine(lineno);
-    };
-
-    func.success = () => {
+    },
+    success: () => {
       setLine(-1);
       setStepped(false);
-    };
-
-    func.error = (e) => {
+    },
+    error: (e) => {
       setGlobals({ objects: [], variables: [] });
       setLocals({ objects: [], variables: [] });
       setStepped(false);
-      func.outf(e);
-    };
-  }, []);
+      skulpt.outf(e);
+    }
+  });
 
   useEffect(() => {
-    update_breakpoints(breakpoints);
+    skulpt.update_breakpoints(breakpoints);
   }, [breakpoints]);
 
   const navItems = [
@@ -109,9 +131,10 @@ const Home = () => {
         <div className={styles['Left-body']}>
           <ControlPanel
             code={code}
-            runit={runit_callback}
+            runit={run_callback}
             step={step_callback}
-            restart={restart}
+            restart={restart_callback}
+            clear_breakpoints={clear_breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
           />
@@ -119,6 +142,7 @@ const Home = () => {
             code={code}
             setCode={setCode}
             line={line}
+            breakpoints={breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
             output_box_ref={output_box_ref}
             add_breakpoint={(line_number) =>

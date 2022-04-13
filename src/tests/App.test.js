@@ -1,17 +1,18 @@
 /* eslint-disable no-undef */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from './App';
-import sleep from './util/sleep';
+
+import App from '../App';
+import sleep from '../util/sleep';
 
 // mock these components since the imported libraries seem to break everything...
-jest.mock('./Components/VisualBox', () => {
+jest.mock('../Components/VisualBox', () => {
   return function VisualBox({ data }) {
     return <div data-testid="visual-box">{JSON.stringify(data)}</div>;
   };
 });
 
-jest.mock('./Components/CodeBox', () => {
+jest.mock('../Components/CodeBox', () => {
   return function CodeBox({ code, setCode }) {
     return (
       <form className="Code-box">
@@ -34,11 +35,15 @@ jest.mock('./Components/CodeBox', () => {
  *   really possible to do with the setup in our website, it's always going to
  *   change state after the program finished runnning.
  *
+ * - App.test.js tests the UI, in other words the tests here try to mimic how
+ *   a user would use the program and check that everything works as intended.
+ *
  * - Don't think there is a way to test if the nodes/edges have been rendered
  *   correctly since the graph visualisation library does not want to work,
  *   the best we can do is to test if the parse() function parses correctly.
  *
- * - Can we at some point remove all the console.log()?
+ * - Similarly it can't test if breakpoints display correctly, but we can test
+ *   for instance if the program stops at the correct line.
  */
 
 test('render correctly', () => {
@@ -151,4 +156,31 @@ print(a)`;
   userEvent.click(stepButton); // print(a)
   await sleep(50);
   expect(outputBox.textContent).toBe('[1, 2, 3]\n[1, 2, 3, 4]\n[1, 2, 3, 4]\n');
+});
+
+test('syntax error outputs correctly', async () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const outputBox = screen.getByTestId('output-box');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+
+  // line 4 or 5 should yield an syntax error, missing closing parenthesis
+  const code = `
+a = [[1,2,3]
+b = a
+print(b
+a.append(4)
+print(b)
+print(a)`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  userEvent.click(runButton);
+  await sleep(50);
+
+  const expected = 'SyntaxError: bad input on line 5';
+
+  expect(outputBox.textContent).toEqual(expected);
 });
