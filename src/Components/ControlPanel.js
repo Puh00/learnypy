@@ -15,6 +15,7 @@ const ControlPanel = ({
   step,
   restart,
   clear_breakpoints,
+  toggle_theme,
   setCode,
   drop_down_menu_ref
 }) => {
@@ -61,9 +62,17 @@ const ControlPanel = ({
           'Clear all breakpoints',
           <Clear_breakpoints_logo />
         )}
+        {create_button(
+          () => {
+            toggle_theme();
+          },
+          'Toggle light/dark mode',
+          <Clear_breakpoints_logo />
+        )}
       </ButtonGroup>
       <ButtonGroup className={`${styles.BtngRight}`}>
         <DropdownLocal
+          className={`${styles.Container}`}
           logo={<Menu_logo />}
           setCode={setCode}
           restart={(code) => {

@@ -69,7 +69,7 @@ const generate_dot = (data) => {
         '];\n';
     }
   });
-  let res = 'digraph structs { node [shape=box]\n' + nodes + edges + '}';
+  let res = 'digraph structs { bgcolor=transparent\nnode [shape=box]\n' + nodes + edges + '}';
 
   return {
     dot: res

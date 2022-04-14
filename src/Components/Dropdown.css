@@ -5,6 +5,10 @@
 
 .dropdown-toggle{
   background-color: var(--components) !important;
+  color: var(--dark) !important;
+  border: 0px;
+  border-left: 2px solid;
+  border-radius: 0px;
 }
 
 .dropdown-toggle:hover{
@@ -19,6 +23,6 @@
   padding: 0px !important;
   box-shadow: var(--shadow);
   color: var(--dark) !important;
-  /* border: 2px solid var(--dark); */
+  background-color: var(--components);
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }

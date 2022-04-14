@@ -93,6 +93,11 @@ const Home = () => {
     setBreakpoints(() => []);
   };
 
+  const toggle_theme = () => {
+    document.body.classList.toggle('dark');
+    console.log(document.body.classList);
+  };
+
   skulpt.configure({
     outf: (text) => {
       latest_output = latest_output + text;
@@ -135,6 +140,7 @@ const Home = () => {
             step={step_callback}
             restart={restart_callback}
             clear_breakpoints={clear_breakpoints}
+            toggle_theme={toggle_theme}
             drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
           />

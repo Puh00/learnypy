@@ -1,6 +1,7 @@
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/python/python';
 import 'codemirror/theme/neat.css';
+import 'codemirror/theme/blackboard.css';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import './CodeBox.css';
@@ -104,7 +105,7 @@ const CodeBox = ({
           lint: true,
           mode: 'python',
           lineNumbers: true,
-          theme: 'neat',
+          theme: 'blackboard',
           autoCloseBrackets: true,
           autoCloseTags: true,
           gutters: ['breakpoints', 'lineMarker', 'CodeMirror-linenumbers']

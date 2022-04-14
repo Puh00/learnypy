@@ -3,7 +3,7 @@
   display: block;
   overflow: hidden;
   margin: 5px;
-  background-color: white;
+  background-color: var(--components);
 }
 
 .Container svg {

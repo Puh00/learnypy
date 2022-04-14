@@ -1,12 +1,28 @@
-@import "rootStyles.css";
-
 html,
-body {
+body{
+   /* Light mode */
+  --background: #e9ecef;
+  --components: white;
+  --dark: #393B44;
+  --border: #393B44;
+  --hover: #cedaee;
+  --shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
   height: 100%;
   margin: 0;
   overflow: hidden; /* to hide the scrollbar */
   overflow-x: hidden;
   background-color: var(--background);
+}
+
+body.dark{
+      /* Dark mode */
+      --background: #3B414B;
+      --components: #0C1021;
+      --dark: #888;
+      --border: transparent;
+      --hover: #8DA6CE;
+      --shadow: #0C1021 0px 2px 5px -1px, #0C1021 0px 1px 3px -1px;
 }
 
 /* if !important is not on then the react-bootstrap components won't be affected */

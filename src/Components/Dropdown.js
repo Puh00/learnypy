@@ -41,9 +41,9 @@ llist.traverse_list()`
   }
 ];
 
-function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref, button_border }) {
+function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref }) {
   return (
-    <Dropdown style={button_border} as={ButtonGroup}>
+    <Dropdown as={ButtonGroup}>
       <Dropdown.Toggle
         data-toggle="tooltip"
         title="Code Examples"

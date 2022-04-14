@@ -21,7 +21,7 @@
 .Btng{
     border: 2px solid;
     border-radius: 4px;
-    border-color: var(--dark);
+    border-color: var(--border);
     display: flex;
     flex-direction: row;
     justify-content: flex-start;

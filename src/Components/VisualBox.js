@@ -9,7 +9,7 @@ import styles from './VisualBox.module.css';
 var text;
 
 const VisualBox = ({ data }) => {
-  const [graph, setGraph] = useState({ dot: 'graph {}' });
+  const [graph, setGraph] = useState({ dot: 'graph {bgcolor="skyblue1"}' });
   const container = useRef(null);
 
   useEffect(() => {
