@@ -16,19 +16,31 @@
   transform: translate(-50%, -50%);
 }
 
-
 .Button {
-  border: 2px solid black;
+  border-left: 2px solid var(--dark) !important;
+  border-bottom: 2px solid var(--dark) !important;
+  border-radius: 0px;
+  border-bottom-left-radius: 5px;
+  color: var(--dark) !important;
+  background-color: var(--components) !important;
 
   position: absolute;
   top: 0;
   right: 0;
 
-  width: 8%;
-  height: 8%;
+  width: 6%;
+  height: 6%;
+}
+
+.Button:disabled{
+  visibility: hidden;
 }
 
 .Button * {
   width: 100%;
   height: 100%;
+}
+
+.Button:hover{
+  background-color: var(--hover) !important;
 }
