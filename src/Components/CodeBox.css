@@ -9,6 +9,7 @@
   height: 100%;
   border: 2px solid var(--border);
   border-radius: 5px;
+  box-shadow: var(--shadow);
 }
 
 .breakpoints{

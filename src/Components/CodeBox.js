@@ -105,7 +105,6 @@ const CodeBox = ({
           lint: true,
           mode: 'python',
           lineNumbers: true,
-          theme: 'blackboard',
           autoCloseBrackets: true,
           autoCloseTags: true,
           gutters: ['breakpoints', 'lineMarker', 'CodeMirror-linenumbers']

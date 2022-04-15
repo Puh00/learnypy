@@ -4,6 +4,7 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import styles from './ControlPanel.module.css';
 import DropdownLocal from './Dropdown';
 import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
+import { ReactComponent as Theme_logo } from './Icons/brightness.svg';
 import { ReactComponent as Clear_breakpoints_logo } from './Icons/clear-breakpoints.svg';
 import { ReactComponent as Play_logo } from './Icons/play.svg';
 import { ReactComponent as Stop_logo } from './Icons/stop.svg';
@@ -19,9 +20,9 @@ const ControlPanel = ({
   setCode,
   drop_down_menu_ref
 }) => {
-  const create_button = (func, tooltip_text, logo) => (
+  const create_button = (func, tooltip_text, logo, left) => (
     <Button
-      className={`${styles.Container}`}
+      className={left ? `${styles.Btn} ${styles.BtnLeft}` : `${styles.Btn} ${styles.BtnRight}`}
       variant="light"
       onClick={func}
       data-toggle="tooltip"
@@ -39,40 +40,45 @@ const ControlPanel = ({
             runit(code);
           },
           'Run code (until next breakpoint)',
-          <Play_logo />
+          <Play_logo />,
+          true
         )}
         {create_button(
           () => {
             step(code);
           },
           'Run next line',
-          <Next_logo />
+          <Next_logo />,
+          true
         )}
         {create_button(
           () => {
             restart(code);
           },
           'Stop execution',
-          <Stop_logo />
+          <Stop_logo />,
+          true
         )}
         {create_button(
           () => {
             clear_breakpoints();
           },
           'Clear all breakpoints',
-          <Clear_breakpoints_logo />
+          <Clear_breakpoints_logo />,
+          true
         )}
+      </ButtonGroup>
+      <ButtonGroup className={`${styles.BtngRight}`}>
         {create_button(
           () => {
             toggle_theme();
           },
           'Toggle light/dark mode',
-          <Clear_breakpoints_logo />
+          <Theme_logo />,
+          false
         )}
-      </ButtonGroup>
-      <ButtonGroup className={`${styles.BtngRight}`}>
         <DropdownLocal
-          className={`${styles.Container}`}
+          className={`${styles.Btn}`}
           logo={<Menu_logo />}
           setCode={setCode}
           restart={(code) => {

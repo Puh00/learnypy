@@ -95,6 +95,7 @@ const Home = () => {
 
   const toggle_theme = () => {
     document.body.classList.toggle('dark');
+    document.getElementById('CodeBox').setOption('theme', 'blackboard'); //ERROR
     console.log(document.body.classList);
   };
 
