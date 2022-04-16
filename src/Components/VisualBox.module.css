@@ -23,6 +23,7 @@
   border-bottom-left-radius: 5px;
   color: var(--dark) !important;
   background-color: var(--components) !important;
+  box-shadow: var(--shadow);
 
   position: absolute;
   top: 0;
