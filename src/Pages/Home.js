@@ -17,6 +17,9 @@ const Home = () => {
   const [line, setLine] = useState(-1);
   const [stepped, setStepped] = useState(false);
   const [breakpoints, setBreakpoints] = useState([]);
+  const [theme, setTheme] = useState(
+    document.body.classList.contains('dark') ? 'blackboard' : 'neat'
+  );
 
   const drop_down_menu_ref = useRef(null);
   const output_box_ref = useRef(null);
@@ -95,7 +98,7 @@ const Home = () => {
 
   const toggle_theme = () => {
     document.body.classList.toggle('dark');
-    document.getElementById('CodeBox').setOption('theme', 'blackboard'); //ERROR
+    setTheme(theme == 'neat' ? 'blackboard' : 'neat');
     console.log(document.body.classList);
   };
 
@@ -150,6 +153,7 @@ const Home = () => {
             setCode={setCode}
             line={line}
             breakpoints={breakpoints}
+            theme={theme}
             drop_down_menu_ref={drop_down_menu_ref}
             output_box_ref={output_box_ref}
             add_breakpoint={(line_number) =>

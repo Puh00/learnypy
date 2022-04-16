@@ -15,6 +15,10 @@
   background-color: var(--hover) !important;
 }
 
+.dropdown-item{
+  color: var(--dark) !important;
+}
+
 .dropdown-item:hover{
   background-color: var(--hover) !important;
 }
@@ -22,7 +26,6 @@
 .dropdown-menu{
   padding: 0px !important;
   box-shadow: var(--shadow);
-  color: var(--dark) !important;
   background-color: var(--components);
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }

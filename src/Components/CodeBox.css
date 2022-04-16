@@ -33,6 +33,6 @@
 }
 
 .CodeMirror-focused {
-  outline: 3px solid blue;
+  outline: 3px solid var(--outline);
   outline-offset: 0px;
 }

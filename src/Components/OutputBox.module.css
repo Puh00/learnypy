@@ -1,9 +1,9 @@
 .Container {
-  background-color: var(--background);
   padding: 5px;
   flex-basis: 45%;
   border-radius: 4px;
   white-space: pre-line;
   overflow: auto;
   background-color: var(--components);
+  color: var(--dark);
 }

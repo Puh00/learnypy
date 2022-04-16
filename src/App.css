@@ -5,9 +5,11 @@ body{
   --background: #c6ced6; 
   --components: white;
   --dark: #393B44;
-  --border: white;
+  --border: transparent;
   --hover: #cedaee;
   --shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  --red: red;
+  --outline: blue;
 
   height: 100%;
   margin: 0;
@@ -24,7 +26,9 @@ body.dark{
       --border: transparent;
       --hover:#171d38;
       --shadow: #0C1021 0px 2px 5px -1px, #0C1021 0px 1px 3px -1px;
+      --red: #FF6400;
+      --outline: #8DA6CE;
 }
 
 /* if !important is not on then the react-bootstrap components won't be affected */
-*:focus {outline:3px solid blue !important; outline-offset: 0px !important;}
+*:focus {outline:3px solid var(--outline) !important; outline-offset: 0px !important;}
