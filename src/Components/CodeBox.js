@@ -17,6 +17,7 @@ const breakpoint_logo = raw('./Icons/breakpoint-node.svg');
 const CodeBox = ({
   code,
   setCode,
+  isStepping,
   line,
   breakpoints,
   drop_down_menu_ref,
@@ -104,6 +105,7 @@ const CodeBox = ({
           lint: true,
           mode: 'python',
           lineNumbers: true,
+          readOnly: isStepping ? 'nocursor' : false,
           theme: 'neat',
           autoCloseBrackets: true,
           autoCloseTags: true,
