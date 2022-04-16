@@ -11,6 +11,15 @@
   border-radius: 5px;
 }
 
+.read-only .CodeMirror {
+  background-color: #eeeeee;
+  opacity: 0.6;
+}
+
+.read-only .CodeMirror .CodeMirror-gutters {
+  background-color: #dddddd;
+}
+
 .breakpoints{
   width: 13px;
   justify-content: center;

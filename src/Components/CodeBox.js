@@ -91,11 +91,24 @@ const CodeBox = ({
     update_breakpoints(editor);
     set_highlighted_row(editor);
     set_tooltip_breakpoint_area();
+
+    if (isStepping) {
+      editor.eachLine((line) => {
+        editor.setGutterMarker(
+          line,
+          'read-only',
+          breakpoints.includes(line.lineNo()) ? breakpoint_node() : null
+        );
+
+        editor.addLineClass(line, 'background', 'read-only');
+      });
+    }
   }
 
   return (
     <div className={`${styles.Container}`}>
       <CodeMirror
+        className={isStepping ? 'read-only' : ''}
         value={code}
         options={{
           configureMouse: () => {
