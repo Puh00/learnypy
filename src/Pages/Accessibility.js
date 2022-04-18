@@ -29,10 +29,10 @@ const Accessibility = () => {
       <div className={styles.Content}>
         <h1 className={styles.heading_title}>Accessibility of {appName}</h1>
         <p>
-          We want as many people as possible to be able to use it, and this document describes how
+          We want as many people as possible to be able to use it, and this document describes how{' '}
           <a href="python-chutor.netlify.app/" target="_blank" rel="noreferrer">
             python-chutor.netlify.app/
-          </a>
+          </a>{' '}
           complies with the accessibility regulations, any known accessibility issues, and how you
           can report problems so that we can fix them.
         </p>
@@ -43,13 +43,22 @@ const Accessibility = () => {
         </p>
         <h2 className={styles.Title}>What to do if you can not access parts of this website?</h2>
         <p>
-          Since this is a closed project, it is unfortunately not possible to report any
-          accessibility problems or contact us for further help.
+          If you need content from this website that is not accessible for you, but is not within
+          the scope of the accessibility regulations as described below, please report it to the{' '}
+          <a href="https://github.com/Puh00/python-chutor/issues" target="_blank" rel="noreferrer">
+            issues page
+          </a>
+          .
         </p>
         <h2 className={styles.Title}>Reporting accessibility problems with this website</h2>
         <p>
-          Since this is a closed project, it is unfortunately not possible to report any
-          accessibility problems or contact us for further help.
+          We’re always looking to improve the accessibility of this website. If you find any
+          problems that aren’t listed on this page or if we’re not meeting the requirements of the
+          accessibility regulations, let us know about the problem by reporting it to the{' '}
+          <a href="https://github.com/Puh00/python-chutor/issues" target="_blank" rel="noreferrer">
+            issues page
+          </a>
+          .
         </p>
         <h2 className={styles.Title}>Enforcement procedure</h2>
         <p>
