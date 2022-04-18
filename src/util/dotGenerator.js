@@ -1,15 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 
 // Colors
-const var_col_1 = 'bisque4';
-const var_col_2 = 'beige';
-const arrow_col_1 = 'lightsteelblue4';
-const arrow_col_2 = 'lightsteelblue3';
-const immutable_col_1 = 'seashell4';
-const immutable_col_2 = 'seashell';
-const indexable_col_1 = 'mistyrose4';
-const indexable_col_2 = 'mistyrose';
-const indexable_col_3 = 'mistyrose2';
+const line_col = 'dimgray';
+//Colors from X11 color scheme, Ref: https://www.w3schools.com/colors/colors_x11.asp
+const var_col = '	paleturquoise2';
+const immutable_col = 'darkseagreen2';
+const indexable_col = 'slategray1';
 
 let nodes; // To represent variables and objects
 let edges; // To represent references
@@ -22,23 +18,39 @@ const generate_dot = (data) => {
   // variables
   data.variables.forEach((v) => {
     const var_id = uuidv4();
+    const edge_tooltip = "Variable '" + v.name + "'" + ' references ...';
+    const node_tooltip = "Variable '" + v.name + "'";
     // add variable as node
     nodes +=
       '##Variable:\n"' +
       var_id +
       '" [label=' +
       v.name +
-      ' shape=ellipse color=' +
-      var_col_1 +
+      ' tooltip="' +
+      node_tooltip +
+      '" shape=oval color=' +
+      line_col +
       ' fillcolor=' +
-      var_col_2 +
+      var_col +
       ' style=filled];\n';
     // add edge from variable to the referenced object
-    edges += '"' + var_id + '" ' + '->' + ' "' + v.ref + '"[color=' + arrow_col_1 + '];\n';
+    edges +=
+      '"' +
+      var_id +
+      '" ' +
+      '->' +
+      '"' +
+      v.ref +
+      '"[color=' +
+      line_col +
+      '] [edgetooltip="' +
+      edge_tooltip +
+      '"];\n';
   });
 
   // objects
   data.objects.forEach((o) => {
+    const object_tooltip = o.info.type;
     if (o.info.type === 'tuple') {
       set_collection_object(o, '(', ')');
     } else if (o.info.type === 'list') {
@@ -62,14 +74,16 @@ const generate_dot = (data) => {
         o.id +
         '" [label=' +
         label +
-        ' style="rounded, filled" fillcolor=' +
-        immutable_col_2 +
+        ' tooltip="' +
+        object_tooltip +
+        '" style="rounded, filled" fillcolor=' +
+        immutable_col +
         ' color=' +
-        immutable_col_1 +
+        line_col +
         '];\n';
     }
   });
-  let res = 'digraph structs { node [shape=box]\n' + nodes + edges + '}';
+  let res = 'digraph structs { node [shape=box] [fontname="Arial"] \n' + nodes + edges + '}';
 
   return {
     dot: res
@@ -86,16 +100,24 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
   let index = '';
   let to = '';
 
+  const node_tooltip =
+    o.info.type == 'class'
+      ? 'A ' + o.info.type + " named '" + o.info.class_name + "'"
+      : 'A ' + o.info.type + ' of size ' + o.value.length;
+
   nodes +=
     '##Indexable object:\n"' +
     o.id +
-    '" [shape=plaintext label=<\n<TABLE BGCOLOR="' +
-    indexable_col_2 +
+    '" [shape=plaintext ' +
+    'tooltip= "' +
+    node_tooltip +
+    '" label=<\n<TABLE BGCOLOR="' +
+    indexable_col +
     '" COLOR="' +
-    indexable_col_1 +
-    '" BORDER="0" CELLBORDER="1" CELLSPACING="0">' +
+    line_col +
+    '" BORDER="0" CELLBORDER="1" CELLPADDING="5" CELLSPACING="0">' +
     '\n\t<TR>\n\t\t<TD PORT="base" BGCOLOR="' +
-    indexable_col_3 +
+    indexable_col +
     '" COLSPAN="' +
     o.value.length +
     '">' +
@@ -105,7 +127,7 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
   if (o.info.type === 'set') {
     // Sets are unordered => edges are not connected to an index
     o.value.forEach((item) => {
-      edges += '"' + o.id + '":"base" -> "' + item.ref + '"[color=' + arrow_col_2 + '];\n';
+      edges += '"' + o.id + '":"base" -> "' + item.ref + '"[color=' + line_col + '];\n';
     });
   } else if (o.value.length > 0) {
     // All types that are ordered => edges should be connected to an index
@@ -126,8 +148,20 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
           break;
         default:
       }
+      const edge_tooltip = " index '" + index + "' references...";
       nodes += 'PORT="' + count + '">' + index;
-      edges += '"' + o.id + '":"' + count + '" -> "' + to + '"[color=' + arrow_col_2 + '];\n';
+      edges +=
+        '"' +
+        o.id +
+        '":"' +
+        count +
+        '" -> "' +
+        to +
+        '"[color=' +
+        line_col +
+        ' edgetooltip="' +
+        edge_tooltip +
+        '"];\n';
 
       // check if one more key is added after this one
       count++;
