@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import generate_dot from '../util/dotGenerator';
 import set_text from '../util/textGenerator';
 import border from './Border.module.css';
-import { ReactComponent as Zoom_logo } from './Icons/magnifying-glass.svg';
+import { ReactComponent as Reset_zoom_logo } from './Icons/reset.svg';
 import styles from './VisualBox.module.css';
 
 const VisualBox = ({ data, share_methods }) => {
@@ -31,7 +31,7 @@ const VisualBox = ({ data, share_methods }) => {
         title={tooltip_text}
         aria-label={tooltip_text}
         disabled={disabled}>
-        <Zoom_logo />
+        <Reset_zoom_logo />
       </Button>
     );
   };
