@@ -189,9 +189,28 @@ class Skulpt {
           old_o_id = retrieve_object_id(new_globals.objects, o.js_object);
         }
         for (const v_new of new_globals.variables) {
-          if (v.name === v_new.name) {
-            if (v_new.ref !== old_o_id) {
-              v_new.dead_ref = old_o_id;
+          if (v.name === v_new.name && v_new.ref !== old_o_id) {
+            v_new.dead_ref = old_o_id;
+          }
+        }
+      }
+    }
+
+    for (const o of old_globals.objects) {
+      if (['list'].includes(o.info.type)) {
+        for (let index = 0; index < o.value.length; index++) {
+          for (const ob of old_globals.objects) {
+            if (o.value[index].ref === ob.id) {
+              old_o_id = retrieve_object_id(new_globals.objects, ob.js_object);
+            }
+            for (const o_new of new_globals.objects) {
+              if (
+                o_new.js_object === o.js_object &&
+                o_new.value.length > index &&
+                o_new.value[index].ref !== old_o_id
+              ) {
+                o_new.value[index].dead_ref = old_o_id;
+              }
             }
           }
         }
