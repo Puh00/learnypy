@@ -12,12 +12,11 @@
 }
 
 .read-only .CodeMirror {
-  background-color: #eeeeee;
-  opacity: 0.6;
+  background-color: #e6e6e6;
 }
 
 .read-only .CodeMirror .CodeMirror-gutters {
-  background-color: #dddddd;
+  background-color: #dedede;
 }
 
 .breakpoints{
