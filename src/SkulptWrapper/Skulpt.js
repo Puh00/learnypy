@@ -1,4 +1,4 @@
-import { parse_globals, parse_locals } from './skulptParser';
+import { parse_globals, parse_locals, retrieve_object_id } from './skulptParser';
 
 /**
  * Wrapper class of the Skulpt module.
@@ -166,12 +166,36 @@ class Skulpt {
    * @param {Function} callback A callback function called with the current globals and locals as arguments.
    */
   async step(prog, callback) {
+    let old_globals = parse_globals();
+
     this.debugger.enable_step_mode();
     await this.debugger.resume.call(this.debugger);
 
+    let new_globals = parse_globals();
+
+    this.set_dead_refs(old_globals, new_globals);
+
     // calls the callback function if it is a function
     if (typeof callback === 'function') {
-      callback(parse_globals(), parse_locals());
+      callback(new_globals, parse_locals());
+    }
+  }
+
+  set_dead_refs(old_globals, new_globals) {
+    let old_o_id;
+    for (const v of old_globals.variables) {
+      for (const o of old_globals.objects) {
+        if (v.ref === o.id) {
+          old_o_id = retrieve_object_id(new_globals.objects, o.js_object);
+        }
+        for (const v_new of new_globals.variables) {
+          if (v.name === v_new.name) {
+            if (v_new.ref !== old_o_id) {
+              v_new.dead_ref = old_o_id;
+            }
+          }
+        }
+      }
     }
   }
 
