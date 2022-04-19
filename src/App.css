@@ -1,4 +1,4 @@
-@import "rootStyles.css";
+@import 'rootStyles.css';
 
 html,
 body {
@@ -10,4 +10,7 @@ body {
 }
 
 /* if !important is not on then the react-bootstrap components won't be affected */
-*:focus {outline:3px solid blue !important; outline-offset: 0px !important;}
+*:focus {
+  outline: 3px solid blue !important;
+  outline-offset: 0px !important;
+}
