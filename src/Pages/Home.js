@@ -20,10 +20,16 @@ const Home = () => {
 
   const drop_down_menu_ref = useRef(null);
   const output_box_ref = useRef(null);
+  // create a mutatable ref so that it won't be reinitialised every rerender
+  const shared_methods = useRef({});
 
   const skulpt = Skulpt.instance();
 
   let latest_output = '';
+
+  // ===========================================================
+  // =========================UTILITIES=========================
+  // ===========================================================
 
   // highlights and stops at the specified line of the code
   const stop_at = (prog, line = 0) => {
@@ -46,6 +52,28 @@ const Home = () => {
     return -1;
   };
 
+  const clear_visuals = () => {
+    setOutput({ text: '' });
+    setGlobals({ objects: [], variables: [] });
+    setLocals({ objects: [], variables: [] });
+    setLine(-1);
+    setStepped(false);
+  };
+
+  const clear_breakpoints = () => {
+    setBreakpoints(() => []);
+  };
+
+  // allow Home.js to use methods from the children by passing down this function
+  // add more functions as parameters if needed
+  const share_methods = ({ resetGraphZoom }) => {
+    shared_methods.current.resetGraphZoom = resetGraphZoom;
+  };
+
+  // ===========================================================
+  // ==========================BUTTONS==========================
+  // ===========================================================
+
   // callback function sent to the debugger
   const callback = (globals, locals) => {
     setGlobals(globals);
@@ -65,6 +93,10 @@ const Home = () => {
     clear_visuals();
     setStepped(true);
     skulpt.run(prog, callback);
+
+    if (typeof shared_methods.current.resetGraphZoom === 'function') {
+      shared_methods.current.resetGraphZoom();
+    }
   };
 
   const step_callback = (prog) => {
@@ -75,23 +107,19 @@ const Home = () => {
       } else {
         stop_at(prog);
       }
+      // reset the graph zoom at step if the program just restarted
+      if (typeof shared_methods.current.resetGraphZoom === 'function') {
+        shared_methods.current.resetGraphZoom();
+      }
       return;
     }
 
     skulpt.step(prog, callback);
   };
 
-  const clear_visuals = () => {
-    setOutput({ text: '' });
-    setGlobals({ objects: [], variables: [] });
-    setLocals({ objects: [], variables: [] });
-    setLine(-1);
-    setStepped(false);
-  };
-
-  const clear_breakpoints = () => {
-    setBreakpoints(() => []);
-  };
+  // ===========================================================
+  // ===================SKULPT CONFIGURATIONS===================
+  // ===========================================================
 
   skulpt.configure({
     outf: (text) => {
@@ -116,6 +144,10 @@ const Home = () => {
   useEffect(() => {
     skulpt.update_breakpoints(breakpoints);
   }, [breakpoints]);
+
+  // ===========================================================
+  // ===========================OTHER===========================
+  // ===========================================================
 
   const navItems = [
     {
@@ -154,7 +186,7 @@ const Home = () => {
           />
           <OutputBox output={output} output_box_ref={output_box_ref} />
         </div>
-        <VisualBox data={globals} />
+        <VisualBox data={globals} share_methods={share_methods} />
       </div>
     </div>
   );

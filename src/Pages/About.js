@@ -62,8 +62,6 @@ const About = () => {
         <h3 className={styles.SubTitle}> Caused by the app </h3>
         <ul>
           <li>Only Python is supported</li>
-
-          <li>Too many variables will make the visualisation unreadable</li>
           <li>Turtle graphics are not supported</li>
           <li>
             The only supported datatypes (for visualisation) are: integers, floats, doubles,
