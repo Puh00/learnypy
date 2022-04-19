@@ -123,9 +123,8 @@ class Skulpt {
    *
    * @param {String} prog The code of the program, as a string.
    * @param {Function} callback A callback function called with no arguments after the program has been restarted.
-   * @param {Boolean} run A boolean used to denote if the intention is to run the program or not after restart
    */
-  restart(prog, callback, run) {
+  restart(prog, callback) {
     // enable step_mode at the beginning to avoid executing this program
     this.debugger.enable_step_mode();
 
@@ -139,26 +138,12 @@ class Skulpt {
       breakpoints: this.debugger.check_breakpoints.bind(this.debugger)
     });
 
-    let promise;
-
-    //If the intention is to run the program, load the debugger with the code.
-    //Otherwise, load the debugger with nothing. This is to make sure that
-    //it's possible to restart the debugger even if the code doesn't compile.
-    if (run) {
-      // the following code run the code in the debugger
-      promise = this.debugger.asyncToPromise(
-        () => window.Sk.importMainWithBody('<stdin>', false, prog, true),
-        null, // the debugger literally doesn't use this...
-        this.debugger
-      );
-    } else {
-      //load program with '' (nothing)
-      promise = this.debugger.asyncToPromise(
-        () => window.Sk.importMainWithBody('<stdin>', false, '', true),
-        null, // the debugger literally doesn't use this...
-        this.debugger
-      );
-    }
+    // the following code run the code in the debugger
+    const promise = this.debugger.asyncToPromise(
+      () => window.Sk.importMainWithBody('<stdin>', false, prog, true),
+      null, // the debugger literally doesn't use this...
+      this.debugger
+    );
 
     promise.then(
       this.debugger.success.bind(this.debugger),
@@ -181,11 +166,6 @@ class Skulpt {
    * @param {Function} callback A callback function called with the current globals and locals as arguments.
    */
   async step(prog, callback) {
-    //If there isn't any program running, restart the debugger
-    //with the appropriate code
-    if (!this.debugger.get_active_suspension()) {
-      this.restart(prog, null, true);
-    }
     this.debugger.enable_step_mode();
     await this.debugger.resume.call(this.debugger);
 
@@ -204,10 +184,9 @@ class Skulpt {
   run(prog, callback) {
     this.init_breakpoints();
 
-    //If there isn't any program running, restart the debugger
-    //with the appropriate code
+    // if the is no active suspension, then we restart the program
     if (!this.debugger.get_active_suspension()) {
-      this.restart(prog, null, true);
+      this.restart(prog);
     }
 
     this.debugger.disable_step_mode();
