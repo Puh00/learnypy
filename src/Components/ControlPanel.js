@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { ButtonGroup } from 'react-bootstrap';
 
+import Button from './Button';
 import styles from './ControlPanel.module.css';
 import DropdownLocal from './Dropdown';
 import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
@@ -18,49 +19,41 @@ const ControlPanel = ({
   setCode,
   drop_down_menu_ref
 }) => {
-  const create_button = (func, tooltip_text, logo) => (
-    <Button
-      className={`${styles.Container}`}
-      variant="light"
-      onClick={func}
-      data-toggle="tooltip"
-      title={tooltip_text}
-      aria-label={tooltip_text}>
-      {logo}
-    </Button>
-  );
-
   return (
     <ButtonGroup className={`${styles.Btng}`}>
       <ButtonGroup className={`${styles.BtngLeft}`}>
-        {create_button(
-          () => {
+        <Button
+          onClick={() => {
             runit(code);
-          },
-          'Run code (until next breakpoint)',
-          <Play_logo />
-        )}
-        {create_button(
-          () => {
+          }}
+          className={styles.Container}
+          tooltip="Run code (until next breakpoint)"
+          logo={<Play_logo />}
+        />
+        <Button
+          onClick={() => {
             step(code);
-          },
-          'Run next line',
-          <Next_logo />
-        )}
-        {create_button(
-          () => {
+          }}
+          className={styles.Container}
+          tooltip="Run next line"
+          logo={<Next_logo />}
+        />
+        <Button
+          onClick={() => {
             restart(code);
-          },
-          'Stop execution',
-          <Stop_logo />
-        )}
-        {create_button(
-          () => {
+          }}
+          className={styles.Container}
+          tooltip="Stop execution"
+          logo={<Stop_logo />}
+        />
+        <Button
+          onClick={() => {
             clear_breakpoints();
-          },
-          'Clear all breakpoints',
-          <Clear_breakpoints_logo />
-        )}
+          }}
+          className={styles.Container}
+          tooltip="Clear all breakpoints"
+          logo={<Clear_breakpoints_logo />}
+        />
       </ButtonGroup>
       <ButtonGroup className={`${styles.BtngRight}`}>
         <DropdownLocal

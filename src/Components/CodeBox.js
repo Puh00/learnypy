@@ -6,7 +6,7 @@ import 'codemirror/addon/edit/closebrackets';
 import './CodeBox.css';
 
 import raw from 'raw.macro';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
 
 import styles from './CodeBox.module.css';
@@ -17,6 +17,7 @@ const breakpoint_logo = raw('./Icons/breakpoint-node.svg');
 const CodeBox = ({
   code,
   setCode,
+  isStepping,
   line,
   breakpoints,
   drop_down_menu_ref,
@@ -25,25 +26,36 @@ const CodeBox = ({
   remove_breakpoint
 }) => {
   const [editor, setEditor] = useState(null);
+  const [prevLine, setPrevLine] = useState(-1);
+  const [prevBreakpoints, setPrevBreakpoints] = useState(() => []);
+
+  const breakpoint_node = () => {
+    const breakpoint_node = document.createElement('span');
+    breakpoint_node.className = styles['breakpoint-node'];
+    breakpoint_node.innerHTML = breakpoint_logo;
+    breakpoint_node.setAttribute('data-toggle', 'tooltip');
+    breakpoint_node.setAttribute('title', 'Click to remove breakpoint');
+    return breakpoint_node;
+  };
+
+  const marker_node = () => {
+    const marker_node = document.createElement('span');
+    marker_node.className = styles['marker-node'];
+    marker_node.innerHTML = marker_logo;
+    marker_node.setAttribute('data-toggle', 'tooltip');
+    marker_node.setAttribute('title', 'Next line to be executed');
+    return marker_node;
+  };
 
   const set_highlighted_row = (_editor) => {
-    // remove all previous highlighted lines and line markers
-    _editor.eachLine((line) => {
-      _editor.removeLineClass(line, 'wrap', styles['Line-highlight']);
-      _editor.setGutterMarker(line, 'lineMarker', null);
-    });
+    // remove previous highlighted line and line marker
+    _editor.removeLineClass(prevLine, 'wrap', styles['Line-highlight']);
+    _editor.setGutterMarker(prevLine, 'lineMarker', null);
 
     if (line >= 0) {
-      // Create line marker
-      let marker_node = document.createElement('span');
-      marker_node.className = styles['marker-node'];
-      marker_node.innerHTML = marker_logo;
-      marker_node.setAttribute('data-toggle', 'tooltip');
-      marker_node.setAttribute('title', 'Next line to be executed');
-
       // highlight the current execution row
       _editor.addLineClass(line, 'wrap', styles['Line-highlight']);
-      _editor.setGutterMarker(line, 'lineMarker', marker_node);
+      _editor.setGutterMarker(line, 'lineMarker', marker_node());
     }
   };
 
@@ -58,24 +70,19 @@ const CodeBox = ({
     add_breakpoint(lineNumber);
   };
 
-  const breakpoint_node = () => {
-    const breakpoint_node = document.createElement('span');
-    breakpoint_node.className = styles['breakpoint-node'];
-    breakpoint_node.innerHTML = breakpoint_logo;
-    breakpoint_node.setAttribute('data-toggle', 'tooltip');
-    breakpoint_node.setAttribute('title', 'Click to remove breakpoint');
-    return breakpoint_node;
-  };
-
   const update_breakpoints = (_editor) => {
-    _editor.eachLine((line) => {
-      _editor.setGutterMarker(
-        line,
-        'breakpoints',
-        breakpoints.includes(line.lineNo()) ? breakpoint_node() : null
-      );
+    const bps_to_remove = prevBreakpoints.filter((bp) => !breakpoints.includes(bp));
+    const bps_to_add = breakpoints.filter((bp) => !prevBreakpoints.includes(bp));
+
+    bps_to_remove.forEach((bp) => {
+      _editor.setGutterMarker(bp, 'breakpoints', null);
+    });
+
+    bps_to_add.forEach((bp) => {
+      _editor.setGutterMarker(bp, 'breakpoints', breakpoint_node());
     });
   };
+
   const set_tooltip_breakpoint_area = () => {
     var breakpoint_area = document.getElementsByClassName('CodeMirror-gutters')[0];
     breakpoint_area.setAttribute('data-toggle', 'tooltip');
@@ -92,9 +99,20 @@ const CodeBox = ({
     set_tooltip_breakpoint_area();
   }
 
+  useEffect(() => {
+    // update previous line for next render, only if line changed
+    setPrevLine(line);
+  }, [line]);
+
+  useEffect(() => {
+    // similar optimisation for breakpoints
+    setPrevBreakpoints(() => breakpoints);
+  }, [breakpoints]);
+
   return (
     <div className={`${styles.Container}`}>
       <CodeMirror
+        className={isStepping ? 'read-only' : ''}
         value={code}
         options={{
           configureMouse: () => {
@@ -104,6 +122,7 @@ const CodeBox = ({
           lint: true,
           mode: 'python',
           lineNumbers: true,
+          readOnly: isStepping ? 'nocursor' : false,
           theme: 'neat',
           autoCloseBrackets: true,
           autoCloseTags: true,

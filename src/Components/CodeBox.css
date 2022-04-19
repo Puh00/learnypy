@@ -11,22 +11,38 @@
   border-radius: 5px;
 }
 
-.breakpoints{
+.read-only .CodeMirror {
+  background-color: #e6e6e6;
+}
+
+.read-only .CodeMirror .CodeMirror-gutters {
+  background-color: #dedede;
+}
+
+.cm-number {
+  color: #247f24 !important;
+}
+
+.breakpoints {
   width: 13px;
   justify-content: center;
   padding: 2px;
 }
 
-.CodeMirror-linenumbers{
-  padding-right: 2px !important
+.CodeMirror-linenumbers {
+  padding-right: 2px !important;
 }
 
-.CodeMirror-gutter-elt{
+.CodeMirror-linenumber {
+  color: #6b6b6b;
+}
+
+.CodeMirror-gutter-elt {
   padding: 2px !important;
   text-align: right;
 }
 
-.lineMarker{
+.lineMarker {
   width: 16px;
   padding: 2px;
 }
