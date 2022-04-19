@@ -204,7 +204,7 @@ a.append(a)`;
   expect(refs.objects).toHaveLength(4); // 1, 2, [1,2] and [[1,2]], 4 objects in total
   expect(a.ref).toEqual(a_obj.id);
   // one of the values in a must refer to a
-  expect(a_obj.value).toEqual(expect.arrayContaining([{ ref: a_obj.id }]));
+  expect(a_obj.value).toEqual(expect.arrayContaining([{ dead_ref: null, ref: a_obj.id }]));
 });
 
 test('creating a basic dictionary', () => {
