@@ -139,26 +139,14 @@ class Skulpt {
       breakpoints: this.debugger.check_breakpoints.bind(this.debugger)
     });
 
-    let promise;
-
     //If the intention is to run the program, load the debugger with the code.
     //Otherwise, load the debugger with nothing. This is to make sure that
     //it's possible to restart the debugger even if the code doesn't compile.
-    if (run) {
-      // the following code run the code in the debugger
-      promise = this.debugger.asyncToPromise(
-        () => window.Sk.importMainWithBody('<stdin>', false, prog, true),
-        null, // the debugger literally doesn't use this...
-        this.debugger
-      );
-    } else {
-      //load program with '' (nothing)
-      promise = this.debugger.asyncToPromise(
-        () => window.Sk.importMainWithBody('<stdin>', false, '', true),
-        null, // the debugger literally doesn't use this...
-        this.debugger
-      );
-    }
+    let promise = this.debugger.asyncToPromise(
+      () => window.Sk.importMainWithBody('<stdin>', false, run ? prog : '', true),
+      null, // the debugger literally doesn't use this...
+      this.debugger
+    );
 
     promise.then(
       this.debugger.success.bind(this.debugger),
