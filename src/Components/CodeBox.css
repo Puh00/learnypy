@@ -10,9 +10,19 @@
   border: 2px solid black;
   border-radius: 5px;
 }
+
+.read-only .CodeMirror {
+  background-color: #e6e6e6;
+}
+
+.read-only .CodeMirror .CodeMirror-gutters {
+  background-color: #dedede;
+}
+
 .cm-number {
   color: #247f24 !important;
 }
+
 .breakpoints {
   width: 13px;
   justify-content: center;

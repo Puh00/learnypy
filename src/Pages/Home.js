@@ -173,6 +173,7 @@ const Home = () => {
           <CodeBox
             code={code}
             setCode={setCode}
+            isStepping={stepped}
             line={line}
             breakpoints={breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
