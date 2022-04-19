@@ -47,7 +47,7 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
       // skip if it's an Python attribute, a function or a class (which is signified by 'type')
       if (
         filter.includes(key) ||
-        ['function', 'type'].includes(Object.getPrototypeOf(value).tp$name)
+        ['function', 'type', 'module'].includes(Object.getPrototypeOf(value).tp$name)
       )
         continue;
 
