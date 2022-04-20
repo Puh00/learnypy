@@ -41,11 +41,26 @@ const generate_dot = (data) => {
       '->' +
       '"' +
       v.ref +
-      '"[color=' +
+      '"[penwidth= 1.25, color=' +
       line_col +
       '] [edgetooltip="' +
       edge_tooltip +
       '"];\n';
+
+    // add edge from variable to the referenced object
+    if (v.dead_ref) {
+      edges +=
+        '"' +
+        var_id +
+        '" ' +
+        '->' +
+        '"' +
+        v.dead_ref +
+        '"[penwidth= 0.75, arrowhead= onormal, style= dashed, color= "indianred2"' +
+        '] [edgetooltip="' +
+        edge_tooltip +
+        '"];\n';
+    }
   });
 
   // objects
