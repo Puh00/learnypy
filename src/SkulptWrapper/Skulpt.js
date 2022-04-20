@@ -181,56 +181,67 @@ class Skulpt {
     }
   }
 
-  set_dead_refs(old_globals, new_globals) {
-    let old_o_id;
-    let old_index_id;
-    for (const v of old_globals.variables) {
-      for (const o of old_globals.objects) {
-        if (v.ref === o.id) {
-          old_o_id = retrieve_object_id(new_globals.objects, o.js_object);
-        }
-        for (const v_new of new_globals.variables) {
-          if (v.name === v_new.name && v_new.ref !== old_o_id) {
-            v_new.dead_ref = old_o_id;
-          }
-        }
+  /**
+   * The function will detect which references has been assigned a new object
+   * and add as a dead reference a reference to the old object.
+   * An old object that does not exist in new_data is created and added.
+   *
+   * @param {{Array, Array}} old_data: the data from before a step was taken
+   * @param {{Array, Array}} new_data: the data after a step was taken,
+   *   will be modified to contain all dead references
+   */
+  set_dead_refs(old_data, new_data) {
+    // get reference from a given index in list, dictionary or class
+    const get_val_or_ref = (obj, index) => {
+      if (['dictionary', 'class'].includes(obj.info.type)) {
+        return obj.value[index].val;
+      } else if (['list'].includes(obj.info.type)) {
+        return obj.value[index].ref;
       }
-    }
-    //vill lägga till deadrefs för förändringsbara objekts index/values
-    for (const o of old_globals.objects) {
-      if (['list', 'dictionary', 'class'].includes(o.info.type)) {
-        //börjar loopa varje index i listan/dict..
-        for (let index = 0; index < o.value.length; index++) {
-          //letar efter objektet indexet pekar på
-          for (const ob of old_globals.objects) {
-            //hittar objektet listans index pekar på (ob)
-            if (this.get_val_or_ref(o, index) === ob.id) {
-              //nya id för objektet listan pekar på (objektet skapas om det är dött)
-              old_index_id = retrieve_object_id(new_globals.objects, ob.js_object);
-            }
-          }
-          //hittar den gamla listan bland de nya objekten
-          for (const o_new of new_globals.objects) {
-            //om indexet inte längre pekar på samma referens
-            if (
-              o_new.js_object === o.js_object &&
-              o_new.value.length > index &&
-              this.get_val_or_ref(o_new, index) !== old_index_id
-            ) {
-              o_new.value[index].dead_ref = old_index_id;
-            }
-          }
-        }
-      }
-    }
-  }
+    };
 
-  get_val_or_ref(o, index) {
-    if (['dictionary', 'class'].includes(o.info.type)) {
-      //console.log(o.value[index].val);
-      return o.value[index].val;
-    } else if (['list'].includes(o.info.type)) {
-      return o.value[index].ref;
+    // add dead_ref for all affected variables
+    for (const old_var of old_data.variables) {
+      // find the old object that the variable reference points to
+      const old_obj = old_data.objects.find((elem) => elem.id === old_var.ref);
+      if (!old_obj) continue;
+
+      // find the new variable
+      const new_var = new_data.variables.find((elem) => elem.name === old_var.name);
+      if (!new_var) continue;
+
+      // get the new id of the object using js_object
+      let new_obj_id = retrieve_object_id(new_data.objects, old_obj.js_object);
+
+      if (new_var.ref !== new_obj_id) {
+        // new assignment -> add the new id of the old object to dead_ref
+        new_var.dead_ref = new_obj_id;
+      }
+    }
+
+    // add dead_ref to all affected objects
+    for (const old_obj of old_data.objects) {
+      // only set dead_ref for types that are changeable and contain references
+      if (!['list', 'dictionary', 'class'].includes(old_obj.info.type)) continue;
+
+      // find the new object by comparing js_object
+      const new_obj = new_data.objects.find((elem) => elem.js_object === old_obj.js_object);
+      if (!new_obj) continue;
+
+      // check each index in value
+      for (let index = 0; index < old_obj.value.length && index < new_obj.value.length; index++) {
+        // get the object that the index is referencing
+        const ref_obj = old_data.objects.find((elem) => elem.id === get_val_or_ref(old_obj, index));
+        if (!ref_obj) continue;
+
+        // get the new id for the referenced object
+        const new_ref_obj_id = retrieve_object_id(new_data.objects, ref_obj.js_object);
+
+        if (get_val_or_ref(new_obj, index) !== new_ref_obj_id) {
+          // new assignment -> add to dead_ref, the new id to the old referenced object
+          new_obj.value[index].dead_ref = new_ref_obj_id;
+        }
+      }
     }
   }
 
