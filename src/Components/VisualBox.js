@@ -1,10 +1,10 @@
 import { graphviz } from 'd3-graphviz';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button } from 'react-bootstrap';
 
 import generate_dot from '../util/dotGenerator';
 import set_text from '../util/textGenerator';
 import border from './Border.module.css';
+import Button from './Button';
 import { ReactComponent as Reset_zoom_logo } from './Icons/reset.svg';
 import styles from './VisualBox.module.css';
 
@@ -17,23 +17,6 @@ const VisualBox = ({ data, share_methods }) => {
   const resetGraphZoom = () => {
     graphviz(`#graph-body`).resetZoom();
     setZoomedIn(false);
-  };
-
-  const resetZoomButton = (disabled) => {
-    const tooltip_text = `Reset zoom and panning ${disabled ? '(disabled)' : ''}`;
-
-    return (
-      <Button
-        className={styles.Button}
-        variant="light"
-        onClick={resetGraphZoom}
-        data-toggle="tooltip"
-        title={tooltip_text}
-        aria-label={tooltip_text}
-        disabled={disabled}>
-        <Reset_zoom_logo />
-      </Button>
-    );
   };
 
   useEffect(() => {
@@ -94,7 +77,13 @@ const VisualBox = ({ data, share_methods }) => {
   return (
     <div className={`${styles.Container} ${border.Border}`} tabIndex={0} aria-label={ariaLabel}>
       <div ref={container} id="graph-body"></div>
-      {resetZoomButton(!zoomedIn)}
+      <Button
+        className={styles.Button}
+        onClick={resetGraphZoom}
+        logo={<Reset_zoom_logo />}
+        tooltip="Reset zoom and panning"
+        disabled={!zoomedIn}
+      />
     </div>
   );
 };
