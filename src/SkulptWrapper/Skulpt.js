@@ -183,6 +183,7 @@ class Skulpt {
 
   set_dead_refs(old_globals, new_globals) {
     let old_o_id;
+    let old_index_id;
     for (const v of old_globals.variables) {
       for (const o of old_globals.objects) {
         if (v.ref === o.id) {
@@ -195,26 +196,41 @@ class Skulpt {
         }
       }
     }
-
+    //vill lägga till deadrefs för förändringsbara objekts index/values
     for (const o of old_globals.objects) {
-      if (['list'].includes(o.info.type)) {
+      if (['list', 'dictionary', 'class'].includes(o.info.type)) {
+        //börjar loopa varje index i listan/dict..
         for (let index = 0; index < o.value.length; index++) {
+          //letar efter objektet indexet pekar på
           for (const ob of old_globals.objects) {
-            if (o.value[index].ref === ob.id) {
-              old_o_id = retrieve_object_id(new_globals.objects, ob.js_object);
+            //hittar objektet listans index pekar på (ob)
+            if (this.get_val_or_ref(o, index) === ob.id) {
+              //nya id för objektet listan pekar på (objektet skapas om det är dött)
+              old_index_id = retrieve_object_id(new_globals.objects, ob.js_object);
             }
-            for (const o_new of new_globals.objects) {
-              if (
-                o_new.js_object === o.js_object &&
-                o_new.value.length > index &&
-                o_new.value[index].ref !== old_o_id
-              ) {
-                o_new.value[index].dead_ref = old_o_id;
-              }
+          }
+          //hittar den gamla listan bland de nya objekten
+          for (const o_new of new_globals.objects) {
+            //om indexet inte längre pekar på samma referens
+            if (
+              o_new.js_object === o.js_object &&
+              o_new.value.length > index &&
+              this.get_val_or_ref(o_new, index) !== old_index_id
+            ) {
+              o_new.value[index].dead_ref = old_index_id;
             }
           }
         }
       }
+    }
+  }
+
+  get_val_or_ref(o, index) {
+    if (['dictionary', 'class'].includes(o.info.type)) {
+      //console.log(o.value[index].val);
+      return o.value[index].val;
+    } else if (['list'].includes(o.info.type)) {
+      return o.value[index].ref;
     }
   }
 
