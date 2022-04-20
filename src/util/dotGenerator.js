@@ -178,6 +178,20 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
         edge_tooltip +
         '"];\n';
 
+      if (o.value[count].dead_ref) {
+        edges +=
+          '"' +
+          o.id +
+          '":"' +
+          count +
+          '" -> "' +
+          o.value[count].dead_ref +
+          '"[penwidth= 0.75, arrowhead= onormal, style= dashed, color= "indianred2"' +
+          '] [edgetooltip="' +
+          edge_tooltip +
+          '"];\n';
+      }
+
       // check if one more key is added after this one
       count++;
       if (count < o.value.length) nodes += '</TD>\n\t\t<TD ';
