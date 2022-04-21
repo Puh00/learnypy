@@ -37,7 +37,8 @@ const generate_dot = (data) => {
     edges += get_ref_edge(var_id, v.ref, edge_tooltip);
 
     if (v.dead_ref) {
-      edges += get_dead_ref_edge(var_id, v.dead_ref, edge_tooltip);
+      const dead_edge_tooltip = "Variable '" + v.name + "'" + ' referenced ...';
+      edges += get_dead_ref_edge(var_id, v.dead_ref, dead_edge_tooltip);
     }
   });
 
@@ -147,7 +148,12 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
       edges += get_ref_edge(o.id + '":"' + count, to, edge_tooltip);
 
       if (o.value[count].dead_ref) {
-        edges += get_dead_ref_edge(o.id + '":"' + count, o.value[count].dead_ref, edge_tooltip);
+        const dead_edge_tooltip = " index '" + index + "' referenced...";
+        edges += get_dead_ref_edge(
+          o.id + '":"' + count,
+          o.value[count].dead_ref,
+          dead_edge_tooltip
+        );
       }
 
       // check if one more key is added after this one
