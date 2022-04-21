@@ -63,6 +63,7 @@ const CodeBox = ({
         styles[markerLogo == 'help' ? 'Error-Line-highlight' : 'Line-highlight']
       );
       _editor.setGutterMarker(line, 'lineMarker', marker_node());
+      _editor.scrollIntoView(line);
     }
   };
 
