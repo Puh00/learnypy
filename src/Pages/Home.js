@@ -15,7 +15,7 @@ const Home = () => {
   const [output, setOutput] = useState({ text: '' });
   const [code, setCode] = useState('a=1\nb=1\nc=b');
   const [line, setLine] = useState(-1);
-  const [stepped, setStepped] = useState(false);
+  const [locked, setLocked] = useState(false);
   const [breakpoints, setBreakpoints] = useState([]);
 
   const drop_down_menu_ref = useRef(null);
@@ -34,7 +34,7 @@ const Home = () => {
   // highlights and stops at the specified line of the code
   const stop_at = (prog, line = 0) => {
     restart_callback(prog);
-    setStepped(true);
+    setLocked(true);
     setLine(line);
   };
 
@@ -57,7 +57,7 @@ const Home = () => {
     setGlobals({ objects: [], variables: [] });
     setLocals({ objects: [], variables: [] });
     setLine(-1);
-    setStepped(false);
+    setLocked(false);
   };
 
   const clear_breakpoints = () => {
@@ -80,18 +80,21 @@ const Home = () => {
     setLocals(locals);
   };
 
-  const restart_callback = (prog) => skulpt.restart(prog, clear_visuals);
+  const restart_callback = (prog) => {
+    setLocked(false);
+    skulpt.restart(prog, clear_visuals);
+  };
 
   const run_callback = (prog) => {
     // hack for stopping at the first row of the code if the condition is satisfied
     const first_row = first_row_of_code();
-    if (!stepped && breakpoints.includes(first_row)) {
+    if (!locked && breakpoints.includes(first_row)) {
       stop_at(prog, first_row);
       return;
     }
 
     clear_visuals();
-    setStepped(true);
+    setLocked(true);
     skulpt.run(prog, callback);
 
     if (typeof shared_methods.current.resetGraphZoom === 'function') {
@@ -101,7 +104,7 @@ const Home = () => {
 
   const step_callback = (prog) => {
     const first_row = first_row_of_code();
-    if (!stepped) {
+    if (!locked) {
       if (line === -1) {
         stop_at(prog, first_row);
       } else {
@@ -131,12 +134,12 @@ const Home = () => {
     },
     success: () => {
       setLine(-1);
-      setStepped(false);
+      setLocked(false);
     },
     error: (e) => {
       setGlobals({ objects: [], variables: [] });
       setLocals({ objects: [], variables: [] });
-      setStepped(false);
+      setLocked(true);
       skulpt.outf(e);
     }
   });
@@ -173,7 +176,7 @@ const Home = () => {
           <CodeBox
             code={code}
             setCode={setCode}
-            isStepping={stepped}
+            isStepping={locked}
             line={line}
             breakpoints={breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
