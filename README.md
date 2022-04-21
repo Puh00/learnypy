@@ -71,7 +71,8 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://python-chutor.netlify.app/)
 
-LearnPy is a free site providing a Python visualisation tool with the aim of helping novice programmers understand the underlying structure of Python's memory model. It offers simple graph visualisation of the relations between objects and variables. The solution is based on vanilla JavaScript which means no server is used, thereby offering lagless user experience and less risk for server-side errors.
+LearnPy is a free site providing a Python visualisation tool with the aim of helping novice programmers to understand the concept of
+references in Python. It offers simple graph visualisation of the relations between objects and variables. The solution is based on vanilla JavaScript which means no server is used, thereby offering lagless user experience and less risk for server-side errors.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
