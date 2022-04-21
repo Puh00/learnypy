@@ -10,6 +10,8 @@ const code_examples = [
 b=a
 b.append(3)
 c=[3]
+c.append(4)
+c.remove(4)
 
 print(a)  
 print(b)  
@@ -26,14 +28,14 @@ print(a is c or b is c)`
   },
   {
     name: 'Mutables vs immutables',
-    code: `a=["hello"]
+    code: `a=["bye"]
 b=a
     
 c=1
 d=1
     
-d=2
-b[0]="bye"`
+b[0]="hello"
+d=2`
   },
   {
     name: 'Classes',
