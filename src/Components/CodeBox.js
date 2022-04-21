@@ -45,7 +45,10 @@ const CodeBox = ({
     marker_node.className = styles['marker-node'];
     marker_node.innerHTML = marker_logo;
     marker_node.setAttribute('data-toggle', 'tooltip');
-    marker_node.setAttribute('title', 'Next line to be executed');
+    marker_node.setAttribute(
+      'title',
+      markerLogo == 'help' ? 'Error on this line' : 'Next line to be executed'
+    );
     return marker_node;
   };
 
