@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Header from '../Components/Header';
@@ -17,13 +17,10 @@ const About = () => {
     }
   ];
 
-  const appName = 'The Dynamic Memory Model';
-
-  useEffect(() => {
-    let title = 'About | ';
-    title = title.concat(appName);
-    document.title = title;
-  }, []);
+  const appName = 'LearnPy';
+  let title = 'About | ';
+  title = title.concat(appName);
+  document.title = title;
 
   return (
     <div>
