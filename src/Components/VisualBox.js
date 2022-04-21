@@ -38,7 +38,6 @@ const VisualBox = ({ data, share_methods }) => {
 
   useEffect(() => {
     const dot = generate_dot(data);
-    console.log(data);
     setGraph(dot);
     setAriaLabel(set_text(data.objects, data.variables));
   }, [data]);
