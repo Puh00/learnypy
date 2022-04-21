@@ -21,15 +21,19 @@ const CodeBox = ({
   breakpoints,
   drop_down_menu_ref,
   output_box_ref,
-  markerLogo,
+  setError,
+  setLine,
+  error,
   add_breakpoint,
   remove_breakpoint
 }) => {
   const [editor, setEditor] = useState(null);
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const [prevLine, setPrevLine] = useState(-1);
   const [prevBreakpoints, setPrevBreakpoints] = useState(() => []);
 
-  const marker_logo = raw(`./Icons/${markerLogo}.svg`);
+  let logo = error ? 'help' : 'marker-node';
+  const marker_logo = raw(`./Icons/${logo}.svg`);
 
   const breakpoint_node = () => {
     const breakpoint_node = document.createElement('span');
@@ -45,28 +49,28 @@ const CodeBox = ({
     marker_node.className = styles['marker-node'];
     marker_node.innerHTML = marker_logo;
     marker_node.setAttribute('data-toggle', 'tooltip');
-    marker_node.setAttribute(
-      'title',
-      markerLogo == 'help' ? 'Error on this line' : 'Next line to be executed'
-    );
+    marker_node.setAttribute('title', error ? 'Error on this line' : 'Next line to be executed');
     return marker_node;
   };
 
   const set_highlighted_row = (_editor) => {
     // remove previous highlighted line and line marker
-    _editor.removeLineClass(prevLine, 'wrap', styles['Line-highlight']);
-    _editor.removeLineClass(prevLine, 'wrap', styles['Error-Line-highlight']);
-    _editor.setGutterMarker(prevLine, 'lineMarker', null);
+    if (!error) {
+      for (let i = 0; i < _editor.lineCount(); i++) {
+        _editor.removeLineClass(i, 'wrap', styles['Line-highlight']);
+        _editor.removeLineClass(i, 'wrap', styles['Error-Line-highlight']);
+        _editor.setGutterMarker(i, 'lineMarker', null);
+      }
+    }
 
     if (line >= 0) {
       // highlight the current execution row
-      _editor.addLineClass(
-        line,
-        'wrap',
-        styles[markerLogo == 'help' ? 'Error-Line-highlight' : 'Line-highlight']
-      );
+      _editor.addLineClass(line, 'wrap', styles[error ? 'Error-Line-highlight' : 'Line-highlight']);
       _editor.setGutterMarker(line, 'lineMarker', marker_node());
       _editor.scrollIntoView(line);
+      if (error) {
+        setLine(-1);
+      }
     }
   };
 
@@ -152,6 +156,7 @@ const CodeBox = ({
           }
         }}
         onKeyDown={(_editor, event) => {
+          setError(false);
           if (event.key === 'Tab') {
             if (event.shiftKey) return drop_down_menu_ref.current.focus();
             output_box_ref.current.focus();

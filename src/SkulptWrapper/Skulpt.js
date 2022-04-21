@@ -194,7 +194,6 @@ class Skulpt {
 
     //If there isn't any program running, restart the debugger
     //with the appropriate code
-    console.log(this.debugger.get_active_suspension());
     if (!this.debugger.get_active_suspension()) {
       this.restart(prog, null, true);
     }

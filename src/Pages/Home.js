@@ -18,7 +18,7 @@ const Home = () => {
   const [locked, setLocked] = useState(false);
   const [breakpoints, setBreakpoints] = useState([]);
   // eslint-disable-next-line unused-imports/no-unused-vars
-  const [markerLogo, setMarkerLogo] = useState('marker-node');
+  const [error, setError] = useState(false);
 
   const drop_down_menu_ref = useRef(null);
   const output_box_ref = useRef(null);
@@ -84,11 +84,12 @@ const Home = () => {
 
   const restart_callback = (prog) => {
     setLocked(false);
+    setError(false);
     skulpt.restart(prog, clear_visuals);
   };
 
   const run_callback = (prog) => {
-    setMarkerLogo('marker-node');
+    setError(false);
     // hack for stopping at the first row of the code if the condition is satisfied
     const first_row = first_row_of_code();
     if (!locked && breakpoints.includes(first_row)) {
@@ -97,7 +98,7 @@ const Home = () => {
     }
 
     clear_visuals();
-    setLocked(true);
+    setLocked(null);
     skulpt.run(prog, callback);
 
     if (typeof shared_methods.current.resetGraphZoom === 'function') {
@@ -106,7 +107,7 @@ const Home = () => {
   };
 
   const step_callback = (prog) => {
-    setMarkerLogo('marker-node');
+    setError(false);
     const first_row = first_row_of_code();
     if (!locked) {
       if (line === -1) {
@@ -143,9 +144,9 @@ const Home = () => {
     error: (e) => {
       setGlobals({ objects: [], variables: [] });
       setLocals({ objects: [], variables: [] });
-      setLocked(true);
       skulpt.outf(e);
-      setMarkerLogo('help');
+      setLocked(false);
+      setError(true);
     }
   });
 
@@ -186,7 +187,9 @@ const Home = () => {
             breakpoints={breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
             output_box_ref={output_box_ref}
-            markerLogo={markerLogo}
+            setError={setError}
+            setLine={setLine}
+            error={error}
             add_breakpoint={(line_number) =>
               setBreakpoints((breakpoints) => [...breakpoints, line_number])
             }
