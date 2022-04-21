@@ -191,15 +191,6 @@ class Skulpt {
    *   will be modified to contain all dead references
    */
   set_dead_refs(old_data, new_data) {
-    // get reference from a given index in list, dictionary or class
-    const get_val_or_ref = (obj, index) => {
-      if (['dictionary', 'class'].includes(obj.info.type)) {
-        return obj.value[index].val;
-      } else if (['list'].includes(obj.info.type)) {
-        return obj.value[index].ref;
-      }
-    };
-
     // add dead_ref for all affected variables
     for (const old_var of old_data.variables) {
       // find the old object that the variable reference points to
@@ -231,17 +222,29 @@ class Skulpt {
       // check each index in value
       for (let index = 0; index < old_obj.value.length && index < new_obj.value.length; index++) {
         // get the object that the index is referencing
-        const ref_obj = old_data.objects.find((elem) => elem.id === get_val_or_ref(old_obj, index));
+        const ref_obj = old_data.objects.find(
+          (elem) => elem.id === this.get_index_ref(old_obj, index)
+        );
         if (!ref_obj) continue;
 
         // get the new id for the referenced object
         const new_ref_obj_id = retrieve_object_id(new_data.objects, ref_obj.js_object);
-
-        if (get_val_or_ref(new_obj, index) !== new_ref_obj_id) {
+        // if the reference has changed, set dead_ref
+        if (this.get_index_ref(new_obj, index) !== new_ref_obj_id) {
           // new assignment -> add to dead_ref, the new id to the old referenced object
           new_obj.value[index].dead_ref = new_ref_obj_id;
         }
       }
+    }
+  }
+
+  // helper method for set_dead_refs()
+  // returns reference from a given index/val/attribute in list/dictionary/class
+  get_index_ref(obj, index) {
+    if (['dictionary', 'class'].includes(obj.info.type)) {
+      return obj.value[index].val;
+    } else if (['list'].includes(obj.info.type)) {
+      return obj.value[index].ref;
     }
   }
 
