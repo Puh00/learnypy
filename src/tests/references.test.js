@@ -36,6 +36,14 @@ jest.mock('../Components/CodeBox', () => {
   };
 });
 
+// disable the error that keeps saying not wrapped in act since there is no
+// good way to fix it
+jest.spyOn(global.console, 'error').mockImplementationOnce((message) => {
+  if (!message.includes('When testing, code that causes React state updates should be wrapped into act(...)')) {
+    global.console.error(message);
+  }
+});
+
 // Tests that test only the backend logic of the application should be put here,
 // normally you would want to use a different framework dedicated to the
 // backend but since we are stuck with React, oh well...
