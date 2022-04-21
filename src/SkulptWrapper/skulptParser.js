@@ -44,10 +44,10 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
     // new dictionary which renders the '===' operator useless for reference checking (which is
     // used in retrieve_object_id(...))
     for (const [key, value] of skulpt_entries) {
-      // skip if it's an Python attribute, a function or a class (which is signified by 'type')
+      // skip if it's an Python attribute: function, class (which is signified by 'type') or import ('module')
       if (
         filter.includes(key) ||
-        ['function', 'type'].includes(Object.getPrototypeOf(value).tp$name)
+        ['function', 'type', 'module'].includes(Object.getPrototypeOf(value).tp$name)
       )
         continue;
 
@@ -214,7 +214,11 @@ const retrieve_object_id = (objects, js_object, class_names) => {
   var obj;
   for (const obj of objects) {
     // '===' returns true only if the objects have the same reference
-    if (obj.js_object === js_object || (obj.info.type === 'integer' && obj.value === js_object.v))
+    if (
+      obj.js_object === js_object ||
+      (obj.info.type === 'integer' && obj.value === js_object.v && js_object.tp$name != 'float') ||
+      (obj.info.type === 'float' && obj.value === js_object.v && js_object.tp$name != 'integer')
+    )
       return obj.id;
   }
   // If the object doesn't exist yet add it and return new id

@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import Header from '../Components/Header';
 import styles from './About.module.css';
@@ -28,18 +29,19 @@ const About = () => {
     <div>
       <Header navItems={navItems} />
       <div className={styles.Content}>
-        <h2 className={styles.Title}>About {appName}</h2>
+        <h1 className={styles.heading_title}>About {appName}</h1>
         <p>
           {appName} is a free site of{' '}
           <a href="https://www.python.org/" target="_blank" rel="noreferrer">
             Python
           </a>{' '}
-          visualisation tool with the aim to help novice programmers to understand the underlying
-          structure of Python&apos;s memory model. {appName} is a project made as a Bachelor project
-          by six students from{' '}
+          visualisation tool with the aim to help novice programmers to understand the concept of
+          references in Python. {appName} is a project made as a Bachelor project by six students
+          from{' '}
           <a href="https://www.chalmers.se" target="_blank" rel="noreferrer">
             Chalmers University of Technology
           </a>
+          .
         </p>
         <p>
           The source code of this project can be found at{' '}
@@ -63,11 +65,9 @@ const About = () => {
         </ul>
 
         <h2 className={styles.Title}>Known limitations</h2>
-        <h1 className={styles.SubTitle}> Caused by the app </h1>
+        <h3 className={styles.SubTitle}> Caused by the app </h3>
         <ul>
           <li>Only Python is supported</li>
-
-          <li>Too many variables will make the visualisation unreadable</li>
           <li>Turtle graphics are not supported</li>
           <li>
             The only supported datatypes (for visualisation) are: integers, floats, doubles,
@@ -75,7 +75,7 @@ const About = () => {
             dictionaries.
           </li>
         </ul>
-        <h1 className={styles.SubTitle}> Caused by Skulpt </h1>
+        <h3 className={styles.SubTitle}> Caused by Skulpt </h3>
         <ul>
           <li>Too many iterations will make the website very slow</li>
           <li>Only supports Python 3.7.3 grammar</li>
@@ -106,6 +106,10 @@ const About = () => {
           </dt>
           <dd>- For being our supervisor during this project and giving us great support.</dd>
         </dl>
+        <h2 className={styles.Title}>Accessibility of {appName} </h2>
+        <p>
+          Read more at our <Link to="/Accessibility"> accessibility page</Link>
+        </p>
       </div>
     </div>
   );
