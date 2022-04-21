@@ -56,6 +56,7 @@ const CodeBox = ({
       // highlight the current execution row
       _editor.addLineClass(line, 'wrap', styles['Line-highlight']);
       _editor.setGutterMarker(line, 'lineMarker', marker_node());
+      _editor.scrollIntoView(line);
     }
   };
 
