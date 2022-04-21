@@ -28,8 +28,6 @@ const CodeBox = ({
   remove_breakpoint
 }) => {
   const [editor, setEditor] = useState(null);
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  const [prevLine, setPrevLine] = useState(-1);
   const [prevBreakpoints, setPrevBreakpoints] = useState(() => []);
 
   let logo = error ? 'help' : 'marker-node';
@@ -116,7 +114,6 @@ const CodeBox = ({
 
   useEffect(() => {
     // update previous line for next render, only if line changed
-    setPrevLine(line);
   }, [line]);
 
   useEffect(() => {
