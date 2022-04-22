@@ -17,7 +17,6 @@ const Home = () => {
   const [line, setLine] = useState(-1);
   const [locked, setLocked] = useState(false);
   const [breakpoints, setBreakpoints] = useState([]);
-  // eslint-disable-next-line unused-imports/no-unused-vars
   const [error, setError] = useState(false);
 
   const drop_down_menu_ref = useRef(null);
