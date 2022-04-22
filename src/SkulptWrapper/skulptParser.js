@@ -44,10 +44,10 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
     // new dictionary which renders the '===' operator useless for reference checking (which is
     // used in retrieve_object_id(...))
     for (const [key, value] of skulpt_entries) {
-      // skip if it's an Python attribute, a function or a class (which is signified by 'type')
+      // skip if it's an Python attribute: function, class (which is signified by 'type') or import ('module')
       if (
         filter.includes(key) ||
-        ['function', 'type'].includes(Object.getPrototypeOf(value).tp$name)
+        ['function', 'type', 'module'].includes(Object.getPrototypeOf(value).tp$name)
       )
         continue;
 
