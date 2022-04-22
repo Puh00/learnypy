@@ -13,7 +13,10 @@ jest.mock('../Components/VisualBox', () => {
 });
 
 jest.mock('../Components/CodeBox', () => {
-  return function CodeBox({ code, setCode }) {
+  return function CodeBox({ code, setCode, share_methods }) {
+    // added here to prevent error, doesn't affect the actual tests
+    share_methods({ breakpoints_to_lines: () => [] });
+
     return (
       <form className="Code-box">
         <textarea
