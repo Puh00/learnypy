@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import CodeBox from '../Components/CodeBox';
 import ControlPanel from '../Components/ControlPanel';
@@ -16,6 +16,7 @@ const Home = () => {
   const [code, setCode] = useState('a=1\nb=1\nc=b');
   const [line, setLine] = useState(-1);
   const [stepped, setStepped] = useState(false);
+  // breakpoints is a list of Line objects from codemirror because of we need the side effects
   const [breakpoints, setBreakpoints] = useState([]);
 
   const drop_down_menu_ref = useRef(null);
@@ -65,9 +66,12 @@ const Home = () => {
   };
 
   // allow Home.js to use methods from the children by passing down this function
-  // add more functions as parameters if needed
-  const share_methods = ({ resetGraphZoom }) => {
-    shared_methods.current.resetGraphZoom = resetGraphZoom;
+  const share_methods = (methods) => {
+    for (const method of Object.getOwnPropertyNames(methods)) {
+      if (typeof methods[method] === 'function') {
+        shared_methods.current[method] = methods[method];
+      }
+    }
   };
 
   // ===========================================================
@@ -83,9 +87,13 @@ const Home = () => {
   const restart_callback = (prog) => skulpt.restart(prog, clear_visuals);
 
   const run_callback = (prog) => {
+    const bp_lines = shared_methods.current.breakpoints_to_lines(breakpoints);
+    // update breakpoints only when running the program
+    skulpt.update_breakpoints(bp_lines);
+
     // hack for stopping at the first row of the code if the condition is satisfied
     const first_row = first_row_of_code();
-    if (!stepped && breakpoints.includes(first_row)) {
+    if (!stepped && bp_lines.includes(first_row)) {
       stop_at(prog, first_row);
       return;
     }
@@ -141,10 +149,6 @@ const Home = () => {
     }
   });
 
-  useEffect(() => {
-    skulpt.update_breakpoints(breakpoints);
-  }, [breakpoints]);
-
   // ===========================================================
   // ===========================OTHER===========================
   // ===========================================================
@@ -171,19 +175,15 @@ const Home = () => {
             setCode={setCode}
           />
           <CodeBox
+            line={line}
             code={code}
             setCode={setCode}
-            isStepping={stepped}
-            line={line}
             breakpoints={breakpoints}
+            setBreakpoints={setBreakpoints}
+            isStepping={stepped}
+            share_methods={share_methods}
             drop_down_menu_ref={drop_down_menu_ref}
             output_box_ref={output_box_ref}
-            add_breakpoint={(line_number) =>
-              setBreakpoints((breakpoints) => [...breakpoints, line_number])
-            }
-            remove_breakpoint={(line_number) =>
-              setBreakpoints((breakpoints) => [...breakpoints].filter((e) => e !== line_number))
-            }
           />
           <OutputBox output={output} output_box_ref={output_box_ref} />
         </div>
