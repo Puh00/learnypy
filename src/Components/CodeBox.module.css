@@ -2,6 +2,10 @@
   background-color: var(--hover);
 }
 
+.Error-Line-highlight{
+  background-color: #ff5c5c;
+}
+
 .Container {
   flex: 1 1 auto;
   margin-top: 0;
