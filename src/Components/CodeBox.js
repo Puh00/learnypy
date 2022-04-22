@@ -113,10 +113,6 @@ const CodeBox = ({
   }
 
   useEffect(() => {
-    // update previous line for next render, only if line changed
-  }, [line]);
-
-  useEffect(() => {
     // similar optimisation for breakpoints
     setPrevBreakpoints(() => breakpoints);
   }, [breakpoints]);

@@ -34,8 +34,8 @@ const Home = () => {
   // ===========================================================
 
   // highlights and stops at the specified line of the code
-  const stop_at = (prog, line = 0) => {
-    restart_callback(prog);
+  const stop_at = (prog, line = 0, run = false) => {
+    restart_callback(prog, run);
     setLine(line);
     setLocked(true);
   };
@@ -82,10 +82,10 @@ const Home = () => {
     setLocals(locals);
   };
 
-  const restart_callback = (prog) => {
+  const restart_callback = (prog, run = false) => {
     setLocked(false);
     setError(false);
-    skulpt.restart(prog, clear_visuals);
+    skulpt.restart(prog, clear_visuals, run);
   };
 
   const run_callback = (prog) => {
@@ -111,7 +111,7 @@ const Home = () => {
     const first_row = first_row_of_code();
     if (!locked) {
       if (line === -1) {
-        stop_at(prog, first_row);
+        stop_at(prog, first_row, true);
       } else {
         stop_at(prog);
       }
