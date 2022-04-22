@@ -36,8 +36,8 @@ const Home = () => {
   // highlights and stops at the specified line of the code
   const stop_at = (prog, line = 0) => {
     restart_callback(prog);
-    setLocked(true);
     setLine(line);
+    setLocked(true);
   };
 
   const first_row_of_code = () => {
@@ -98,7 +98,7 @@ const Home = () => {
     }
 
     clear_visuals();
-    setLocked(null);
+    setLocked(true);
     skulpt.run(prog, callback);
 
     if (typeof shared_methods.current.resetGraphZoom === 'function') {
