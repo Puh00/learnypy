@@ -11,7 +11,6 @@ import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
 
 import styles from './CodeBox.module.css';
 
-const marker_logo = raw('./Icons/marker-node.svg');
 const breakpoint_logo = raw('./Icons/breakpoint-node.svg');
 
 const CodeBox = ({
@@ -22,12 +21,17 @@ const CodeBox = ({
   breakpoints,
   drop_down_menu_ref,
   output_box_ref,
+  setError,
+  setLine,
+  error,
   add_breakpoint,
   remove_breakpoint
 }) => {
   const [editor, setEditor] = useState(null);
-  const [prevLine, setPrevLine] = useState(-1);
   const [prevBreakpoints, setPrevBreakpoints] = useState(() => []);
+
+  let logo = error ? 'help' : 'marker-node';
+  const marker_logo = raw(`./Icons/${logo}.svg`);
 
   const breakpoint_node = () => {
     const breakpoint_node = document.createElement('span');
@@ -43,20 +47,28 @@ const CodeBox = ({
     marker_node.className = styles['marker-node'];
     marker_node.innerHTML = marker_logo;
     marker_node.setAttribute('data-toggle', 'tooltip');
-    marker_node.setAttribute('title', 'Next line to be executed');
+    marker_node.setAttribute('title', error ? 'Error on this line' : 'Next line to be executed');
     return marker_node;
   };
 
   const set_highlighted_row = (_editor) => {
     // remove previous highlighted line and line marker
-    _editor.removeLineClass(prevLine, 'wrap', styles['Line-highlight']);
-    _editor.setGutterMarker(prevLine, 'lineMarker', null);
+    if (!error) {
+      for (let i = 0; i < _editor.lineCount(); i++) {
+        _editor.removeLineClass(i, 'wrap', styles['Line-highlight']);
+        _editor.removeLineClass(i, 'wrap', styles['Error-Line-highlight']);
+        _editor.setGutterMarker(i, 'lineMarker', null);
+      }
+    }
 
     if (line >= 0) {
       // highlight the current execution row
-      _editor.addLineClass(line, 'wrap', styles['Line-highlight']);
+      _editor.addLineClass(line, 'wrap', styles[error ? 'Error-Line-highlight' : 'Line-highlight']);
       _editor.setGutterMarker(line, 'lineMarker', marker_node());
       _editor.scrollIntoView(line);
+      if (error) {
+        setLine(-1);
+      }
     }
   };
 
@@ -101,11 +113,6 @@ const CodeBox = ({
   }
 
   useEffect(() => {
-    // update previous line for next render, only if line changed
-    setPrevLine(line);
-  }, [line]);
-
-  useEffect(() => {
     // similar optimisation for breakpoints
     setPrevBreakpoints(() => breakpoints);
   }, [breakpoints]);
@@ -142,6 +149,7 @@ const CodeBox = ({
           }
         }}
         onKeyDown={(_editor, event) => {
+          setError(false);
           if (event.key === 'Tab') {
             if (event.shiftKey) return drop_down_menu_ref.current.focus();
             output_box_ref.current.focus();
