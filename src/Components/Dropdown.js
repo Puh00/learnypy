@@ -21,7 +21,7 @@ print(a is b)
 print(a is c or b is c)`
   },
   {
-    name: 'Nestled functions',
+    name: 'Nested functions',
     code:
       'def test():\n  print(2)\n  another_test()\n  print(4)\n\ndef another_test():' +
       '\n  print(3)\n\nprint(1)\ntest()\nprint(5)'
@@ -90,7 +90,7 @@ function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref, button_bord
         variant="light"
         id="dropdown-basic"
         ref={drop_down_menu_ref}>
-        <p>Examples {logo} </p>
+        <p>Code examples {logo} </p>
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
