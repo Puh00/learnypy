@@ -35,8 +35,8 @@ const About = () => {
           visualisation tool with the aim to help novice programmers to understand the concept of
           references in Python. It offers simple graph visualisation of the relations between
           objects and variables. The solution is based on JavaScript, which means no server is used,
-          thereby offering lagless user experience and less risk for server-side errors. {appName}{' '}
-          is a project made as a Bachelor project by six students from{' '}
+          and is thereby offering a user experience with less risk for lag and no server-side
+          errors. {appName} is a project made as a Bachelor project by six students from{' '}
           <a href="https://www.chalmers.se" target="_blank" rel="noreferrer">
             Chalmers University of Technology
           </a>
