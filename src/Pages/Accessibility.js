@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Header from '../Components/Header';
 import styles from './About.module.css';
@@ -15,13 +15,10 @@ const Accessibility = () => {
     }
   ];
 
-  const appName = 'The Dynamic Memory Model';
-
-  useEffect(() => {
-    let title = 'Accessibility | ';
-    title = title.concat(appName);
-    document.title = title;
-  }, []);
+  const appName = 'LearnPy';
+  let title = 'Accessibility | ';
+  title = title.concat(appName);
+  document.title = title;
 
   return (
     <div className={styles.Page}>
