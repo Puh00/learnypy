@@ -1,4 +1,4 @@
-// Keeps track of all variables that points to the same non-primitve object. key:object id, val:list of variables that points directly to it
+// Keeps track of all variables that points to the same list/tuple/dictionary/class/set. key:object id, val:list of variables that points directly to it
 let pointers = {};
 let objects;
 
@@ -11,20 +11,25 @@ const set_text = (data_objects, variables) => {
   for (const v of variables) {
     for (const o of objects) {
       if (v.ref === o.id) {
-        graph_text = graph_text.concat('Variable "' + v.name + '" points to ');
+        if (!v.dead_ref) {
+          graph_text = graph_text.concat('Variable "' + v.name + '" points to ');
+        }
         if (['list', 'tuple', 'dictionary', 'class', 'set'].includes(o.info.type)) {
-          graph_text = graph_text.concat(get_text_for_traversable_objects(o, v.name, true));
+          graph_text = graph_text.concat(get_text_for_traversable_objects(o, v, true));
           if (!pointers[o.id].includes('variable ' + v.name)) {
             pointers[o.id].push('variable ' + v.name);
           }
         } else if (o.value == '') {
           graph_text = graph_text.concat('an empty ' + o.info.type + '. ');
         } else {
-          graph_text = graph_text.concat('the ' + o.info.type + ' value ' + o.value + '. ');
+          v.dead_ref
+            ? (graph_text = graph_text.concat(text_for_dead_refs(v, o)))
+            : (graph_text = graph_text.concat('the ' + o.info.type + ' value ' + o.value + '. '));
         }
       }
     }
   }
+  console.log(graph_text);
   return graph_text;
 };
 
@@ -40,13 +45,13 @@ const initialize_pointers_dict = () => {
 
 // Text for non-primitve objects
 // is_root keeps track of if this is the "root" object (needed if there are nestled objects).
-const get_text_for_traversable_objects = (o, variable_name, is_root) => {
+const get_text_for_traversable_objects = (o, v, is_root) => {
   let text = '';
 
   // index 0: description of the object (not it's indices)
   // index 1: boolean. if a variable points to the same object as another, the
   // referenced object will not be explained again
-  let outer_object_description = get_description_of_outer_object(o);
+  let outer_object_description = get_description_of_outer_object(o, v);
 
   text = text.concat(outer_object_description[0]);
 
@@ -81,13 +86,11 @@ const get_text_for_traversable_objects = (o, variable_name, is_root) => {
               (o.info.type == 'dictionary' ? 'Key ' : 'Attribute ') +
                 o.value[index_number].key +
                 ' of "' +
-                variable_name +
+                v.name +
                 '" points to '
             );
           } else {
-            text = text.concat(
-              'Index nr ' + index_number + ' of "' + variable_name + '" points to '
-            );
+            text = text.concat('Index nr ' + index_number + ' of "' + v.name + '" points to ');
           }
         }
       } else {
@@ -97,30 +100,33 @@ const get_text_for_traversable_objects = (o, variable_name, is_root) => {
       for (const ob of objects) {
         //val.ref works for lists and tuples, val.val works for dictionarys
         if (val.ref === ob.id || val.val === ob.id) {
-          //if there are nestled non-primitive objects this method needs to be called recursively
+          //if there are nestled objects this method needs to be called recursively
           if (['list', 'tuple', 'dictionary', 'class', 'set'].includes(ob.info.type)) {
             //this is for objects with self-references
             if (o.id === ob.id) {
-              if (!pointers[o.id].includes('variable ' + variable_name)) {
-                pointers[o.id].push('variable ' + variable_name);
+              if (!pointers[o.id].includes('variable ' + v.name)) {
+                pointers[o.id].push('variable ' + v.name);
               }
               let t = text_for_many_pointers_at_the_same_object(pointers[ob.id]);
               text = text.concat(
                 'the same ' + o.info.type + ' of size ' + o.value.length + ' as ' + t + '. '
               );
             } else {
-              text = text.concat(get_text_for_traversable_objects(ob, variable_name, false));
+              text = text.concat(get_text_for_traversable_objects(ob, v, false));
             }
             //save keys / indices that points to the object
             if (o.info.type == 'dictionary') {
-              pointers[ob.id].push(variable_name + "'s key " + o.value[index_number].key);
+              pointers[ob.id].push(v.name + "'s key " + o.value[index_number].key);
             } else if (o.info.type == 'list') {
-              pointers[ob.id].push(variable_name + "'s index " + index_number);
+              pointers[ob.id].push(v.name + "'s index " + index_number);
             }
           } else if (ob.value == '') {
             text = text.concat('an empty ' + ob.info.type + '. ');
           } else {
             text = text.concat('the ' + ob.info.type + ' value ' + ob.value + '. ');
+          }
+          if (o.value[index_number].dead_ref) {
+            text = text.concat(get_text_for_dead_refs_on_index(v.name, o, index_number));
           }
         }
       }
@@ -130,7 +136,7 @@ const get_text_for_traversable_objects = (o, variable_name, is_root) => {
   return text;
 };
 
-const get_description_of_outer_object = (o) => {
+const get_description_of_outer_object = (o, v) => {
   const size_description =
     o.info.type == 'class'
       ? ' named "' +
@@ -142,6 +148,10 @@ const get_description_of_outer_object = (o) => {
 
   let text = '';
   let explain_object = true;
+  console.log(v);
+  if (v.dead_ref) {
+    text = text.concat(text_for_dead_refs(v, o));
+  }
   if (pointers[o.id].length >= 1) {
     let t = text_for_many_pointers_at_the_same_object(pointers[o.id]);
     text = text.concat('the same ' + o.info.type + size_description + ' as ' + t + '. ');
@@ -159,6 +169,67 @@ const text_for_many_pointers_at_the_same_object = (names) => {
     text = text.concat(names[n]);
     if (n < names.length - 1) {
       text = text.concat(' & ');
+    }
+  }
+  return text;
+};
+
+const text_for_dead_refs = (v, new_object) => {
+  let text = 'Variable "' + v.name + '" changed reference since the last step';
+  for (const old_object of objects) {
+    if (old_object.id === v.dead_ref) {
+      if (old_object.value == '') {
+        text = text.concat('from pointing at an empty string to now pointing to the ');
+      } else if (!['list', 'tuple', 'dictionary', 'class', 'set'].includes(new_object.info.type)) {
+        text = text.concat(
+          ' from pointing to the ' +
+            old_object.info.type +
+            ' value ' +
+            old_object.value +
+            ' to now pointing to the '
+        );
+        text = text.concat(new_object.info.type + ' value ' + new_object.value + '.');
+      } else {
+        text = text.concat('. Variable "' + v.name + '" now points to ');
+      }
+    }
+  }
+  return text;
+};
+
+const get_text_for_dead_refs_on_index = (variable_name, new_object, index_number) => {
+  let text = '';
+  if (['dictionary', 'class'].includes(new_object.info.type)) {
+    text = text.concat(
+      (new_object.info.type == 'dictionary' ? 'Key ' : 'Attribute ') +
+        new_object.value[index_number].key +
+        ' of "' +
+        variable_name +
+        '" changed reference since the last step'
+    );
+    text = text.concat(get_text_for_old_object(new_object, index_number));
+  } else {
+    text = text.concat(
+      'Index nr ' +
+        index_number +
+        ' of "' +
+        variable_name +
+        '" changed reference since the last step'
+    );
+    text = text.concat(get_text_for_old_object(new_object, index_number));
+  }
+  return text;
+};
+
+const get_text_for_old_object = (new_object, index_number) => {
+  let text = '';
+  for (const old_object of objects) {
+    if (old_object.id === new_object.value[index_number].dead_ref) {
+      text = text.concat(
+        ['list', 'tuple', 'dictionary', 'class', 'set'].includes(old_object.info.type)
+          ? '.'
+          : ' from pointing to the ' + old_object.info.type + ' value ' + old_object.value + '. '
+      );
     }
   }
   return text;
