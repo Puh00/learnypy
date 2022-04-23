@@ -1,12 +1,12 @@
-import { graphviz } from 'd3-graphviz';
 import React, { useEffect, useRef, useState } from 'react';
+import { graphviz } from 'd3-graphviz';
 
-import { ReactComponent as Reset_zoom_logo } from '../../assets/reset.svg';
-import Button from '../../components/Button';
-import border from '../Border.module.css';
-import generate_dot from './dotGenerator';
-import set_text from './textGenerator';
-import styles from './VisualBox.module.css';
+import { ReactComponent as Reset_zoom_logo } from 'src/assets/reset.svg';
+import Button from 'src/components/Button';
+import border from 'src/features/Border.module.css';
+import set_text from 'src/features/visual-box//textGenerator';
+import styles from 'src/features/visual-box//VisualBox.module.css';
+import generate_dot from 'src/features/visual-box/dotGenerator';
 
 const VisualBox = ({ data, share_methods }) => {
   const [graph, setGraph] = useState({ dot: 'graph {}' });

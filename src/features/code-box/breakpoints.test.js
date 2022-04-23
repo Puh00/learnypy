@@ -2,10 +2,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import App from '../../App';
+import App from 'src/App';
 
 // mock these components since the imported libraries seem to break everything...
-jest.mock('../visual-box/VisualBox', () => {
+jest.mock('src/features/visual-box/VisualBox', () => {
   return function VisualBox({ data }) {
     // js_object contains raw javascript object which makes it impossible to
     // stringify using JSON
@@ -22,7 +22,7 @@ jest.mock('../visual-box/VisualBox', () => {
 // limitations of frontend testing, can't access setBreakpoints directly...
 let set_breakpoints;
 
-jest.mock('../code-box/CodeBox', () => {
+jest.mock('src/features/code-box/CodeBox', () => {
   return function CodeBox({ code, setCode, add_breakpoint }) {
     set_breakpoints = (breakpoints) => {
       breakpoints.forEach((bp) => {

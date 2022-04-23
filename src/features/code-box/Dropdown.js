@@ -1,7 +1,7 @@
-import './Dropdown.css';
-
 import React from 'react';
 import { ButtonGroup, Dropdown } from 'react-bootstrap';
+
+import 'src/features/code-box/Dropdown.css';
 
 const code_examples = [
   { name: 'Example 1', code: 'a=[]\nb=a\nb.append(3)\nprint(b)' },

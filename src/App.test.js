@@ -2,16 +2,16 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import App from './App';
+import App from 'src/App';
 
 // mock these components since the imported libraries seem to break everything...
-jest.mock('./features/visual-box/VisualBox', () => {
+jest.mock('src/features/visual-box/VisualBox', () => {
   return function VisualBox({ data }) {
     return <div data-testid="visual-box">{JSON.stringify(data)}</div>;
   };
 });
 
-jest.mock('./features/code-box/CodeBox', () => {
+jest.mock('src/features/code-box/CodeBox', () => {
   return function CodeBox({ code, setCode }) {
     return (
       <form className="Code-box">

@@ -1,11 +1,11 @@
-import './App.css';
-
 import React from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 
-import About from './pages/About';
-import Accessibility from './pages/Accessibility';
-import Home from './pages/Home';
+import About from 'src/pages/About';
+import Accessibility from 'src/pages/Accessibility';
+import Home from 'src/pages/Home';
+
+import 'src/App.css';
 
 function App() {
   return (

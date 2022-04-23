@@ -2,10 +2,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import App from '../../App';
+import App from 'src/App';
 
 // mock these components since the imported libraries seem to break everything...
-jest.mock('./VisualBox', () => {
+jest.mock('src/features/visual-box/VisualBox', () => {
   return function VisualBox({ data }) {
     // js_object contains raw javascript object which makes it impossible to
     // stringify using JSON
@@ -18,7 +18,7 @@ jest.mock('./VisualBox', () => {
   };
 });
 
-jest.mock('../code-box/CodeBox', () => {
+jest.mock('src/features/code-box/CodeBox', () => {
   return function CodeBox({ code, setCode }) {
     return (
       <form className="Code-box">

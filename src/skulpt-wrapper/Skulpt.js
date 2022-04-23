@@ -1,4 +1,4 @@
-import { parse_globals, parse_locals } from './skulptParser';
+import { parse_globals, parse_locals } from 'src/skulpt-wrapper/skulptParser';
 
 /**
  * Wrapper class of the Skulpt module.
