@@ -2,9 +2,9 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
-
 import fs from 'fs';
+
+import '@testing-library/jest-dom';
 
 const head = document.getElementsByTagName('head')[0];
 
