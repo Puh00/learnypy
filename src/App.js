@@ -3,9 +3,9 @@ import './App.css';
 import React from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 
-import About from './Pages/About';
-import Accessibility from './Pages/Accessibility';
-import Home from './Pages/Home';
+import About from './pages/About';
+import Accessibility from './pages/Accessibility';
+import Home from './pages/Home';
 
 function App() {
   return (

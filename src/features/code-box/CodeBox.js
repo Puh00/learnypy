@@ -11,7 +11,7 @@ import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
 
 import styles from './CodeBox.module.css';
 
-const breakpoint_logo = raw('./Icons/breakpoint-node.svg');
+const breakpoint_logo = raw('../../assets/breakpoint-node.svg');
 
 const CodeBox = ({
   code,
@@ -31,7 +31,7 @@ const CodeBox = ({
   const [prevBreakpoints, setPrevBreakpoints] = useState(() => []);
 
   let logo = error ? 'help' : 'marker-node';
-  const marker_logo = raw(`./Icons/${logo}.svg`);
+  const marker_logo = raw(`../../assets/${logo}.svg`);
 
   const breakpoint_node = () => {
     const breakpoint_node = document.createElement('span');

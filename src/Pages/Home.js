@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import CodeBox from '../Components/CodeBox';
-import ControlPanel from '../Components/ControlPanel';
-import Header from '../Components/Header';
-import OutputBox from '../Components/OutputBox';
-import VisualBox from '../Components/VisualBox';
-import Skulpt from '../SkulptWrapper/Skulpt';
+import Header from '../components/Header';
+import CodeBox from '../features/code-box/CodeBox';
+import ControlPanel from '../features/code-box/ControlPanel';
+import OutputBox from '../features/output-box/OutputBox';
+import VisualBox from '../features/visual-box/VisualBox';
+import Skulpt from '../skulpt-wrapper/Skulpt';
 import styles from './Home.module.css';
 
 const Home = () => {

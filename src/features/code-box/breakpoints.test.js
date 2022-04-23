@@ -2,11 +2,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import App from '../App';
-import sleep from '../util/sleep';
+import App from '../../App';
 
 // mock these components since the imported libraries seem to break everything...
-jest.mock('../Components/VisualBox', () => {
+jest.mock('../visual-box/VisualBox', () => {
   return function VisualBox({ data }) {
     // js_object contains raw javascript object which makes it impossible to
     // stringify using JSON
@@ -23,7 +22,7 @@ jest.mock('../Components/VisualBox', () => {
 // limitations of frontend testing, can't access setBreakpoints directly...
 let set_breakpoints;
 
-jest.mock('../Components/CodeBox', () => {
+jest.mock('../code-box/CodeBox', () => {
   return function CodeBox({ code, setCode, add_breakpoint }) {
     set_breakpoints = (breakpoints) => {
       breakpoints.forEach((bp) => {
@@ -88,12 +87,12 @@ print(5)`;
 
   // execute the code once
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n2\n');
 
   // execute the code twice
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n2\n3\n4\n5\n');
 });
 
@@ -117,27 +116,27 @@ print(5)`;
   set_breakpoints([0, 1, 2, 3, 4]);
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('');
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n');
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n2\n');
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n2\n3\n');
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n2\n3\n4\n');
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n2\n3\n4\n5\n');
 });
 
@@ -162,11 +161,11 @@ print(5)`;
   set_breakpoints([1]);
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('');
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n2\n3\n4\n5\n');
 });
 
@@ -192,27 +191,27 @@ print(5)`;
 
   // run
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n');
 
   // step
   userEvent.click(stepButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n2\n');
 
   // step
   userEvent.click(stepButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n2\n3\n');
 
   // run
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n2\n3\n4\n');
 
   // run
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('1\n2\n3\n4\n5\n');
 });
 
@@ -238,16 +237,16 @@ print("over")`;
 
   // run the code
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   // should stopped at print("yes") and have printed nothing yet
   expect(outputBox.textContent).toEqual('');
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('yes\n');
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual('yes\nyup\nover\n');
 });
 
@@ -271,14 +270,14 @@ test('breakpoints in loops', async () => {
 
   // first time have not printed anything yet
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toEqual(expected);
 
   for (let i = 0; i < 10; i++) {
     expected += `${i}\n`;
 
     userEvent.click(runButton);
-    await sleep(50);
+    await global.sleep(50);
     expect(outputBox.textContent).toEqual(expected);
   }
 });
@@ -304,17 +303,17 @@ b()`;
   set_breakpoints([1, 3]);
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   // stopped at `print(1)`
   expect(outputBox.textContent).toEqual('');
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   // printed 1 and stopped at `print(2)`
   expect(outputBox.textContent).toEqual('1\n');
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
   // printed 2
   expect(outputBox.textContent).toEqual('1\n2\n');
 });
@@ -344,12 +343,12 @@ print(5)`;
   const codeExampleOneButton = screen.getByText('Example 1');
 
   userEvent.click(codeExampleOneButton);
-  await sleep(50);
+  await global.sleep(50);
 
   expect(codebox.textContent).toEqual('a=[]\nb=a\nb.append(3)\nprint(b)');
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
 
   expect(outputBox.textContent).toEqual('[3]\n');
 });
