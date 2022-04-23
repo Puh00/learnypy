@@ -7,8 +7,8 @@ import { ReactComponent as Play_logo } from '../../assets/play.svg';
 import { ReactComponent as Stop_logo } from '../../assets/stop.svg';
 import { ReactComponent as Menu_logo } from '../../assets/vertical-menu-dots.svg';
 import Button from '../../components/Button';
-import DropdownLocal from '../../components/Dropdown';
 import styles from './ControlPanel.module.css';
+import DropdownLocal from './Dropdown';
 
 const ControlPanel = ({
   code,
