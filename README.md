@@ -5,12 +5,12 @@
 <br />
 <div align="center">
   <!-- logo area
-  <a href="https://github.com/Puh00/python-chutor">
+  <a href="https://github.com/Puh00/learnpy">
     <img src="public/images/python-chutor-logo.png" alt="Logo" width="240" height="255">
   </a>
   -->
 
-  <h1 align="center">Python Chutor</h1>
+  <h1 align="center">LearnPy</h1>
     
   <!-- PROJECT SHIELDS -->
   <!--
@@ -42,8 +42,6 @@
   </p>
 </div>
 
-
-
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -67,33 +65,31 @@
   </ol>
 </details>
 
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 [![Product Name Screen Shot][product-screenshot]](https://python-chutor.netlify.app/)
 
-Python Chutor is a free site providing a Python visualisation tool with the aim of helping novice programmers understand the underlying structure of Python's memory model. It offers simple graph visualisation of the relations between objects and variables. The solution is based on vanilla JavaScript which means no server is used, thereby offering lagless user experience and less risk for server-side errors.
+LearnPy is a free site providing a Python visualisation tool with the aim of helping novice programmers to understand the concept of
+references in Python. It offers simple graph visualisation of the relations between objects and variables. The solution is based on vanilla JavaScript which means no server is used, and is thereby offering a user experience with less risk for lag and no server-side errors.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 ### Built With
 
 This project is built with the folllowing open-source libraries:
 
-* [React.js](https://reactjs.org/)
-* [Skulpt](https://skulpt.org/)
-* [CodeMirror](https://codemirror.net/)
-* [Graphviz](https://graphviz.org/)
-* [Bootstrap](https://getbootstrap.com)
+- [React.js](https://reactjs.org/)
+- [Skulpt](https://skulpt.org/)
+- [CodeMirror](https://codemirror.net/)
+- [Graphviz](https://graphviz.org/)
+- [Bootstrap](https://getbootstrap.com)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 To get a local copy of the website up and running, follow these simple example steps.
@@ -101,7 +97,8 @@ To get a local copy of the website up and running, follow these simple example s
 ### Prerequisites
 
 You will need to the lastest version of [npm](https://www.npmjs.com/) to be able to run this project locally.
-* npm
+
+- npm
   ```sh
   npm install npm@latest -g
   ```
@@ -121,8 +118,8 @@ You will need to the lastest version of [npm](https://www.npmjs.com/) to be able
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -137,25 +134,22 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
-* [Skulpt](https://github.com/skulpt/skulpt)
-* [Our supervisor](https://github.com/krangelov)
+- [Skulpt](https://github.com/skulpt/skulpt)
+- [Our supervisor](https://github.com/krangelov)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -173,6 +167,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/othneildrew
 -->
+
 [netlify-shield]: https://api.netlify.com/api/v1/badges/bf597ae6-0527-4836-a675-6455e3daa1c2/deploy-status
 [netlify-url]: https://app.netlify.com/sites/python-chutor/deploys
 [product-screenshot]: public/images/website-screenshot.png

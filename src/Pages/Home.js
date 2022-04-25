@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import CodeBox from '../Components/CodeBox';
 import ControlPanel from '../Components/ControlPanel';
@@ -16,6 +16,7 @@ const Home = () => {
   const [code, setCode] = useState('a=1\nb=1\nc=b');
   const [line, setLine] = useState(-1);
   const [locked, setLocked] = useState(false);
+  // breakpoints is a list of Line objects from codemirror because of we need the side effects
   const [breakpoints, setBreakpoints] = useState([]);
   const [error, setError] = useState(false);
 
@@ -27,6 +28,7 @@ const Home = () => {
   const skulpt = Skulpt.instance();
 
   let latest_output = '';
+  document.title = 'LearnPy';
 
   // ===========================================================
   // =========================UTILITIES=========================
@@ -66,9 +68,12 @@ const Home = () => {
   };
 
   // allow Home.js to use methods from the children by passing down this function
-  // add more functions as parameters if needed
-  const share_methods = ({ resetGraphZoom }) => {
-    shared_methods.current.resetGraphZoom = resetGraphZoom;
+  const share_methods = (methods) => {
+    for (const method of Object.getOwnPropertyNames(methods)) {
+      if (typeof methods[method] === 'function') {
+        shared_methods.current[method] = methods[method];
+      }
+    }
   };
 
   // ===========================================================
@@ -88,10 +93,13 @@ const Home = () => {
   };
 
   const run_callback = (prog) => {
-    setError(false);
+    const bp_lines = shared_methods.current.breakpoints_to_lines(breakpoints);
+    // update breakpoints only when running the program
+    skulpt.update_breakpoints(bp_lines);
+
     // hack for stopping at the first row of the code if the condition is satisfied
     const first_row = first_row_of_code();
-    if (!locked && breakpoints.includes(first_row)) {
+    if (!locked && bp_lines.includes(first_row)) {
       stop_at(prog, first_row);
       return;
     }
@@ -149,10 +157,6 @@ const Home = () => {
     }
   });
 
-  useEffect(() => {
-    skulpt.update_breakpoints(breakpoints);
-  }, [breakpoints]);
-
   // ===========================================================
   // ===========================OTHER===========================
   // ===========================================================
@@ -179,22 +183,18 @@ const Home = () => {
             setCode={setCode}
           />
           <CodeBox
+            line={line}
+            setLine={setLine}
             code={code}
             setCode={setCode}
-            isStepping={locked}
-            line={line}
+            error={error}
+            setError={setError}
             breakpoints={breakpoints}
+            setBreakpoints={setBreakpoints}
+            isStepping={locked}
+            share_methods={share_methods}
             drop_down_menu_ref={drop_down_menu_ref}
             output_box_ref={output_box_ref}
-            setError={setError}
-            setLine={setLine}
-            error={error}
-            add_breakpoint={(line_number) =>
-              setBreakpoints((breakpoints) => [...breakpoints, line_number])
-            }
-            remove_breakpoint={(line_number) =>
-              setBreakpoints((breakpoints) => [...breakpoints].filter((e) => e !== line_number))
-            }
           />
           <OutputBox output={output} output_box_ref={output_box_ref} />
         </div>

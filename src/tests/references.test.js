@@ -21,7 +21,10 @@ jest.mock('../Components/VisualBox', () => {
 });
 
 jest.mock('../Components/CodeBox', () => {
-  return function CodeBox({ code, setCode }) {
+  return function CodeBox({ code, setCode, share_methods }) {
+    // added here to prevent error, doesn't affect the actual tests
+    share_methods({ breakpoints_to_lines: () => [] });
+
     return (
       <form className="Code-box">
         <textarea
@@ -34,6 +37,18 @@ jest.mock('../Components/CodeBox', () => {
       </form>
     );
   };
+});
+
+// disable the error that keeps saying not wrapped in act since there is no
+// good way to fix it
+jest.spyOn(global.console, 'error').mockImplementationOnce((message) => {
+  if (
+    !message.includes(
+      'When testing, code that causes React state updates should be wrapped into act(...)'
+    )
+  ) {
+    global.console.error(message);
+  }
 });
 
 // Tests that test only the backend logic of the application should be put here,

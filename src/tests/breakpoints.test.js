@@ -24,11 +24,11 @@ jest.mock('../Components/VisualBox', () => {
 let set_breakpoints;
 
 jest.mock('../Components/CodeBox', () => {
-  return function CodeBox({ code, setCode, add_breakpoint }) {
-    set_breakpoints = (breakpoints) => {
-      breakpoints.forEach((bp) => {
-        add_breakpoint(bp);
-      });
+  return function CodeBox({ code, setCode, breakpoints, setBreakpoints, share_methods }) {
+    share_methods({ breakpoints_to_lines: () => breakpoints });
+
+    set_breakpoints = (bps) => {
+      setBreakpoints(() => [...bps]);
     };
 
     return (
@@ -43,6 +43,18 @@ jest.mock('../Components/CodeBox', () => {
       </form>
     );
   };
+});
+
+// disable the error that keeps saying not wrapped in act since there is no
+// good way to fix it
+jest.spyOn(global.console, 'error').mockImplementationOnce((message) => {
+  if (
+    !message.includes(
+      'When testing, code that causes React state updates should be wrapped into act(...)'
+    )
+  ) {
+    global.console.error(message);
+  }
 });
 
 /**
@@ -71,7 +83,6 @@ print(5)`;
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
 
-  // TODO: incoming merge conflict
   set_breakpoints([2]); // insert a breakpoint at line 3 -> `print(3)`
 
   // execute the code once
