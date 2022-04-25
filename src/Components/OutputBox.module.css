@@ -1,9 +1,38 @@
 .Container {
   background-color: var(--background);
-  padding: 5px;
   flex-basis: 45%;
   border-radius: 4px;
   white-space: pre-line;
   overflow: auto;
   background-color: white;
+  position: relative;
+}
+
+.Inner {
+  position: relative;
+  height: auto;
+  min-height: 100%;
+}
+
+.Output {
+  padding: 5px;
+}
+
+.Shadow {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: CornflowerBlue;
+}
+
+.fadeOut{
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.fadeIn{
+  opacity:0.25;
+  transition: opacity 0.5s;
 }

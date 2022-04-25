@@ -13,7 +13,7 @@ const Home = () => {
   // eslint-disable-next-line unused-imports/no-unused-vars
   const [locals, setLocals] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
-  const [code, setCode] = useState('a=1\nb=1\nc=b');
+  const [code, setCode] = useState('print(1)\nprint(2)\nprint(3)');
   const [line, setLine] = useState(-1);
   const [locked, setLocked] = useState(false);
   // breakpoints is a list of Line objects from codemirror because of we need the side effects
