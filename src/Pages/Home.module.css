@@ -13,7 +13,6 @@
   display: grid;
   /* So the left- and right-body doesn't collide */
   grid-template-columns: repeat(auto-fit, minmax(260px, 40%)) 60%;
-  margin: 16px;
   background-color: var(--background);
 }
 
@@ -24,3 +23,45 @@
   margin: 5px;
   background-color: var(--background);
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .Content-body {
+    margin: 0;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .Content-body {
+    margin: 0;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .Content-body {
+    margin: 4px;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .Content-body {
+    margin: 8px;
+  }
+}
+
+/* Large devices (laptops/desktops, 1200 and up) */
+@media only screen and (min-width: 1200px) {
+  .Content-body {
+    margin: 12px;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1600px and up) */
+@media only screen and (min-width: 1600px) {
+  .Content-body {
+    margin: 16px;
+  }
+} 
