@@ -339,15 +339,13 @@ print(5)`;
 
   userEvent.click(dropDownButton);
 
-  const codeExampleOneButton = screen.getByText('Example 1');
+  const codeExampleOneButton = screen.getByText('Aliasing');
 
   userEvent.click(codeExampleOneButton);
   await global.sleep(50);
 
-  expect(codebox.textContent).toEqual('a=[]\nb=a\nb.append(3)\nprint(b)');
-
   userEvent.click(runButton);
   await global.sleep(50);
 
-  expect(outputBox.textContent).toEqual('[3]\n');
+  expect(outputBox.textContent).toEqual('[3]\n[3]\n[3]\nTrue\nFalse\n');
 });
