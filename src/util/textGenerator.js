@@ -133,16 +133,7 @@ const get_text_for_traversable_objects = (o, v, is_root) => {
             text = text.concat('an empty ' + ob.info.type + '. ');
           } else {
             text = text.concat('the ' + ob.info.type + ' value ' + ob.value + '. ');
-          } /*
-          if (o.value[index_number].dead_ref) {
-            text = text.concat(
-              text_for_dead_refs(
-                is_root ? '"' + v.name + '"' : 'this ' + o.info.type,
-                o,
-                index_number
-              )
-            );
-          }*/
+          }
         }
       }
       index_number++;
@@ -189,26 +180,26 @@ const text_for_many_pointers_at_the_same_object = (names) => {
 };
 
 const text_for_dead_refs = (v, new_object, index_number) => {
-  console.log(new_object);
   let text;
   let new_index_type = null;
 
   if (v.name != undefined) {
-    text = 'Variable "' + v.name + '" changed reference since the last step';
+    text = 'Variable "' + v.name + '"';
   } else if (['dictionary', 'class'].includes(new_object.info.type)) {
     text =
       (new_object.info.type == 'dictionary' ? 'Key ' : 'Attribute ') +
       new_object.value[index_number].key +
       ' of "' +
       v +
-      '" changed reference since the last step';
+      '"';
     let new_o = objects.find((elem) => elem.id === new_object.value[index_number].val);
     new_index_type = new_o.info.type;
   } else {
-    text = 'Index nr ' + index_number + ' of ' + v + ' changed reference since the last step';
+    text = 'Index nr ' + index_number + ' of ' + v;
     let new_o = objects.find((elem) => elem.id === new_object.value[index_number].ref);
     new_index_type = new_o.info.type;
   }
+  text = text.concat(' changed reference since the last step from pointing ');
 
   for (const old_object of objects) {
     if (
@@ -216,12 +207,10 @@ const text_for_dead_refs = (v, new_object, index_number) => {
       (index_number != undefined && old_object.id === new_object.value[index_number].dead_ref)
     ) {
       if (old_object.value === '') {
-        text = text.concat(
-          ' from pointing at an empty ' + old_object.info.type + ' to now pointing to '
-        );
+        text = text.concat('at an empty ' + old_object.info.type + ' to now pointing to ');
       } else if (composite_types.includes(old_object.info.type)) {
         text = text.concat(
-          ' from pointing to a ' +
+          'to a ' +
             old_object.info.type +
             ' of size ' +
             old_object.value.length +
@@ -229,13 +218,13 @@ const text_for_dead_refs = (v, new_object, index_number) => {
             (old_object.info.type === new_index_type ? 'another ' : '')
         );
         if (composite_types.includes(new_index_type)) {
-          text = text.concat('a ');
+          text = text.concat('a '); // ska fixas. nu blir det ibland "another a"
         } else {
           text = text.concat('the ' + new_object.info.type + ' value ' + new_object.value + '. ');
         }
       } else {
         text = text.concat(
-          ' from pointing to the ' +
+          'to the ' +
             old_object.info.type +
             ' value ' +
             old_object.value +
