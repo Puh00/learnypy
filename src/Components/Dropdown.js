@@ -4,15 +4,58 @@ import React from 'react';
 import { ButtonGroup, Dropdown } from 'react-bootstrap';
 
 const code_examples = [
-  { name: 'Example 1', code: 'a=[]\nb=a\nb.append(3)\nprint(b)' },
   {
-    name: 'Example 2',
+    name: 'Aliasing',
+    code: `a=[]
+b=a
+b.append(3)
+c=[3]
+c.append(4)
+c.remove(4)
+
+print(a)  
+print(b)  
+print(c)  
+
+print(a is b)
+print(a is c or b is c)`
+  },
+  {
+    name: 'Nested functions',
     code:
       'def test():\n  print(2)\n  another_test()\n  print(4)\n\ndef another_test():' +
       '\n  print(3)\n\nprint(1)\ntest()\nprint(5)'
   },
   {
-    name: 'Example 3',
+    name: 'Mutables vs immutables',
+    code: `a=["bye"]
+b=a
+    
+c=1
+d=1
+    
+b[0]="hello"
+d=2`
+  },
+  {
+    name: 'Classes',
+    code: `class Dog:
+  def __init__(self, name, age, bark):
+    self.name = name
+    self.age = age
+    self.bark = bark
+    
+  def say_hi(self):
+    print(self.bark)
+    
+dog1 = Dog("Charlie", 3, "woof!")
+dog2 = Dog("Lady", 5, "ruff!")
+    
+dog1.say_hi()
+dog2.say_hi()`
+  },
+  {
+    name: 'Linked list',
     code: `class Node:
   def __init__(self, data):
     self.data = data
@@ -24,20 +67,17 @@ class LinkedList:
       
   def create_list(self):
     self.head = Node(1)
-    second = Node(2)
-    third = Node(3)
-    self.head.next = second
-    second.next = third
-    
+    self.head.next = Node(2)
+
   def traverse_list(self):
     node = self.head
     while node != None:
       print(node.data)
       node = node.next
 
-llist = LinkedList()
-llist.create_list()
-llist.traverse_list()`
+mylist = LinkedList()
+mylist.create_list()
+mylist.traverse_list()`
   }
 ];
 
@@ -50,7 +90,7 @@ function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref, button_bord
         variant="light"
         id="dropdown-basic"
         ref={drop_down_menu_ref}>
-        {logo}
+        <p>Code examples {logo} </p>
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
