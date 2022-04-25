@@ -126,7 +126,13 @@ const get_text_for_traversable_objects = (o, v, is_root) => {
             text = text.concat('the ' + ob.info.type + ' value ' + ob.value + '. ');
           }
           if (o.value[index_number].dead_ref) {
-            text = text.concat(get_text_for_dead_refs_on_index(v.name, o, index_number));
+            text = text.concat(
+              get_text_for_dead_refs_on_index(
+                is_root ? '"' + v.name + '"' : 'this ' + o.info.type,
+                o,
+                index_number
+              )
+            );
           }
         }
       }
@@ -179,7 +185,9 @@ const text_for_dead_refs = (v, new_object) => {
   for (const old_object of objects) {
     if (old_object.id === v.dead_ref) {
       if (old_object.value == '') {
-        text = text.concat('from pointing at an empty string to now pointing to the ');
+        text = text.concat(
+          ' from pointing at an empty ' + old_object.info.type + ' to now pointing to the '
+        );
       } else if (!['list', 'tuple', 'dictionary', 'class', 'set'].includes(new_object.info.type)) {
         text = text.concat(
           ' from pointing to the ' +
@@ -210,11 +218,7 @@ const get_text_for_dead_refs_on_index = (variable_name, new_object, index_number
     text = text.concat(get_text_for_old_object(new_object, index_number));
   } else {
     text = text.concat(
-      'Index nr ' +
-        index_number +
-        ' of "' +
-        variable_name +
-        '" changed reference since the last step'
+      'Index nr ' + index_number + ' of ' + variable_name + ' changed reference since the last step'
     );
     text = text.concat(get_text_for_old_object(new_object, index_number));
   }
@@ -227,7 +231,7 @@ const get_text_for_old_object = (new_object, index_number) => {
     if (old_object.id === new_object.value[index_number].dead_ref) {
       text = text.concat(
         ['list', 'tuple', 'dictionary', 'class', 'set'].includes(old_object.info.type)
-          ? '.'
+          ? '. '
           : ' from pointing to the ' + old_object.info.type + ' value ' + old_object.value + '. '
       );
     }
