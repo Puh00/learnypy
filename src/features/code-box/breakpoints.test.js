@@ -23,11 +23,11 @@ jest.mock('src/features/visual-box/VisualBox', () => {
 let set_breakpoints;
 
 jest.mock('src/features/code-box/CodeBox', () => {
-  return function CodeBox({ code, setCode, add_breakpoint }) {
-    set_breakpoints = (breakpoints) => {
-      breakpoints.forEach((bp) => {
-        add_breakpoint(bp);
-      });
+  return function CodeBox({ code, setCode, breakpoints, setBreakpoints, share_methods }) {
+    share_methods({ breakpoints_to_lines: () => breakpoints });
+
+    set_breakpoints = (bps) => {
+      setBreakpoints(() => [...bps]);
     };
 
     return (

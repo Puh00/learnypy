@@ -15,18 +15,18 @@ import 'src/features/code-box/CodeBox.css';
 const breakpoint_logo = raw('../../assets/breakpoint-node.svg');
 
 const CodeBox = ({
+  line,
+  setLine,
   code,
   setCode,
-  isStepping,
-  line,
-  breakpoints,
-  drop_down_menu_ref,
-  output_box_ref,
-  setError,
-  setLine,
   error,
-  add_breakpoint,
-  remove_breakpoint
+  setError,
+  breakpoints,
+  setBreakpoints,
+  isStepping,
+  share_methods,
+  drop_down_menu_ref,
+  output_box_ref
 }) => {
   const [editor, setEditor] = useState(null);
   const [prevBreakpoints, setPrevBreakpoints] = useState(() => []);
@@ -76,12 +76,15 @@ const CodeBox = ({
   const handle_breakpoints = (_editor, lineNumber) => {
     let info = _editor.lineInfo(lineNumber);
 
+    // only remove breakpoints when there is a breakpoint
     if (info.gutterMarkers && info.gutterMarkers.breakpoints) {
-      remove_breakpoint(lineNumber);
+      setBreakpoints((bps) => [
+        ...new Set(bps.filter((bp) => bp !== _editor.getLineHandle(lineNumber)))
+      ]);
       return;
     }
 
-    add_breakpoint(lineNumber);
+    setBreakpoints((bps) => [...new Set([...bps, _editor.getLineHandle(lineNumber)])]);
   };
 
   const update_breakpoints = (_editor) => {
@@ -112,6 +115,11 @@ const CodeBox = ({
     set_highlighted_row(editor);
     set_tooltip_breakpoint_area();
   }
+
+  // whenever editor updates also update breakpoints_to_lines
+  useEffect(() => {
+    share_methods({ breakpoints_to_lines: (bps) => bps.map((bp) => editor?.getLineNumber(bp)) });
+  }, [editor]);
 
   useEffect(() => {
     // similar optimisation for breakpoints
@@ -146,7 +154,6 @@ const CodeBox = ({
         onBeforeChange={(_editor, data, value) => {
           if (data.text[0] != '\t') {
             setCode(value);
-            update_breakpoints(_editor);
           }
         }}
         onKeyDown={(_editor, event) => {
@@ -155,6 +162,14 @@ const CodeBox = ({
             if (event.shiftKey) return drop_down_menu_ref.current.focus();
             output_box_ref.current.focus();
           }
+        }}
+        onChange={(_editor) => {
+          // remove all breakpoints that are don't exist anymore after pasting
+          setBreakpoints((bps) => [
+            ...new Set(bps.filter((bp) => _editor.getLineNumber(bp) !== null))
+          ]);
+          // update the breakpoint markers
+          update_breakpoints(_editor);
         }}
       />
     </div>
