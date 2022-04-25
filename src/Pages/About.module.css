@@ -1,3 +1,10 @@
+.About-page {
+  width: 100vw;
+  height: 98vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .Content {
   border-width: 2px;
   border-color: var(--dark);
@@ -40,16 +47,34 @@ dl {
 
 
 /* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {}
+@media only screen and (max-width: 600px) {
+  .Content {
+    margin-left: 2vw;
+    margin-right: 2vw;
+    margin-top: 0;
+    padding: 8px;
+    box-shadow: blue 0px 0px 0px 2px inset
+  }
+}
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {}
+@media only screen and (min-width: 600px) {
+  .Content {
+    margin-left: 2vw;
+    margin-right: 2vw;
+    margin-top: 0;
+    padding: 12px;
+    box-shadow: blue 0px 0px 0px 2px inset
+  }
+}
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
   .Content {
-    margin: 28px;
-    padding: 32px;
+    margin-left: 2vw;
+    margin-right: calc(2vw + 10px);
+    margin-top: 2vh;
+    padding: 12px;
     box-shadow: blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px,
       rgb(31, 193, 27) 10px -10px;
   }
@@ -58,8 +83,10 @@ dl {
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
   .Content {
-    margin: 40px;
-    padding: 32px;
+    margin-left: 2vw;
+    margin-right: calc(2vw + 20px);
+    margin-top: 4vh;
+    padding: 16px;
     box-shadow: blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px,
       rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px,
       rgb(255, 217, 19) 20px -20px;
@@ -69,8 +96,10 @@ dl {
 /* Large devices (laptops/desktops, 1200 and up) */
 @media only screen and (min-width: 1200px) {
   .Content {
-    margin: 48px;
-    padding: 32px;
+    margin-left: 2vw;
+    margin-right: calc(2vw + 30px);
+    margin-top: 6vh;
+    padding: 24px;
     box-shadow: blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px,
       rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px,
       rgb(255, 217, 19) 20px -20px, rgb(255, 255, 255) 30px -30px 0px -3px,
@@ -81,7 +110,9 @@ dl {
 /* Extra large devices (large laptops and desktops, 1600px and up) */
 @media only screen and (min-width: 1600px) {
   .Content {
-    margin: 64px;
+    margin-left: 2vw;
+    margin-right: calc(2vw + 40px);
+    margin-top: 6vh;
     padding: 32px;
     box-shadow: blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px,
       rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px,

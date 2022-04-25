@@ -23,7 +23,7 @@ const About = () => {
   document.title = title;
 
   return (
-    <div>
+    <div className={styles["About-page"]}>
       <Header navItems={navItems} />
       <div className={styles.Content}>
         <h1 className={styles.heading_title}>About {appName}</h1>
