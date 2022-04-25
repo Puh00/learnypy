@@ -15,8 +15,9 @@ const Home = () => {
   const [output, setOutput] = useState({ text: '' });
   const [code, setCode] = useState('a=1\nb=1\nc=b');
   const [line, setLine] = useState(-1);
-  const [stepped, setStepped] = useState(false);
+  const [locked, setLocked] = useState(false);
   const [breakpoints, setBreakpoints] = useState([]);
+  const [error, setError] = useState(false);
 
   const drop_down_menu_ref = useRef(null);
   const output_box_ref = useRef(null);
@@ -26,16 +27,17 @@ const Home = () => {
   const skulpt = Skulpt.instance();
 
   let latest_output = '';
+  document.title = 'LearnPy';
 
   // ===========================================================
   // =========================UTILITIES=========================
   // ===========================================================
 
   // highlights and stops at the specified line of the code
-  const stop_at = (prog, line = 0) => {
-    restart_callback(prog);
-    setStepped(true);
+  const stop_at = (prog, line = 0, run = false) => {
+    restart_callback(prog, run);
     setLine(line);
+    setLocked(true);
   };
 
   const first_row_of_code = () => {
@@ -57,7 +59,7 @@ const Home = () => {
     setGlobals({ objects: [], variables: [] });
     setLocals({ objects: [], variables: [] });
     setLine(-1);
-    setStepped(false);
+    setLocked(false);
   };
 
   const clear_breakpoints = () => {
@@ -80,18 +82,23 @@ const Home = () => {
     setLocals(locals);
   };
 
-  const restart_callback = (prog) => skulpt.restart(prog, clear_visuals);
+  const restart_callback = (prog, run = false) => {
+    setLocked(false);
+    setError(false);
+    skulpt.restart(prog, clear_visuals, run);
+  };
 
   const run_callback = (prog) => {
+    setError(false);
     // hack for stopping at the first row of the code if the condition is satisfied
     const first_row = first_row_of_code();
-    if (!stepped && breakpoints.includes(first_row)) {
+    if (!locked && breakpoints.includes(first_row)) {
       stop_at(prog, first_row);
       return;
     }
 
     clear_visuals();
-    setStepped(true);
+    setLocked(true);
     skulpt.run(prog, callback);
 
     if (typeof shared_methods.current.resetGraphZoom === 'function') {
@@ -100,10 +107,11 @@ const Home = () => {
   };
 
   const step_callback = (prog) => {
+    setError(false);
     const first_row = first_row_of_code();
-    if (!stepped) {
+    if (!locked) {
       if (line === -1) {
-        stop_at(prog, first_row);
+        stop_at(prog, first_row, true);
       } else {
         stop_at(prog);
       }
@@ -131,13 +139,14 @@ const Home = () => {
     },
     success: () => {
       setLine(-1);
-      setStepped(false);
+      setLocked(false);
     },
     error: (e) => {
       setGlobals({ objects: [], variables: [] });
       setLocals({ objects: [], variables: [] });
-      setStepped(false);
       skulpt.outf(e);
+      setLocked(false);
+      setError(true);
     }
   });
 
@@ -173,11 +182,14 @@ const Home = () => {
           <CodeBox
             code={code}
             setCode={setCode}
-            isStepping={stepped}
+            isStepping={locked}
             line={line}
             breakpoints={breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
             output_box_ref={output_box_ref}
+            setError={setError}
+            setLine={setLine}
+            error={error}
             add_breakpoint={(line_number) =>
               setBreakpoints((breakpoints) => [...breakpoints, line_number])
             }

@@ -7,7 +7,7 @@ const Header = ({ navItems }) => {
   return (
     <header className={styles.Header}>
       <Link className={styles['Home-logo']} to="/">
-        The Dynamic Memory Model
+        LearnPy
       </Link>
 
       <div className={styles['Nav-menu']}>
