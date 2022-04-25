@@ -19,7 +19,7 @@ const set_text = (data_objects, variables) => {
           if (!pointers[o.id].includes('variable ' + v.name)) {
             pointers[o.id].push('variable ' + v.name);
           }
-        } else if (o.value == '') {
+        } else if (o.value === '') {
           graph_text = graph_text.concat('an empty ' + o.info.type + '. ');
         } else {
           v.dead_ref
@@ -61,40 +61,48 @@ const get_text_for_traversable_objects = (o, v, is_root) => {
 
     //traverses all indices
     for (const val of o.value) {
-      //set are not indexable
-      if (!['set'].includes(o.info.type)) {
-        // If this is the root object we want to write the variables name pointing to the
-        // object, otherwise refer to the object as "this"
-        if (!is_root) {
-          if (['dictionary', 'class'].includes(o.info.type)) {
-            text = text.concat(
-              (o.info.type == 'dictionary' ? 'Key ' : 'Attribute ') +
-                o.value[index_number].key +
-                ' of ' +
-                'this ' +
-                o.info.type +
-                ' points to '
-            );
+      if (!o.value[index_number].dead_ref) {
+        //set are not indexable
+        if (!['set'].includes(o.info.type)) {
+          // If this is the root object we want to write the variables name pointing to the
+          // object, otherwise refer to the object as "this"
+          if (!is_root) {
+            if (['dictionary', 'class'].includes(o.info.type)) {
+              text = text.concat(
+                (o.info.type == 'dictionary' ? 'Key ' : 'Attribute ') +
+                  o.value[index_number].key +
+                  ' of ' +
+                  'this ' +
+                  o.info.type +
+                  ' points to '
+              );
+            } else {
+              text = text.concat(
+                'Index nr ' + index_number + ' of ' + 'this ' + o.info.type + ' points to '
+              );
+            }
           } else {
-            text = text.concat(
-              'Index nr ' + index_number + ' of ' + 'this ' + o.info.type + ' points to '
-            );
+            if (['dictionary', 'class'].includes(o.info.type)) {
+              text = text.concat(
+                (o.info.type == 'dictionary' ? 'Key ' : 'Attribute ') +
+                  o.value[index_number].key +
+                  ' of "' +
+                  v.name +
+                  '" points to '
+              );
+            } else {
+              text = text.concat('Index nr ' + index_number + ' of "' + v.name + '" points to ');
+            }
           }
         } else {
-          if (['dictionary', 'class'].includes(o.info.type)) {
-            text = text.concat(
-              (o.info.type == 'dictionary' ? 'Key ' : 'Attribute ') +
-                o.value[index_number].key +
-                ' of "' +
-                v.name +
-                '" points to '
-            );
-          } else {
-            text = text.concat('Index nr ' + index_number + ' of "' + v.name + '" points to ');
-          }
+          text = text.concat(
+            index_number >= 1 ? 'This set also points to ' : 'This set points to '
+          );
         }
       } else {
-        text = text.concat(index_number >= 1 ? 'This set also points to ' : 'This set points to ');
+        text = text.concat(
+          text_for_dead_refs(is_root ? '"' + v.name + '"' : 'this ' + o.info.type, o, index_number)
+        );
       }
       //traverses all objects to find what object the index points to
       for (const ob of objects) {
@@ -120,20 +128,20 @@ const get_text_for_traversable_objects = (o, v, is_root) => {
             } else if (o.info.type == 'list') {
               pointers[ob.id].push(v.name + "'s index " + index_number);
             }
-          } else if (ob.value == '') {
+          } else if (ob.value === '') {
             text = text.concat('an empty ' + ob.info.type + '. ');
           } else {
             text = text.concat('the ' + ob.info.type + ' value ' + ob.value + '. ');
-          }
+          } /*
           if (o.value[index_number].dead_ref) {
             text = text.concat(
-              get_text_for_dead_refs_on_index(
+              text_for_dead_refs(
                 is_root ? '"' + v.name + '"' : 'this ' + o.info.type,
                 o,
                 index_number
               )
             );
-          }
+          }*/
         }
       }
       index_number++;
@@ -154,7 +162,6 @@ const get_description_of_outer_object = (o, v) => {
 
   let text = '';
   let explain_object = true;
-  console.log(v);
   if (v.dead_ref) {
     text = text.concat(text_for_dead_refs(v, o));
   }
@@ -163,7 +170,7 @@ const get_description_of_outer_object = (o, v) => {
     text = text.concat('the same ' + o.info.type + size_description + ' as ' + t + '. ');
     explain_object = false;
   } else {
-    text = text.concat('a ' + o.info.type + size_description + '. ');
+    text = text.concat(o.info.type + size_description + '. ');
   }
 
   return [text, explain_object];
@@ -180,60 +187,62 @@ const text_for_many_pointers_at_the_same_object = (names) => {
   return text;
 };
 
-const text_for_dead_refs = (v, new_object) => {
-  let text = 'Variable "' + v.name + '" changed reference since the last step';
+const text_for_dead_refs = (v, new_object, index_number) => {
+  let text;
+  let new_o_type = null;
+  if (v.name != undefined) {
+    text = 'Variable "' + v.name + '" changed reference since the last step';
+  } else if (['dictionary', 'class'].includes(new_object.info.type)) {
+    text =
+      (new_object.info.type == 'dictionary' ? 'Key ' : 'Attribute ') +
+      new_object.value[index_number].key +
+      ' of "' +
+      v +
+      '" changed reference since the last step';
+    let new_o = objects.find((elem) => elem.id === new_object.value[index_number].val);
+    new_o_type = new_o.info.type;
+  } else {
+    text = 'Index nr ' + index_number + ' of ' + v + ' changed reference since the last step';
+    let new_o = objects.find((elem) => elem.id === new_object.value[index_number].ref);
+    new_o_type = new_o.info.type;
+  }
   for (const old_object of objects) {
-    if (old_object.id === v.dead_ref) {
-      if (old_object.value == '') {
+    if (
+      (v.name != undefined && old_object.id === v.dead_ref) ||
+      (index_number != undefined && old_object.id === new_object.value[index_number].dead_ref)
+    ) {
+      if (old_object.value === '') {
         text = text.concat(
-          ' from pointing at an empty ' + old_object.info.type + ' to now pointing to the '
+          ' from pointing at an empty ' + old_object.info.type + ' to now pointing to '
         );
-      } else if (!['list', 'tuple', 'dictionary', 'class', 'set'].includes(new_object.info.type)) {
+      } else if (['list', 'tuple', 'dictionary', 'class', 'set'].includes(old_object.info.type)) {
+        text = text.concat(
+          ' from pointing to a ' +
+            old_object.info.type +
+            ' of size ' +
+            old_object.value.length +
+            ' to now pointing to ' +
+            (old_object.info.type === new_o_type ? 'another ' : '')
+        );
+        if (['list', 'tuple', 'dictionary', 'class', 'set'].includes(new_o_type)) {
+          text = text.concat('a ');
+        } else {
+          text = text.concat('the ' + new_object.info.type + ' value ' + new_object.value + '. ');
+        }
+      } else if (!['list', 'tuple', 'dictionary', 'class', 'set'].includes(old_object.info.type)) {
         text = text.concat(
           ' from pointing to the ' +
             old_object.info.type +
             ' value ' +
             old_object.value +
-            ' to now pointing to the '
+            ' to now pointing to ' +
+            (old_object.info.type === new_object.info.type ? 'the ' : 'a ')
         );
-        text = text.concat(new_object.info.type + ' value ' + new_object.value + '.');
-      } else {
-        text = text.concat('. Variable "' + v.name + '" now points to ');
+        if (!['list', 'tuple', 'dictionary', 'class', 'set'].includes(new_object.info.type)) {
+          console.log('häe');
+          text = text.concat(new_object.info.type + ' value ' + new_object.value + '.');
+        }
       }
-    }
-  }
-  return text;
-};
-
-const get_text_for_dead_refs_on_index = (variable_name, new_object, index_number) => {
-  let text = '';
-  if (['dictionary', 'class'].includes(new_object.info.type)) {
-    text = text.concat(
-      (new_object.info.type == 'dictionary' ? 'Key ' : 'Attribute ') +
-        new_object.value[index_number].key +
-        ' of "' +
-        variable_name +
-        '" changed reference since the last step'
-    );
-    text = text.concat(get_text_for_old_object(new_object, index_number));
-  } else {
-    text = text.concat(
-      'Index nr ' + index_number + ' of ' + variable_name + ' changed reference since the last step'
-    );
-    text = text.concat(get_text_for_old_object(new_object, index_number));
-  }
-  return text;
-};
-
-const get_text_for_old_object = (new_object, index_number) => {
-  let text = '';
-  for (const old_object of objects) {
-    if (old_object.id === new_object.value[index_number].dead_ref) {
-      text = text.concat(
-        ['list', 'tuple', 'dictionary', 'class', 'set'].includes(old_object.info.type)
-          ? '. '
-          : ' from pointing to the ' + old_object.info.type + ' value ' + old_object.value + '. '
-      );
     }
   }
   return text;
