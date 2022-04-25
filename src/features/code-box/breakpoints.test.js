@@ -82,7 +82,6 @@ print(5)`;
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
 
-  // TODO: incoming merge conflict
   set_breakpoints([2]); // insert a breakpoint at line 3 -> `print(3)`
 
   // execute the code once
