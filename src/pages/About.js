@@ -1,9 +1,8 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Header from '../Components/Header';
-import styles from './About.module.css';
+import Header from 'src/components/Header';
+import styles from 'src/pages/About.module.css';
 
 const About = () => {
   const navItems = [

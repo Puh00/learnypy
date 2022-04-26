@@ -26,7 +26,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "local-build": "serve build"
   },
   "eslintConfig": {
     "extends": [
@@ -53,7 +54,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "serve": "^13.0.2"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"

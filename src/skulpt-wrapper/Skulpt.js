@@ -1,4 +1,4 @@
-import { parse_globals, parse_locals, retrieve_object_id } from './skulptParser';
+import { parse_globals, parse_locals, retrieve_object_id } from 'src/skulpt-wrapper/skulptParser';
 
 /**
  * Wrapper class of the Skulpt module.
