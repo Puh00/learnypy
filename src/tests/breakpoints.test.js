@@ -24,11 +24,11 @@ jest.mock('../Components/VisualBox', () => {
 let set_breakpoints;
 
 jest.mock('../Components/CodeBox', () => {
-  return function CodeBox({ code, setCode, add_breakpoint }) {
-    set_breakpoints = (breakpoints) => {
-      breakpoints.forEach((bp) => {
-        add_breakpoint(bp);
-      });
+  return function CodeBox({ code, setCode, breakpoints, setBreakpoints, share_methods }) {
+    share_methods({ breakpoints_to_lines: () => breakpoints });
+
+    set_breakpoints = (bps) => {
+      setBreakpoints(() => [...bps]);
     };
 
     return (
@@ -83,7 +83,6 @@ print(5)`;
   userEvent.clear(codebox);
   userEvent.type(codebox, code);
 
-  // TODO: incoming merge conflict
   set_breakpoints([2]); // insert a breakpoint at line 3 -> `print(3)`
 
   // execute the code once
@@ -341,15 +340,13 @@ print(5)`;
 
   userEvent.click(dropDownButton);
 
-  const codeExampleOneButton = screen.getByText('Example 1');
+  const codeExampleOneButton = screen.getByText('Aliasing');
 
   userEvent.click(codeExampleOneButton);
   await sleep(50);
 
-  expect(codebox.textContent).toEqual('a=[]\nb=a\nb.append(3)\nprint(b)');
-
   userEvent.click(runButton);
   await sleep(50);
 
-  expect(outputBox.textContent).toEqual('[3]\n');
+  expect(outputBox.textContent).toEqual('[3]\n[3]\n[3]\nTrue\nFalse\n');
 });
