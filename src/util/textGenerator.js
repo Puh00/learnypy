@@ -44,7 +44,6 @@ const initialize_pointers_dict = () => {
   return pointers;
 };
 
-// Text for non-primitve objects
 // is_root keeps track of if this is the "root" object (needed if there are nestled objects).
 const get_text_for_traversable_objects = (o, v, is_root) => {
   let text = '';
@@ -179,6 +178,7 @@ const text_for_many_pointers_at_the_same_object = (names) => {
   return text;
 };
 
+//help method for text_for_dead_refs()
 const get_type_of_index = (index_number, new_object) => {
   if (index_number === undefined) {
     return null;
@@ -191,6 +191,7 @@ const get_type_of_index = (index_number, new_object) => {
   }
 };
 
+//index_number is undefined if new_object is not a index/key/attribute
 const text_for_dead_refs = (v, new_object, index_number) => {
   let text;
   let new_index_type = get_type_of_index(index_number, new_object);
@@ -210,6 +211,7 @@ const text_for_dead_refs = (v, new_object, index_number) => {
   text = text.concat(' changed reference since the last step from pointing ');
 
   for (const old_object of objects) {
+    //find the old object
     if (
       (v.name != undefined && old_object.id === v.dead_ref) ||
       (index_number != undefined && old_object.id === new_object.value[index_number].dead_ref)
@@ -222,20 +224,25 @@ const text_for_dead_refs = (v, new_object, index_number) => {
             old_object.info.type +
             ' of size ' +
             old_object.value.length +
-            ' to now pointing to ' +
-            (old_object.info.type === new_index_type ||
-            (old_object.info.type === new_object.info.type && new_index_type)
-              ? 'another '
-              : 'a ')
+            ' to now pointing to '
         );
-      } else {
+        if (
+          old_object.info.type === new_index_type ||
+          (old_object.info.type === new_object.info.type && !index_number)
+        ) {
+          text = text.concat('another ');
+        } else if (composite_types.includes(old_object.info.type)) {
+          text = text.concat('a ');
+        }
+      } // if the old object is a bool,int,string,float,double,char..
+      else {
         text = text.concat(
           'to the ' +
             old_object.info.type +
             ' value ' +
             old_object.value +
             ' to now pointing to ' +
-            (old_object.info.type === new_object.info.type ? 'the ' : 'a ')
+            (old_object.info.type === new_object.info.type ? '' : 'a ')
         );
         if (!composite_types.includes(new_object.info.type)) {
           text = text.concat(new_object.info.type + ' value ' + new_object.value + '.');
