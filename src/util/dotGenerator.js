@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 // Colors
 const line_col = 'dimgray';
 //Colors from X11 color scheme, Ref: https://www.w3schools.com/colors/colors_x11.asp
-const var_col = '	paleturquoise2';
+const var_col = 'paleturquoise2';
 const immutable_col = 'darkseagreen2';
 const indexable_col = 'slategray1';
 
