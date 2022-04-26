@@ -51,7 +51,6 @@ const About = () => {
           </a>
           .
         </p>
-
         <h2 className={styles.Title}>The Team</h2>
         <ul>
           <li>Moa Berglund</li>
@@ -61,7 +60,6 @@ const About = () => {
           <li>Vera Svensson</li>
           <li>Yenan Wang</li>
         </ul>
-
         <h2 className={styles.Title}>Known limitations</h2>
         <h3 className={styles.SubTitle}> Caused by the app </h3>
         <ul>
@@ -84,28 +82,21 @@ const About = () => {
             for more information.
           </li>
         </ul>
-
         <h2 className={styles.Title}>Special Thanks</h2>
-        <dl>
-          <dt>
-            <a href="https://skulpt.org/" target="_blank" rel="noreferrer">
-              Skulpt
-            </a>
-          </dt>
-          <dd>
-            - For providing us with this amazing framework that allows us to execute Python code
-            directly in the browser.
-          </dd>
-          <dt>
-            <a href="http://www.cse.chalmers.se/~krasimir/" target="_blank" rel="noreferrer">
-              Krasimir Angelov
-            </a>
-          </dt>
-          <dd>- For being our supervisor during this project and giving us great support.</dd>
-        </dl>
+        <h3 className={styles.SubTitle}> Skulpt </h3>
+        <p>
+          - For providing us with this amazing framework that allows us to execute Python code
+          directly in the browser. Visit Skulpts webpage here{' '}
+          <a href="https://skulpt.org/" target="_blank" rel="noreferrer">
+            https://skulpt.org/
+          </a>
+          .
+        </p>
+        <h3 className={styles.SubTitle}> Krasimir Angelov </h3>
+        <p>- For being our supervisor during this project and giving us great support.</p>
         <h2 className={styles.Title}>Accessibility of {appName} </h2>
         <p>
-          Read more at our <Link to="/Accessibility"> accessibility page</Link>
+          Read more at our <Link to="/Accessibility"> accessibility page</Link>.
         </p>
       </div>
     </div>
