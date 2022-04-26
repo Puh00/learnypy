@@ -45,7 +45,6 @@ dl {
   font-weight: 600;
 }
 
-
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .Content {
@@ -120,4 +119,4 @@ dl {
       rgb(255, 156, 85) 30px -30px, rgb(255, 255, 255) 40px -40px 0px -3px,
       rgb(255, 85, 85) 40px -40px;
   }
-} 
+}

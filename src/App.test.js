@@ -2,17 +2,16 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import App from '../App';
-import sleep from '../util/sleep';
+import App from 'src/App';
 
 // mock these components since the imported libraries seem to break everything...
-jest.mock('../Components/VisualBox', () => {
+jest.mock('src/features/visual-box/VisualBox', () => {
   return function VisualBox({ data }) {
     return <div data-testid="visual-box">{JSON.stringify(data)}</div>;
   };
 });
 
-jest.mock('../Components/CodeBox', () => {
+jest.mock('src/features/code-box/CodeBox', () => {
   return function CodeBox({ code, setCode, share_methods }) {
     // added here to prevent error, doesn't affect the actual tests
     share_methods({ breakpoints_to_lines: () => [] });
@@ -145,31 +144,31 @@ print(a)`;
   userEvent.type(codebox, code);
 
   userEvent.click(stepButton); // no row executed
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toBe('');
 
   userEvent.click(stepButton); // a = [1,2,3]
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toBe('');
 
   userEvent.click(stepButton); // b = a
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toBe('');
 
   userEvent.click(stepButton); // print(b)
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toBe('[1, 2, 3]\n');
 
   userEvent.click(stepButton); // b.append(4)
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toBe('[1, 2, 3]\n');
 
   userEvent.click(stepButton); // print(b)
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toBe('[1, 2, 3]\n[1, 2, 3, 4]\n');
 
   userEvent.click(stepButton); // print(a)
-  await sleep(50);
+  await global.sleep(50);
   expect(outputBox.textContent).toBe('[1, 2, 3]\n[1, 2, 3, 4]\n[1, 2, 3, 4]\n');
 });
 
@@ -193,7 +192,7 @@ print(a)`;
   userEvent.type(codebox, code);
 
   userEvent.click(runButton);
-  await sleep(50);
+  await global.sleep(50);
 
   const expected = 'SyntaxError: bad input on line 5';
 

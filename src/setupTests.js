@@ -2,9 +2,9 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
-
 import fs from 'fs';
+
+import '@testing-library/jest-dom';
 
 const head = document.getElementsByTagName('head')[0];
 
@@ -29,3 +29,19 @@ skulptDebuggerScript.textContent = skulptDebugger;
 head.appendChild(skulptMinJsScript);
 head.appendChild(skulptStdlibScript);
 head.appendChild(skulptDebuggerScript);
+
+/* global global */
+// Util functions for jest testing
+global.sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+global.getObjectById = (objects, id) => {
+  return objects.find((object) => object.id === id);
+};
+
+global.getVariableByName = (variables, name) => {
+  return variables.find((variable) => variable.name === name);
+};
+
+global.getRefs = (visualBox) => {
+  return JSON.parse(visualBox.textContent);
+};

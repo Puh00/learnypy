@@ -1,7 +1,7 @@
-import './Dropdown.css';
-
 import React from 'react';
 import { ButtonGroup, Dropdown } from 'react-bootstrap';
+
+import 'src/features/code-box/Dropdown.css';
 
 const code_examples = [
   {
@@ -81,7 +81,7 @@ mylist.traverse_list()`
   }
 ];
 
-function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref, button_border }) {
+const DropdownLocal = ({ logo, setCode, restart, drop_down_menu_ref, button_border }) => {
   return (
     <Dropdown style={button_border} as={ButtonGroup}>
       <Dropdown.Toggle
@@ -111,6 +111,6 @@ function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref, button_bord
       </Dropdown.Menu>
     </Dropdown>
   );
-}
+};
 
 export default DropdownLocal;
