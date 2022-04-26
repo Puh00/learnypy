@@ -1,0 +1,35 @@
+.dropdown-toggle::after {
+  /* disables the arrow */
+  display: none !important;
+}
+
+.dropdown-toggle {
+  background-color: var(--components) !important;
+  color: var(--dark) !important;
+  border: 0px;
+  border-left: 2px solid var(--border) !important;
+  border-radius: 0px;
+}
+
+.dropdown-toggle:hover {
+  background-color: var(--hover) !important;
+}
+
+.dropdown-item{
+  color: var(--dark) !important;
+}
+
+.dropdown-item:hover{
+  background-color: var(--hover) !important;
+}
+
+.dropdown-menu {
+  padding: 0px !important;
+  box-shadow: var(--shadow);
+  background-color: var(--components);
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.dropdown p {
+  padding-top: 0.35rem;
+}

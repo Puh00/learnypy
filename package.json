@@ -1,5 +1,5 @@
 {
-  "name": "dynamicmemmodel",
+  "name": "learnpy",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,7 +7,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "codemirror": "^5.65.2",
-    "graphviz-react": "^1.2.0",
+    "d3-graphviz": "^4.1.1",
     "raw.macro": "^0.4.2",
     "react": "^17.0.2",
     "react-bootstrap": "^2.2.1",
@@ -26,7 +26,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "local-build": "serve build"
   },
   "eslintConfig": {
     "extends": [
@@ -53,6 +54,10 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "serve": "^13.0.2"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
   }
 }

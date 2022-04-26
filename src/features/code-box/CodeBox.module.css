@@ -1,0 +1,31 @@
+.Line-highlight {
+  background-color: var(--hover);
+}
+
+.Error-Line-highlight{
+  background-color: #ff5c5c;
+}
+
+.Container {
+  flex: 1 1 auto;
+  margin-top: 0;
+  height: 100%;
+  position: relative;
+}
+
+.marker-node .breakpoint-node {
+  display: inline-block;
+}
+
+.marker-node {
+  color: var(--dark);
+}
+
+.breakpoint-node{
+  color: var(--red);
+}
+
+.breakpoint-node:hover {
+  cursor: pointer;
+  color: var(--redHover);
+}

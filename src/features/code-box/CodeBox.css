@@ -1,0 +1,54 @@
+/* CodeMirror related css */
+
+.CodeMirror {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  border: 2px solid var(--border);
+  border-radius: 5px;
+  box-shadow: var(--shadow);
+}
+
+.read-only .CodeMirror {
+  background-color: #e6e6e6;
+}
+
+.read-only .CodeMirror .CodeMirror-gutters {
+  background-color: #dedede;
+}
+
+.cm-number {
+  color: #247f24 !important;
+}
+
+.breakpoints {
+  width: 13px;
+  justify-content: center;
+  padding: 2px;
+}
+
+.CodeMirror-linenumbers {
+  padding-right: 2px !important;
+}
+
+.CodeMirror-linenumber {
+  color: #6b6b6b;
+}
+
+.CodeMirror-gutter-elt {
+  padding: 2px !important;
+  text-align: right;
+}
+
+.lineMarker {
+  width: 16px;
+  padding: 2px;
+}
+
+.CodeMirror-focused {
+  outline: 3px solid var(--outline);
+  outline-offset: 0px;
+}
