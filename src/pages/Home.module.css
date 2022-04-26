@@ -43,74 +43,126 @@
   display: flex;
   flex-flow: column wrap;
   gap: 10px;
-  align-items: stretch;
 }
 
 .Control-panel {
   width: 40%;
   height: 50px;
+  z-index: 1;
 }
 
 .Code-box {
   position: relative;
   width: 40%;
   flex: 1;
+  z-index: 0;
 }
 
 .Output-box {  
   border-radius: 4px;
   height: 30%;
   width: 40%;
+  z-index: 0;
 }
 
 .Visual-box {
   background-color: white;
   position: relative;
-  
   min-height: 90%;
   width: calc(60% - 10px);
   overflow: hidden;
   flex: 1;
+  z-index: 0;
 }
 
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-  .Content-body {
-    margin: 0;
+/* Small devices (portrait tablets and large phones, 768px and down) */
+@media only screen and (max-width: 768px) {
+  .Page {
+    height: auto;
   }
-}
 
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-  .Content-body {
-    margin: 0;
+  .Container {
+    margin-top: 0;
+    margin-bottom: 2vh;
+    height: auto;
+    gap: 4px;
+    flex-flow: column nowrap;
+    align-items: center;
+  }
+
+  .Control-panel {
+    position: sticky;
+    top: 0;
+    width: 80vw;
+    order: 1;
+  }
+
+  .Code-box {
+    height: 60vh;
+    width: 80vw;
+    flex: 0 1 auto;
+    order: 2;
+  }
+
+  .Output-box {
+    height: 40vh;
+    width: 80vw;
+    order: 4;
+  }
+
+  .Visual-box {
+    height: 80vh;
+    width: 80vw;
+    flex: 0 1 auto;
+    order: 3;
   }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-  .Content-body {
-    margin: 4px;
+  .Page {
+    height: 98vh;
+  }
+
+  .Container {
+    margin-top: 1vh;
+    margin-bottom: auto;
+    height: 100%;
+    gap: 6px;
+    flex-flow: column wrap;
+  }
+  
+  .Control-panel {
+    position: static;
+    top: auto;
+    width: 40%;
+    order: 1;
+  }
+
+  .Code-box {
+    width: 40%;
+    height: auto;
+    flex: 1;
+    order: 2;
+  }
+
+  .Output-box {
+    height: 30%;
+    width: 40%;
+    order: 3;
+  }
+
+  .Visual-box {
+    height: auto;
+    width: calc(60% - 6px);
+    flex: 1;
+    order: 4;
   }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-  .Content-body {
-    margin: 8px;
-  }
-}
-
-/* Large devices (laptops/desktops, 1200 and up) */
-@media only screen and (min-width: 1200px) {
-  .Content-body {
-    margin: 12px;
-  }
-}
-
-/* Extra large devices (large laptops and desktops, 1600px and up) */
-@media only screen and (min-width: 1600px) {
-  .Content-body {
-    margin: 16px;
+  .Container {
+    gap: 10px;
   }
 }

@@ -90,7 +90,8 @@ const DropdownLocal = ({ logo, setCode, restart, drop_down_menu_ref, button_bord
         variant="light"
         id="dropdown-basic"
         ref={drop_down_menu_ref}>
-        <p>Code examples {logo} </p>
+        <p>Code examples </p>
+        {logo}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
