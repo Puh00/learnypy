@@ -26,3 +26,10 @@
 .dropdown p {
   padding-top: 0.35rem;
 }
+
+/* Large devices (laptops/desktops, 1200 and up) */
+@media only screen and (max-width: 992px) {
+  .dropdown p {
+    visibility: hidden;
+  }
+}

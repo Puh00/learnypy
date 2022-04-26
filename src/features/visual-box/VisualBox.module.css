@@ -1,9 +1,7 @@
 .Container {
   position: relative;
-  display: block;
-  overflow: hidden;
-  margin: 5px;
-  background-color: white;
+  height: 100%;
+  width: 100%;
 }
 
 .Container div svg {
