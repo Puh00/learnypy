@@ -1,29 +1,4 @@
-/*.Outer-grid {
-  height: 100vh;
-  width: 100vw;
-  display: grid;
-  grid-template-rows: 60px;
-  padding-bottom: 5px;
-  background-color: var(--background);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
-}
-
-.Content-body {
-  grid-row: 2;
-  display: grid;
-  /* So the left- and right-body doesn't collide 
-  grid-template-columns: repeat(auto-fit, minmax(260px, 40%)) 60%;
-  background-color: var(--background);
-}
-
-.Left-body {
-  display: grid;
-  grid-template-rows: 50px 60%;
-  row-gap: 10px;
-  margin: 5px;
-  background-color: var(--background);
-}*/
-
+/* TODO: fix visualbox focus border */
 .Page {
   width: 100vw;
   height: 98vh;
