@@ -161,7 +161,11 @@ const get_description_of_outer_object = (o, v) => {
     text = text.concat('the same ' + o.info.type + size_description + ' as ' + t + '. ');
     explain_object = false;
   } else {
-    text = text.concat(o.info.type + size_description + '. ');
+    text = text.concat(
+      v.dead_ref
+        ? o.info.type + size_description + '. '
+        : 'a ' + o.info.type + size_description + '. '
+    );
   }
 
   return [text, explain_object];
