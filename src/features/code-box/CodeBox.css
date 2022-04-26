@@ -16,6 +16,10 @@
   background-color: var(--lockedCodeboxBackground);
 }
 
+.read-only:hover{
+  cursor: not-allowed !important;
+}
+
 .read-only .CodeMirror .CodeMirror-gutters {
   background-color: var(--lockedCodeboxGutters);
 }

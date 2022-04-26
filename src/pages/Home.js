@@ -142,7 +142,6 @@ const Home = () => {
   const toggle_theme = () => {
     document.body.classList.toggle('dark');
     setTheme(theme == 'neat' ? 'blackboard' : 'neat');
-    console.log(document.body.classList);
   };
 
   skulpt.configure({
