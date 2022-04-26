@@ -215,13 +215,16 @@ const text_for_dead_refs = (v, new_object, index_number) => {
             ' of size ' +
             old_object.value.length +
             ' to now pointing to ' +
-            (old_object.info.type === new_index_type ? 'another ' : '')
+            (old_object.info.type === new_index_type ||
+            old_object.info.type === new_object.info.type
+              ? 'another '
+              : '')
         );
-        if (composite_types.includes(new_index_type)) {
+        /*if (composite_types.includes(new_index_type || new_object.info.type)) {
           text = text.concat('a '); // ska fixas. nu blir det ibland "another a"
         } else {
           text = text.concat('the ' + new_object.info.type + ' value ' + new_object.value + '. ');
-        }
+        }*/
       } else {
         text = text.concat(
           'to the ' +
