@@ -179,9 +179,21 @@ const text_for_many_pointers_at_the_same_object = (names) => {
   return text;
 };
 
+const get_type_of_index = (index_number, new_object) => {
+  if (index_number === undefined) {
+    return null;
+  } else {
+    if (['dictionary', 'class'].includes(new_object.info.type)) {
+      return objects.find((elem) => elem.id === new_object.value[index_number].val).info.type;
+    } else {
+      return objects.find((elem) => elem.id === new_object.value[index_number].ref).info.type;
+    }
+  }
+};
+
 const text_for_dead_refs = (v, new_object, index_number) => {
   let text;
-  let new_index_type = null;
+  let new_index_type = get_type_of_index(index_number, new_object);
 
   if (v.name != undefined) {
     text = 'Variable "' + v.name + '"';
@@ -192,12 +204,8 @@ const text_for_dead_refs = (v, new_object, index_number) => {
       ' of "' +
       v +
       '"';
-    let new_o = objects.find((elem) => elem.id === new_object.value[index_number].val);
-    new_index_type = new_o.info.type;
   } else {
     text = 'Index nr ' + index_number + ' of ' + v;
-    let new_o = objects.find((elem) => elem.id === new_object.value[index_number].ref);
-    new_index_type = new_o.info.type;
   }
   text = text.concat(' changed reference since the last step from pointing ');
 
@@ -216,15 +224,10 @@ const text_for_dead_refs = (v, new_object, index_number) => {
             old_object.value.length +
             ' to now pointing to ' +
             (old_object.info.type === new_index_type ||
-            old_object.info.type === new_object.info.type
+            (old_object.info.type === new_object.info.type && new_index_type)
               ? 'another '
-              : '')
+              : 'a ')
         );
-        /*if (composite_types.includes(new_index_type || new_object.info.type)) {
-          text = text.concat('a '); // ska fixas. nu blir det ibland "another a"
-        } else {
-          text = text.concat('the ' + new_object.info.type + ' value ' + new_object.value + '. ');
-        }*/
       } else {
         text = text.concat(
           'to the ' +
