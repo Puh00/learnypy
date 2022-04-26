@@ -1,33 +1,38 @@
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/mode/python/python';
-import 'codemirror/theme/neat.css';
-import 'codemirror/addon/edit/closetag';
-import 'codemirror/addon/edit/closebrackets';
-import './CodeBox.css';
-
-import raw from 'raw.macro';
 import React, { useEffect, useState } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
+import raw from 'raw.macro';
 
-import styles from './CodeBox.module.css';
+import styles from 'src/features/code-box/CodeBox.module.css';
 
-const marker_logo = raw('./Icons/marker-node.svg');
-const breakpoint_logo = raw('./Icons/breakpoint-node.svg');
+import 'codemirror/mode/python/python';
+import 'codemirror/addon/edit/closetag';
+import 'codemirror/addon/edit/closebrackets';
+
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/neat.css';
+import 'src/features/code-box/CodeBox.css';
+
+const breakpoint_logo = raw('../../assets/breakpoint-node.svg');
 
 const CodeBox = ({
+  line,
+  setLine,
   code,
   setCode,
-  isStepping,
-  line,
+  error,
+  setError,
   breakpoints,
+  setBreakpoints,
+  isStepping,
+  share_methods,
   drop_down_menu_ref,
-  output_box_ref,
-  add_breakpoint,
-  remove_breakpoint
+  output_box_ref
 }) => {
   const [editor, setEditor] = useState(null);
-  const [prevLine, setPrevLine] = useState(-1);
   const [prevBreakpoints, setPrevBreakpoints] = useState(() => []);
+
+  let logo = error ? 'help' : 'marker-node';
+  const marker_logo = raw(`../../assets/${logo}.svg`);
 
   const breakpoint_node = () => {
     const breakpoint_node = document.createElement('span');
@@ -43,32 +48,43 @@ const CodeBox = ({
     marker_node.className = styles['marker-node'];
     marker_node.innerHTML = marker_logo;
     marker_node.setAttribute('data-toggle', 'tooltip');
-    marker_node.setAttribute('title', 'Next line to be executed');
+    marker_node.setAttribute('title', error ? 'Error on this line' : 'Next line to be executed');
     return marker_node;
   };
 
   const set_highlighted_row = (_editor) => {
     // remove previous highlighted line and line marker
-    _editor.removeLineClass(prevLine, 'wrap', styles['Line-highlight']);
-    _editor.setGutterMarker(prevLine, 'lineMarker', null);
+    if (!error) {
+      for (let i = 0; i < _editor.lineCount(); i++) {
+        _editor.removeLineClass(i, 'wrap', styles['Line-highlight']);
+        _editor.removeLineClass(i, 'wrap', styles['Error-Line-highlight']);
+        _editor.setGutterMarker(i, 'lineMarker', null);
+      }
+    }
 
     if (line >= 0) {
       // highlight the current execution row
-      _editor.addLineClass(line, 'wrap', styles['Line-highlight']);
+      _editor.addLineClass(line, 'wrap', styles[error ? 'Error-Line-highlight' : 'Line-highlight']);
       _editor.setGutterMarker(line, 'lineMarker', marker_node());
       _editor.scrollIntoView(line);
+      if (error) {
+        setLine(-1);
+      }
     }
   };
 
   const handle_breakpoints = (_editor, lineNumber) => {
     let info = _editor.lineInfo(lineNumber);
 
+    // only remove breakpoints when there is a breakpoint
     if (info.gutterMarkers && info.gutterMarkers.breakpoints) {
-      remove_breakpoint(lineNumber);
+      setBreakpoints((bps) => [
+        ...new Set(bps.filter((bp) => bp !== _editor.getLineHandle(lineNumber)))
+      ]);
       return;
     }
 
-    add_breakpoint(lineNumber);
+    setBreakpoints((bps) => [...new Set([...bps, _editor.getLineHandle(lineNumber)])]);
   };
 
   const update_breakpoints = (_editor) => {
@@ -100,10 +116,10 @@ const CodeBox = ({
     set_tooltip_breakpoint_area();
   }
 
+  // whenever editor updates also update breakpoints_to_lines
   useEffect(() => {
-    // update previous line for next render, only if line changed
-    setPrevLine(line);
-  }, [line]);
+    share_methods({ breakpoints_to_lines: (bps) => bps.map((bp) => editor?.getLineNumber(bp)) });
+  }, [editor]);
 
   useEffect(() => {
     // similar optimisation for breakpoints
@@ -138,14 +154,22 @@ const CodeBox = ({
         onBeforeChange={(_editor, data, value) => {
           if (data.text[0] != '\t') {
             setCode(value);
-            update_breakpoints(_editor);
           }
         }}
         onKeyDown={(_editor, event) => {
+          setError(false);
           if (event.key === 'Tab') {
             if (event.shiftKey) return drop_down_menu_ref.current.focus();
             output_box_ref.current.focus();
           }
+        }}
+        onChange={(_editor) => {
+          // remove all breakpoints that are don't exist anymore after pasting
+          setBreakpoints((bps) => [
+            ...new Set(bps.filter((bp) => _editor.getLineNumber(bp) !== null))
+          ]);
+          // update the breakpoint markers
+          update_breakpoints(_editor);
         }}
       />
     </div>

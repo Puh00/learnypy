@@ -1,9 +1,8 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Header from '../Components/Header';
-import styles from './About.module.css';
+import Header from 'src/components/Header';
+import styles from 'src/pages/About.module.css';
 
 const About = () => {
   const navItems = [
@@ -17,10 +16,13 @@ const About = () => {
     }
   ];
 
-  const appName = 'The Dynamic Memory Model';
+  const appName = 'LearnPy';
+  let title = 'About | ';
+  title = title.concat(appName);
+  document.title = title;
 
   return (
-    <div>
+    <div className={styles.Page}>
       <Header navItems={navItems} />
       <div className={styles.Content}>
         <h1 className={styles.heading_title}>About {appName}</h1>
@@ -30,8 +32,10 @@ const About = () => {
             Python
           </a>{' '}
           visualisation tool with the aim to help novice programmers to understand the concept of
-          references in Python. {appName} is a project made as a Bachelor project by six students
-          from{' '}
+          references in Python. It offers simple graph visualisation of the relations between
+          objects and variables. The solution is based on JavaScript, which means no server is used,
+          and is thereby offering a user experience with less risk for lag and no server-side
+          errors. {appName} is a project made as a Bachelor project by six students from{' '}
           <a href="https://www.chalmers.se" target="_blank" rel="noreferrer">
             Chalmers University of Technology
           </a>
@@ -64,9 +68,8 @@ const About = () => {
           <li>Only Python is supported</li>
           <li>Turtle graphics are not supported</li>
           <li>
-            The only supported datatypes (for visualisation) are: integers, floats, doubles,
-            strings, characters, booleans, tuples, user-defined classes, lists, sets and
-            dictionaries.
+            The supported datatypes (for visualisation) are: integers, floats, doubles, strings,
+            characters, booleans, tuples, user-defined classes, lists, sets and dictionaries.
           </li>
         </ul>
         <h3 className={styles.SubTitle}> Caused by Skulpt </h3>

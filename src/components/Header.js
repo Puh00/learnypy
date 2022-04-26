@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import styles from './Header.module.css';
+import styles from 'src/components/Header.module.css';
 
 const Header = ({ navItems }) => {
   return (
     <header className={styles.Header}>
       <Link className={styles['Home-logo']} to="/">
-        The Dynamic Memory Model
+        LearnPy
       </Link>
 
       <div className={styles['Nav-menu']}>

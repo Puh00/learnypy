@@ -219,7 +219,7 @@ const retrieve_full_type_name = (js_object_type) => {
 const retrieve_object_id = (
   objects,
   js_object,
-  class_names = Object.entries(window.Sk.globals)
+  class_names = fetch_class_names(Object.entries(window.Sk.globals))
 ) => {
   var obj;
   for (const obj of objects) {

@@ -2,12 +2,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import App from '../App';
-import { getRefs } from '../util/testUtils';
-import set_text from '../util/textGenerator';
+import App from 'src/App';
+import set_text from 'src/features/visual-box/textGenerator';
 
 // mock these components since the imported libraries seem to break everything...
-jest.mock('../Components/VisualBox', () => {
+jest.mock('src/features/visual-box/VisualBox', () => {
   return function VisualBox({ data }) {
     // js_object contains raw javascript object which makes it impossible to
     // stringify using JSON
@@ -20,8 +19,11 @@ jest.mock('../Components/VisualBox', () => {
   };
 });
 
-jest.mock('../Components/CodeBox', () => {
-  return function CodeBox({ code, setCode }) {
+jest.mock('src/features/code-box/CodeBox', () => {
+  return function CodeBox({ code, setCode, share_methods }) {
+    // added here to prevent error, doesn't affect the actual tests
+    share_methods({ breakpoints_to_lines: () => [] });
+
     return (
       <form className="Code-box">
         <textarea
@@ -34,6 +36,18 @@ jest.mock('../Components/CodeBox', () => {
       </form>
     );
   };
+});
+
+// disable the error that keeps saying not wrapped in act since there is no
+// good way to fix it
+jest.spyOn(global.console, 'error').mockImplementationOnce((message) => {
+  if (
+    !message.includes(
+      'When testing, code that causes React state updates should be wrapped into act(...)'
+    )
+  ) {
+    global.console.error(message);
+  }
 });
 
 test('simple assignment with integers', () => {
@@ -58,7 +72,7 @@ c = b`;
   userEvent.click(runButton);
 
   // get the objects and variables, and generate text from these
-  const refs = getRefs(visualBox);
+  const refs = global.getRefs(visualBox);
   const text = set_text(refs.objects, refs.variables);
 
   expect(text).toEqual(expected);
@@ -86,7 +100,7 @@ b.append(3)`;
   userEvent.click(runButton);
 
   // get the objects and variables, and generate text from these
-  const refs = getRefs(visualBox);
+  const refs = global.getRefs(visualBox);
   const text = set_text(refs.objects, refs.variables);
 
   expect(text).toEqual(expected);
@@ -113,7 +127,7 @@ a.add("orange")`;
   userEvent.click(runButton);
 
   // get the objects and variables, and generate text from these
-  const refs = getRefs(visualBox);
+  const refs = global.getRefs(visualBox);
   const text = set_text(refs.objects, refs.variables);
 
   expect(text).toEqual(expected);
@@ -141,7 +155,7 @@ set1.update(set2)`;
   userEvent.click(runButton);
 
   // get the objects and variables, and generate text from these
-  const refs = getRefs(visualBox);
+  const refs = global.getRefs(visualBox);
   const text = set_text(refs.objects, refs.variables);
 
   expect(text).toEqual(expected);
@@ -169,7 +183,7 @@ b[[2] = "a new value"`;
   userEvent.click(runButton);
 
   // get the objects and variables, and generate text from these
-  const refs = getRefs(visualBox);
+  const refs = global.getRefs(visualBox);
   const text = set_text(refs.objects, refs.variables);
 
   expect(text).toEqual(expected);
@@ -195,7 +209,7 @@ a = [[ [[ [[ [[ [[ ]]]]]`; // the same as `a = [[[[[]]]]]`
   userEvent.click(runButton);
 
   // get the objects and variables, and generate text from these
-  const refs = getRefs(visualBox);
+  const refs = global.getRefs(visualBox);
   const text = set_text(refs.objects, refs.variables);
 
   expect(text).toEqual(expected);
@@ -224,7 +238,7 @@ b[["b"] = b`;
   userEvent.click(runButton);
 
   // get the objects and variables, and generate text from these
-  const refs = getRefs(visualBox);
+  const refs = global.getRefs(visualBox);
   const text = set_text(refs.objects, refs.variables);
 
   expect(text).toEqual(expected);
@@ -266,7 +280,7 @@ llist.create_list()`;
   userEvent.click(runButton);
 
   // get the objects and variables, and generate text from these
-  const refs = getRefs(visualBox);
+  const refs = global.getRefs(visualBox);
   const text = set_text(refs.objects, refs.variables);
 
   expect(text).toEqual(expected);

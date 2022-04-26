@@ -1,4 +1,4 @@
-import { parse_globals, parse_locals, retrieve_object_id } from './skulptParser';
+import { parse_globals, parse_locals, retrieve_object_id } from 'src/skulpt-wrapper/skulptParser';
 
 /**
  * Wrapper class of the Skulpt module.
@@ -123,8 +123,9 @@ class Skulpt {
    *
    * @param {String} prog The code of the program, as a string.
    * @param {Function} callback A callback function called with no arguments after the program has been restarted.
+   * @param {Boolean} run A boolean used to denote if the intention is to run the program or not after restart
    */
-  restart(prog, callback) {
+  restart(prog, callback, run) {
     // enable step_mode at the beginning to avoid executing this program
     this.debugger.enable_step_mode();
 
@@ -138,9 +139,11 @@ class Skulpt {
       breakpoints: this.debugger.check_breakpoints.bind(this.debugger)
     });
 
-    // the following code run the code in the debugger
-    const promise = this.debugger.asyncToPromise(
-      () => window.Sk.importMainWithBody('<stdin>', false, prog, true),
+    //If the intention is to run the program, load the debugger with the code.
+    //Otherwise, load the debugger with nothing. This is to make sure that
+    //it's possible to restart the debugger even if the code doesn't compile.
+    let promise = this.debugger.asyncToPromise(
+      () => window.Sk.importMainWithBody('<stdin>', false, run ? prog : '', true),
       null, // the debugger literally doesn't use this...
       this.debugger
     );
@@ -168,6 +171,11 @@ class Skulpt {
   async step(prog, callback) {
     let old_globals = parse_globals();
 
+    //If there isn't any program running, restart the debugger
+    //with the appropriate code
+    if (!this.debugger.get_active_suspension()) {
+      this.restart(prog, null, true);
+    }
     this.debugger.enable_step_mode();
     await this.debugger.resume.call(this.debugger);
 
@@ -190,9 +198,10 @@ class Skulpt {
   run(prog, callback) {
     this.init_breakpoints();
 
-    // if the is no active suspension, then we restart the program
+    //If there isn't any program running, restart the debugger
+    //with the appropriate code
     if (!this.debugger.get_active_suspension()) {
-      this.restart(prog);
+      this.restart(prog, null, true);
     }
 
     this.debugger.disable_step_mode();
