@@ -217,7 +217,7 @@ a.append(a)`;
   expect(refs.objects).toHaveLength(4); // 1, 2, [1,2] and [[1,2]], 4 objects in total
   expect(a.ref).toEqual(a_obj.id);
   // one of the values in a must refer to a
-  expect(a_obj.value).toEqual(expect.arrayContaining([{ ref: a_obj.id }]));
+  expect(a_obj.value).toEqual(expect.arrayContaining([{ dead_ref: null, ref: a_obj.id }]));
 });
 
 test('creating a basic dictionary', () => {
@@ -557,4 +557,142 @@ a = Node(1)`;
   const class_obj = refs.objects.find((entry) => entry.info.type == 'class');
   const a = global.getVariableByName(refs.variables, 'a');
   expect(a.ref).toBe(class_obj.id);
+});
+
+test('dead ref on variable', async () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const stepButton = screen.getByTitle('Run next line');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const code = `a=1
+a=2`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  userEvent.click(stepButton);
+  await sleep(50);
+
+  userEvent.click(stepButton); //first row
+  await sleep(50);
+
+  const refs = getRefs(visualBox);
+
+  const a = getVariableByName(refs.variables, 'a');
+  const a_obj = getObjectById(refs.objects, a.ref);
+
+  expect(refs.objects).toHaveLength(1);
+  expect(a.ref).toEqual(a_obj.id);
+  expect(a.dead_ref).toBeNull();
+
+  userEvent.click(stepButton); //second row
+  await sleep(50);
+
+  const new_refs = getRefs(visualBox);
+
+  const a_new = getVariableByName(new_refs.variables, 'a');
+  const new_a_obj = getObjectById(new_refs.objects, a_new.ref);
+  const a_dead_obj = getObjectById(new_refs.objects, a_new.dead_ref);
+
+  expect(new_refs.objects).toHaveLength(2);
+  expect(a_dead_obj.id).toEqual(a_new.dead_ref);
+  expect(a_dead_obj.id).not.toEqual(new_a_obj.id);
+  expect(a_dead_obj.value).toBe(1);
+});
+
+test('dead ref on list index', async () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const stepButton = screen.getByTitle('Run next line');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const code = `a=[[1,3]
+a[[0]=2`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  userEvent.click(stepButton);
+  await sleep(50);
+
+  userEvent.click(stepButton); //first row
+  await sleep(50);
+
+  const refs = getRefs(visualBox);
+  const a = getVariableByName(refs.variables, 'a');
+  const a_obj = getObjectById(refs.objects, a.ref);
+
+  const first_index_obj = getObjectById(refs.objects, a_obj.value[0].ref);
+
+  expect(refs.objects).toHaveLength(3);
+  expect(first_index_obj.value).toBe(1);
+  expect(a_obj.value[0].dead_ref).toBeNull();
+  expect(a.dead_ref).toBeNull();
+
+  userEvent.click(stepButton); //second row
+  await sleep(50);
+
+  const new_refs = getRefs(visualBox);
+
+  const a_new = getVariableByName(new_refs.variables, 'a');
+  const new_a_obj = getObjectById(new_refs.objects, a_new.ref);
+  const new_first_index_obj = getObjectById(new_refs.objects, new_a_obj.value[0].ref);
+  const first_index_dead_obj = getObjectById(new_refs.objects, new_a_obj.value[0].dead_ref);
+
+  expect(new_refs.objects).toHaveLength(4);
+  expect(new_first_index_obj.value).toBe(2);
+  expect(a_new.dead_ref).toBeNull();
+  expect(new_a_obj.value[0].dead_ref).toEqual(first_index_dead_obj.id);
+  expect(new_first_index_obj.id).not.toEqual(first_index_obj.id);
+});
+
+test('dead ref on self-referencing dictionary', async () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const stepButton = screen.getByTitle('Run next line');
+  const visualBox = screen.getByTestId('visual-box');
+
+  const code = `mydict = {{"key1": "val1", "key2": "val2"}
+mydict[["key2"]=mydict`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+
+  userEvent.click(stepButton);
+  await sleep(50);
+
+  userEvent.click(stepButton); //first row
+  await sleep(50);
+
+  const refs = getRefs(visualBox);
+  const mydict = getVariableByName(refs.variables, 'mydict');
+  const mydict_obj = getObjectById(refs.objects, mydict.ref);
+
+  const second_key_obj = getObjectById(refs.objects, mydict_obj.value[1].val);
+
+  expect(refs.objects).toHaveLength(3);
+  expect(second_key_obj.value).toBe('val2');
+  expect(mydict_obj.value[0].dead_ref).toBeNull();
+  expect(mydict_obj.value[1].dead_ref).toBeNull();
+
+  userEvent.click(stepButton); //second row
+  await sleep(50);
+
+  const new_refs = getRefs(visualBox);
+
+  const mydict_new = getVariableByName(new_refs.variables, 'mydict');
+  const new_mydict_obj = getObjectById(new_refs.objects, mydict_new.ref);
+  const new_second_key_obj = getObjectById(new_refs.objects, new_mydict_obj.value[1].val);
+  const new_second_key_dead_obj = getObjectById(new_refs.objects, new_mydict_obj.value[1].dead_ref);
+
+  expect(new_refs.objects).toHaveLength(3);
+  expect(new_second_key_obj.id).toEqual(new_mydict_obj.id);
+  expect(new_mydict_obj.value[1].dead_ref).toEqual(new_second_key_dead_obj.id);
+  expect(new_second_key_dead_obj.value).toBe('val2');
+  expect(new_mydict_obj.value[0].dead_ref).toBeNull();
+  expect(mydict_new.dead_ref).toBeNull();
 });

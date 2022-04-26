@@ -1,4 +1,4 @@
-import { parse_globals, parse_locals } from 'src/skulpt-wrapper/skulptParser';
+import { parse_globals, parse_locals, retrieve_object_id } from 'src/skulpt-wrapper/skulptParser';
 
 /**
  * Wrapper class of the Skulpt module.
@@ -169,6 +169,8 @@ class Skulpt {
    * @param {Function} callback A callback function called with the current globals and locals as arguments.
    */
   async step(prog, callback) {
+    let old_globals = parse_globals();
+
     //If there isn't any program running, restart the debugger
     //with the appropriate code
     if (!this.debugger.get_active_suspension()) {
@@ -177,9 +179,13 @@ class Skulpt {
     this.debugger.enable_step_mode();
     await this.debugger.resume.call(this.debugger);
 
+    let new_globals = parse_globals();
+
+    this.set_dead_refs(old_globals, new_globals);
+
     // calls the callback function if it is a function
     if (typeof callback === 'function') {
-      callback(parse_globals(), parse_locals());
+      callback(new_globals, parse_locals());
     }
   }
 
@@ -204,6 +210,64 @@ class Skulpt {
     // calls the callback function if it is a function
     if (typeof callback === 'function') {
       callback(parse_globals(), parse_locals());
+    }
+  }
+
+  // Dead references ----------------------------------------------------------
+
+  /**
+   * The function will detect which references has been assigned a new object
+   * and add as a dead reference a reference to the old object.
+   * An old object that does not exist in new_data is created and added.
+   *
+   * @param {{Array, Array}} old_data: the data from before a step was taken
+   * @param {{Array, Array}} new_data: the data after a step was taken,
+   *   will be modified to contain all dead references
+   */
+  set_dead_refs(old_data, new_data) {
+    // add dead_ref for all affected variables
+    for (const old_var of old_data.variables) {
+      const old_obj = old_data.objects.find((elem) => elem.id === old_var.ref);
+      const new_var = new_data.variables.find((elem) => elem.name === old_var.name);
+      if (!new_var || !old_obj) continue;
+      let new_obj_id = retrieve_object_id(new_data.objects, old_obj.js_object);
+
+      if (new_var.ref !== new_obj_id) {
+        // new assignment -> add new id of old object to dead_ref
+        new_var.dead_ref = new_obj_id;
+      }
+    }
+
+    // add dead_ref for all affected objects
+    for (const old_obj of old_data.objects) {
+      if (!['list', 'dictionary', 'class'].includes(old_obj.info.type)) continue;
+
+      const new_obj = new_data.objects.find((elem) => elem.js_object === old_obj.js_object);
+      if (!new_obj) continue;
+
+      for (let index = 0; index < old_obj.value.length && index < new_obj.value.length; index++) {
+        // get the object that the index is referencing
+        const ref_obj = old_data.objects.find(
+          (elem) => elem.id === this.get_index_ref(old_obj, index)
+        );
+        if (!ref_obj) continue;
+        const new_ref_obj_id = retrieve_object_id(new_data.objects, ref_obj.js_object);
+
+        if (this.get_index_ref(new_obj, index) !== new_ref_obj_id) {
+          // new assignment -> add new id of old referenced object to dead_ref
+          new_obj.value[index].dead_ref = new_ref_obj_id;
+        }
+      }
+    }
+  }
+
+  // helper method for set_dead_refs()
+  // returns reference from a given index/val/attribute in list/dictionary/class
+  get_index_ref(obj, index) {
+    if (['dictionary', 'class'].includes(obj.info.type)) {
+      return obj.value[index].val;
+    } else if (['list'].includes(obj.info.type)) {
+      return obj.value[index].ref;
     }
   }
 }
