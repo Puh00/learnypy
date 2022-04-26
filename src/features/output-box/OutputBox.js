@@ -30,7 +30,7 @@ const OutputBox = ({ output, output_box_ref }) => {
           tabIndex={0}>
           {output.text}
         </div>
-        <div className={`${styles.Shadow} ${highlight ? styles.FadeIn : styles.FadeOut}`} />
+        <div className={`${styles.Highlight} ${highlight ? styles.FadeIn : styles.FadeOut}`} />
       </div>
     </div>
   );
