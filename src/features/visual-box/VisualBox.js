@@ -43,6 +43,14 @@ const VisualBox = ({ data, share_methods }) => {
         ele.innerHTML = '';
         return;
       }
+      if (ele.id === 'graph0') {
+        ele.childNodes.forEach((node) => {
+          if (node.tagName === 'title') {
+            node.innerHTML = 'Graph';
+          }
+        });
+        return;
+      }
 
       ele.childNodes.forEach((node) => {
         removeTitle(node);
@@ -75,8 +83,13 @@ const VisualBox = ({ data, share_methods }) => {
   }, []);
 
   return (
-    <div className={`${styles.Container} ${border.Border}`} tabIndex={0} aria-label={ariaLabel}>
-      <div ref={container} id="graph-body"></div>
+    <div
+      className={`${styles.Container} ${border.Border}`}
+      tabIndex={0}
+      data-toggle="tooltip"
+      title="Graph"
+      aria-label={ariaLabel}>
+      <div ref={container} id="graph-body" data-toggle="tooltip" title="Graph"></div>
       <Button
         className={styles.Button}
         onClick={resetGraphZoom}

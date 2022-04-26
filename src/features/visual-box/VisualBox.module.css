@@ -30,7 +30,7 @@
   right: 0;
 }
 
-.Button:disabled{
+.Button:disabled {
   visibility: hidden;
 }
 
@@ -39,6 +39,6 @@
   height: 100%;
 }
 
-.Button:hover{
+.Button:hover {
   background-color: var(--hover) !important;
 }
