@@ -235,7 +235,7 @@ const text_for_dead_refs = (v, new_object, index_number) => {
           (old_object.info.type === new_object.info.type && !index_number)
         ) {
           text = text.concat('another ');
-        } else if (composite_types.includes(old_object.info.type)) {
+        } else if (composite_types.includes(new_object.info.type) && v.dead_ref) {
           text = text.concat('a ');
         }
       } // if the old object is a bool,int,string,float,double,char..
@@ -246,10 +246,17 @@ const text_for_dead_refs = (v, new_object, index_number) => {
             ' value ' +
             old_object.value +
             ' to now pointing to ' +
-            (old_object.info.type === new_object.info.type ? '' : 'a ')
+            ((old_object.info.type !== new_object.info.type &&
+              composite_types.includes(new_object.info.type) &&
+              v.dead_ref) ||
+            (old_object.info.type !== new_index_type &&
+              composite_types.includes(new_index_type) &&
+              v.dead_ref)
+              ? 'a '
+              : '')
         );
         if (!composite_types.includes(new_object.info.type)) {
-          text = text.concat(new_object.info.type + ' value ' + new_object.value + '.');
+          text = text.concat('the ' + new_object.info.type + ' value ' + new_object.value + '.');
         }
       }
     }
