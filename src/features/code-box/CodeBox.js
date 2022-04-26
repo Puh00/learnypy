@@ -1,17 +1,18 @@
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/mode/python/python';
-import 'codemirror/theme/neat.css';
-import 'codemirror/addon/edit/closetag';
-import 'codemirror/addon/edit/closebrackets';
-import './CodeBox.css';
-
-import raw from 'raw.macro';
 import React, { useEffect, useState } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
+import raw from 'raw.macro';
 
-import styles from './CodeBox.module.css';
+import styles from 'src/features/code-box/CodeBox.module.css';
 
-const breakpoint_logo = raw('./Icons/breakpoint-node.svg');
+import 'codemirror/mode/python/python';
+import 'codemirror/addon/edit/closetag';
+import 'codemirror/addon/edit/closebrackets';
+
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/neat.css';
+import 'src/features/code-box/CodeBox.css';
+
+const breakpoint_logo = raw('../../assets/breakpoint-node.svg');
 
 const CodeBox = ({
   line,
@@ -31,7 +32,7 @@ const CodeBox = ({
   const [prevBreakpoints, setPrevBreakpoints] = useState(() => []);
 
   let logo = error ? 'help' : 'marker-node';
-  const marker_logo = raw(`./Icons/${logo}.svg`);
+  const marker_logo = raw(`../../assets/${logo}.svg`);
 
   const breakpoint_node = () => {
     const breakpoint_node = document.createElement('span');

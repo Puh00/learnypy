@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react';
 
-import CodeBox from '../Components/CodeBox';
-import ControlPanel from '../Components/ControlPanel';
-import Header from '../Components/Header';
-import OutputBox from '../Components/OutputBox';
-import VisualBox from '../Components/VisualBox';
-import Skulpt from '../SkulptWrapper/Skulpt';
-import styles from './Home.module.css';
+import Header from 'src/components/Header';
+import CodeBox from 'src/features/code-box/CodeBox';
+import ControlPanel from 'src/features/code-box/ControlPanel';
+import OutputBox from 'src/features/output-box/OutputBox';
+import VisualBox from 'src/features/visual-box/VisualBox';
+import styles from 'src/pages/Home.module.css';
+import Skulpt from 'src/skulpt-wrapper/Skulpt';
 
 const Home = () => {
   const [globals, setGlobals] = useState({ objects: [], variables: [] });

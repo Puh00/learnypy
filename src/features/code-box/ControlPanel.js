@@ -1,14 +1,14 @@
 import React from 'react';
 import { ButtonGroup } from 'react-bootstrap';
 
-import Button from './Button';
-import styles from './ControlPanel.module.css';
-import DropdownLocal from './Dropdown';
-import { ReactComponent as Next_logo } from './Icons/arrow-right.svg';
-import { ReactComponent as Clear_breakpoints_logo } from './Icons/clear-breakpoints.svg';
-import { ReactComponent as Play_logo } from './Icons/play.svg';
-import { ReactComponent as Stop_logo } from './Icons/stop.svg';
-import { ReactComponent as Menu_logo } from './Icons/vertical-menu-dots.svg';
+import { ReactComponent as Next_logo } from 'src/assets/arrow-right.svg';
+import { ReactComponent as Menu_logo } from 'src/assets/chevron-down.svg';
+import { ReactComponent as Clear_breakpoints_logo } from 'src/assets/clear-breakpoints.svg';
+import { ReactComponent as Play_logo } from 'src/assets/play.svg';
+import { ReactComponent as Stop_logo } from 'src/assets/stop.svg';
+import Button from 'src/components/Button';
+import styles from 'src/features/code-box/ControlPanel.module.css';
+import DropdownLocal from 'src/features/code-box/Dropdown';
 
 const ControlPanel = ({
   code,

@@ -53,7 +53,8 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
 
       variables.push({
         name: key,
-        ref: retrieve_object_id(objects, value, user_defined_class_names)
+        ref: retrieve_object_id(objects, value, user_defined_class_names),
+        dead_ref: null
       });
     }
   }
@@ -88,8 +89,12 @@ const create_object = (objects, js_object, class_names) => {
     const _values = [];
     values.forEach((val) => {
       if (!set)
-        _values.push({ key: val.lhs.v, val: retrieve_object_id(objects, val.rhs, class_names) });
-      else _values.push({ ref: retrieve_object_id(objects, val.lhs, class_names) });
+        _values.push({
+          key: val.lhs.v,
+          val: retrieve_object_id(objects, val.rhs, class_names),
+          dead_ref: null
+        });
+      else _values.push({ ref: retrieve_object_id(objects, val.lhs, class_names), dead_ref: null });
     });
     return _values;
   };
@@ -138,7 +143,8 @@ const create_object = (objects, js_object, class_names) => {
 
       values.push({
         key: key,
-        val: retrieve_object_id(objects, value, class_names)
+        val: retrieve_object_id(objects, value, class_names),
+        dead_ref: null
       });
     }
     return values;
@@ -164,7 +170,7 @@ const create_object = (objects, js_object, class_names) => {
   if (js_object.tp$name === 'list' || js_object.tp$name === 'tuple') {
     value = [];
     for (const v of js_object.v) {
-      value.push({ ref: retrieve_object_id(objects, v, class_names) });
+      value.push({ ref: retrieve_object_id(objects, v, class_names), dead_ref: null });
     }
   } else if (js_object.tp$name === 'dict' && !js_object?.hp$type) {
     // the second condition is required because otherwise a user-defined class
@@ -210,7 +216,11 @@ const retrieve_full_type_name = (js_object_type) => {
  * @param {Array} class_names List of user-defined class names
  * @returns The id of the object with a matching value
  */
-const retrieve_object_id = (objects, js_object, class_names) => {
+const retrieve_object_id = (
+  objects,
+  js_object,
+  class_names = fetch_class_names(Object.entries(window.Sk.globals))
+) => {
   var obj;
   for (const obj of objects) {
     // '===' returns true only if the objects have the same reference
@@ -227,4 +237,4 @@ const retrieve_object_id = (objects, js_object, class_names) => {
   return obj.id;
 };
 
-export { parse_globals, parse_locals };
+export { parse_globals, parse_locals, retrieve_object_id };

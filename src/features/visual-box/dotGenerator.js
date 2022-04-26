@@ -34,18 +34,12 @@ const generate_dot = (data) => {
       var_col +
       ' style=filled];\n';
     // add edge from variable to the referenced object
-    edges +=
-      '"' +
-      var_id +
-      '" ' +
-      '->' +
-      '"' +
-      v.ref +
-      '"[color=' +
-      line_col +
-      '] [edgetooltip="' +
-      edge_tooltip +
-      '"];\n';
+    edges += get_ref_edge(var_id, v.ref, edge_tooltip);
+
+    if (v.dead_ref) {
+      const dead_edge_tooltip = "Variable '" + v.name + "'" + ' referenced ...';
+      edges += get_dead_ref_edge(var_id, v.dead_ref, dead_edge_tooltip);
+    }
   });
 
   // objects
@@ -126,8 +120,9 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
 
   if (o.info.type === 'set') {
     // Sets are unordered => edges are not connected to an index
+    const edge_tooltip = ' this set references...';
     o.value.forEach((item) => {
-      edges += '"' + o.id + '":"base" -> "' + item.ref + '"[color=' + line_col + '];\n';
+      edges += get_ref_edge(o.id + '":"base', item.ref, edge_tooltip);
     });
   } else if (o.value.length > 0) {
     // All types that are ordered => edges should be connected to an index
@@ -150,18 +145,16 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
       }
       const edge_tooltip = " index '" + index + "' references...";
       nodes += 'PORT="' + count + '">' + index;
-      edges +=
-        '"' +
-        o.id +
-        '":"' +
-        count +
-        '" -> "' +
-        to +
-        '"[color=' +
-        line_col +
-        ' edgetooltip="' +
-        edge_tooltip +
-        '"];\n';
+      edges += get_ref_edge(o.id + '":"' + count, to, edge_tooltip);
+
+      if (o.value[count].dead_ref) {
+        const dead_edge_tooltip = " index '" + index + "' referenced...";
+        edges += get_dead_ref_edge(
+          o.id + '":"' + count,
+          o.value[count].dead_ref,
+          dead_edge_tooltip
+        );
+      }
 
       // check if one more key is added after this one
       count++;
@@ -171,6 +164,36 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
     nodes += '</TD>\n\t</TR>\n';
   }
   nodes += '</TABLE>\n>];\n';
+};
+
+// Returns the edge for an active/living reference.
+const get_ref_edge = (from, to, edge_tooltip) => {
+  return (
+    '"' +
+    from +
+    '" ' +
+    '->' +
+    '"' +
+    to +
+    '"[penwidth= 1.25, color=' +
+    line_col +
+    '] [edgetooltip="' +
+    edge_tooltip +
+    '"];\n'
+  );
+};
+
+// Returns the edge for a dead reference.
+const get_dead_ref_edge = (from, to, edge_tooltip) => {
+  return (
+    '"' +
+    from +
+    '" -> "' +
+    to +
+    '" [penwidth=0.75, arrowhead=onormal, style=dashed, color="indianred2"] [edgetooltip="' +
+    edge_tooltip +
+    '"];\n'
+  );
 };
 
 export default generate_dot;
