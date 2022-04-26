@@ -9,7 +9,7 @@ import styles from 'src/features/visual-box//VisualBox.module.css';
 import generate_dot from 'src/features/visual-box/dotGenerator';
 
 const VisualBox = ({ data, share_methods }) => {
-  const [graph, setGraph] = useState({ dot: 'graph {bgcolor="skyblue1"}' });
+  const [graph, setGraph] = useState({ dot: 'graph {}' });
   const [ariaLabel, setAriaLabel] = useState('');
   const [zoomedIn, setZoomedIn] = useState(false);
   const container = useRef(null);

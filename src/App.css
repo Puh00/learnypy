@@ -11,6 +11,8 @@ body{
   --red: #dc3545;
   --redHover: rgb(255, 139, 139);
   --outline: blue;
+  --lockedCodeboxBackground: #e6e6e6;
+  --lockedCodeboxGutters: #dedede;
 
   height: 100%;
   margin: 0;
@@ -30,6 +32,8 @@ body.dark{
       --red: #FF6400;
       --redHover: #ee9051;
       --outline: #8DA6CE;
+      --lockedCodeboxBackground: #21263b;
+      --lockedCodeboxGutters: #21263b;
 }
 
 /* if !important is not on then the react-bootstrap components won't be affected */

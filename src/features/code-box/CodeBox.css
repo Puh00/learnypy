@@ -13,11 +13,11 @@
 }
 
 .read-only .CodeMirror {
-  background-color: #e6e6e6;
+  background-color: var(--lockedCodeboxBackground);
 }
 
 .read-only .CodeMirror .CodeMirror-gutters {
-  background-color: #dedede;
+  background-color: var(--lockedCodeboxGutters);
 }
 
 .cm-number {
