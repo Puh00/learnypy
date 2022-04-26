@@ -28,11 +28,11 @@
   background: CornflowerBlue;
 }
 
-.fadeOut{
+.FadeOut{
   opacity: 0;
   transition: opacity 0.5s;
 }
-.fadeIn{
+.FadeIn{
   opacity:0.25;
   transition: opacity 0.5s;
 }

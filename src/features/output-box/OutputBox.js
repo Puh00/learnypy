@@ -8,10 +8,12 @@ const OutputBox = ({ output, output_box_ref }) => {
 
   useEffect(() => {
     if (output.text.length > 0) {
-      setHighlight(true);
-      setTimeout(() => {
-        setHighlight(false);
-      }, 2000);
+      if (!highlight) {
+        setHighlight(true);
+        setTimeout(() => {
+          setHighlight(false);
+        }, 2000);
+      }
     } else {
       setHighlight(false);
     }
@@ -28,7 +30,7 @@ const OutputBox = ({ output, output_box_ref }) => {
           tabIndex={0}>
           {output.text}
         </div>
-        <div className={`${styles.Shadow} ${highlight ? styles.fadeIn : styles.fadeOut}`} />
+        <div className={`${styles.Shadow} ${highlight ? styles.FadeIn : styles.FadeOut}`} />
       </div>
     </div>
   );
