@@ -82,7 +82,9 @@ const generate_dot = (data, colors) => {
     }
   });
   let res =
-    'digraph structs { bgcolor=transparent\nnode [shape=box] [fontname="Arial"] \n' +
+    'digraph structs { bgcolor=transparent\nnode [shape=box] [fontname="Arial"] [fontcolor=' +
+    colors[0] +
+    '] \n' +
     nodes +
     edges +
     '}';

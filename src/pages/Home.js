@@ -24,8 +24,8 @@ const Home = () => {
   const [theme, setTheme] = useState(
     document.body.classList.contains('dark') ? 'blackboard' : 'neat'
   );
-  const light_graph = ['dimgray', 'paleturquoise2', 'darkseagreen2', 'slategray1'];
-  const dark_graph = ['lightcyan4', 'mediumturquoise', 'olivedrab2', 'lightcyan1'];
+  const light_graph = ['gray27', 'paleturquoise2', 'darkseagreen2', 'slategray1'];
+  const dark_graph = ['gray80', 'midnightblue', 'darkgreen', 'darkslategray'];
   const [graph_colors, setGraph_colors] = useState(
     document.body.classList.contains('dark') ? dark_graph : light_graph
   );
