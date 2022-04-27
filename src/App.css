@@ -3,6 +3,8 @@ body{
    /* Light mode */
   /* --background: #e9ecef; */
   --background: #8995A9; 
+  --header: #2A2A2C;
+  --navItemHover: black;
   --components: white;
   --dark: #393B44;
   --border: transparent;
@@ -24,6 +26,8 @@ body{
 body.dark{
       /* Dark mode */
       --background: #3B414B;
+      --header: #ADADAD;
+      --navItemHover: #dbdbdb;
       --components: #0C1021;
       --dark: #888;
       --border: transparent;
