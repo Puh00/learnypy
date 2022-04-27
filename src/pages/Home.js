@@ -21,6 +21,11 @@ const Home = () => {
   const [theme, setTheme] = useState(
     document.body.classList.contains('dark') ? 'blackboard' : 'neat'
   );
+  const light_graph = ['dimgray', 'paleturquoise2', 'darkseagreen2', 'slategray1'];
+  const dark_graph = ['lightcyan4', 'mediumturquoise', 'olivedrab2', 'lightcyan1'];
+  const [graph_colors, setGraph_colors] = useState(
+    document.body.classList.contains('dark') ? dark_graph : light_graph
+  );
   const [error, setError] = useState(false);
 
   const drop_down_menu_ref = useRef(null);
@@ -141,7 +146,9 @@ const Home = () => {
 
   const toggle_theme = () => {
     document.body.classList.toggle('dark');
-    setTheme(theme == 'neat' ? 'blackboard' : 'neat');
+    setTheme(document.body.classList.contains('dark') ? 'blackboard' : 'neat');
+    setGraph_colors(document.body.classList.contains('dark') ? dark_graph : light_graph);
+    //TODO: Update graph so new colors are applied
   };
 
   skulpt.configure({
@@ -208,7 +215,7 @@ const Home = () => {
           />
           <OutputBox output={output} output_box_ref={output_box_ref} />
         </div>
-        <VisualBox data={globals} share_methods={share_methods} />
+        <VisualBox data={globals} colors={graph_colors} share_methods={share_methods} />
       </div>
     </div>
   );

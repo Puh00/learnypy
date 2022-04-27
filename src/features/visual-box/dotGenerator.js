@@ -1,17 +1,21 @@
 import { v4 as uuidv4 } from 'uuid';
 
 // Colors
-const line_col = 'dimgray';
+let line_col;
 //Colors from X11 color scheme, Ref: https://www.w3schools.com/colors/colors_x11.asp
-const var_col = 'paleturquoise2';
-const immutable_col = 'darkseagreen2';
-const indexable_col = 'slategray1';
+let var_col;
+let immutable_col;
+let indexable_col;
 
 let nodes; // To represent variables and objects
 let edges; // To represent references
 
 // Generates a string containing nodes and edges as a representation of variables and objects
-const generate_dot = (data) => {
+const generate_dot = (data, colors) => {
+  line_col = colors[0];
+  var_col = colors[1];
+  immutable_col = colors[2];
+  indexable_col = colors[3];
   nodes = '#Nodes:\n';
   edges = '\n#Edges:\n';
 
