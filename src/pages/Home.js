@@ -202,7 +202,7 @@ const Home = () => {
         <div className={styles['Output-box']}>
           <OutputBox output={output} output_box_ref={output_box_ref} />
         </div>
-        <div className={styles['Visual-box']}>
+        <div className={styles['Visual-box']} tabIndex={0}>
           <VisualBox data={globals} share_methods={share_methods} />
         </div>
       </div>
