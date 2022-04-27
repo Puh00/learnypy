@@ -20,16 +20,14 @@ const OutputBox = ({ output, output_box_ref }) => {
   }, [output]);
 
   return (
-    <div className={`${styles.Container} ${border.Border}`}>
+    <div
+      className={`${styles.Container} ${border.Border}`}
+      data-testid="output-box"
+      aria-label="Output"
+      ref={output_box_ref}
+      tabIndex={0}>
       <div className={`${styles.Inner}`}>
-        <div
-          className={`${styles.Output}`}
-          data-testid="output-box"
-          aria-label="Output"
-          ref={output_box_ref}
-          tabIndex={0}>
-          {output.text}
-        </div>
+        <div className={`${styles.Output}`}>{output.text}</div>
         <div className={`${styles.Highlight} ${highlight ? styles.FadeIn : styles.FadeOut}`} />
       </div>
     </div>
