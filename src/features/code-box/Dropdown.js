@@ -83,14 +83,15 @@ mylist.traverse_list()`
 
 function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref }) {
   return (
-    <Dropdown as={ButtonGroup}>
+    <Dropdown as={ButtonGroup} align="end">
       <Dropdown.Toggle
         data-toggle="tooltip"
         title="Code Examples"
         variant="light"
         id="dropdown-basic"
         ref={drop_down_menu_ref}>
-        <p>Code examples {logo} </p>
+        <p>Code examples </p>
+        {logo}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>

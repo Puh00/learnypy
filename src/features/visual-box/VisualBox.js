@@ -75,7 +75,7 @@ const VisualBox = ({ data, colors, share_methods }) => {
   }, []);
 
   return (
-    <div className={`${styles.Container} ${border.Border}`} tabIndex={0} aria-label={ariaLabel}>
+    <div className={`${styles.Container} ${border.Border}`} aria-label={ariaLabel}>
       <div ref={container} id="graph-body"></div>
       <Button
         className={styles.Button}

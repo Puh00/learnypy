@@ -184,10 +184,10 @@ const Home = () => {
   ];
 
   return (
-    <div className={styles['Outer-grid']}>
+    <div className={styles.Page}>
       <Header navItems={navItems} />
-      <div className={styles['Content-body']}>
-        <div className={styles['Left-body']}>
+      <div className={styles.Container}>
+        <div className={styles['Control-panel']}>
           <ControlPanel
             code={code}
             runit={run_callback}
@@ -198,6 +198,8 @@ const Home = () => {
             drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
           />
+        </div>
+        <div className={styles['Code-box']}>
           <CodeBox
             line={line}
             setLine={setLine}
@@ -213,9 +215,13 @@ const Home = () => {
             drop_down_menu_ref={drop_down_menu_ref}
             output_box_ref={output_box_ref}
           />
+        </div>
+        <div className={styles['Output-box']}>
           <OutputBox output={output} output_box_ref={output_box_ref} />
         </div>
-        <VisualBox data={globals} colors={graph_colors} share_methods={share_methods} />
+        <div className={styles['Visual-box']} tabIndex={0}>
+          <VisualBox data={globals} colors={graph_colors} share_methods={share_methods} />
+        </div>
       </div>
     </div>
   );
