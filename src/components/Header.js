@@ -17,21 +17,34 @@ const Header = ({ navItems }) => {
           // yes this just copies from CodingBat...
           if (index === arr.length - 1) {
             link = (
-              <Link className={styles['Nav-item']} to={item.link}>
-                {item.name}
+              <Link
+                className={styles['Nav-item']}
+                to={item.link}
+                data-toggle="tooltip"
+                title={item.tooltip}
+                onClick={item.onclick}>
+                {item.icon}
               </Link>
             );
           } else {
             link = (
               <>
-                <Link className={styles['Nav-item']} to={item.link}>
-                  {item.name}
+                <Link
+                  className={styles['Nav-item']}
+                  to={item.link}
+                  data-toggle="tooltip"
+                  title={item.tooltip}
+                  onClick={item.onclick}>
+                  {item.icon}
                 </Link>
-                |
               </>
             );
           }
-          return <div key={index}>{link}</div>;
+          return (
+            <div className={styles['Nav-button']} key={index}>
+              {link}
+            </div>
+          );
         })}
       </div>
     </header>

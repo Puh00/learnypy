@@ -21,6 +21,7 @@
 
 .dropdown-item:hover{
   background-color: var(--hover) !important;
+  transition: .4s;
 }
 
 .dropdown-menu {

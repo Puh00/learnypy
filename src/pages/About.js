@@ -1,18 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { ReactComponent as Theme_logo } from 'src/assets/brightness.svg';
+import { ReactComponent as Home_logo } from 'src/assets/home.svg';
 import Header from 'src/components/Header';
 import styles from 'src/pages/About.module.css';
 
 const About = () => {
   const navItems = [
     {
-      name: 'home',
-      link: '/'
+      name: 'toggle-theme',
+      icon: <Theme_logo />,
+      link: '',
+      tooltip: 'Toggle between light and dark mode',
+      onclick: () => {
+        document.body.classList.toggle('dark');
+      }
     },
     {
-      name: 'about',
-      link: '/about'
+      name: 'home',
+      icon: <Home_logo />,
+      link: '/'
     }
   ];
 

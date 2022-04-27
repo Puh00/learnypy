@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 
+import { ReactComponent as Theme_logo } from 'src/assets/brightness.svg';
+import { ReactComponent as Info_logo } from 'src/assets/info.svg';
 import Header from 'src/components/Header';
 import CodeBox from 'src/features/code-box/CodeBox';
 import ControlPanel from 'src/features/code-box/ControlPanel';
@@ -178,8 +180,19 @@ const Home = () => {
 
   const navItems = [
     {
+      name: 'toggle-theme',
+      icon: <Theme_logo />,
+      link: '',
+      tooltip: 'Toggle between light and dark mode',
+      onclick: () => {
+        toggle_theme();
+      }
+    },
+    {
       name: 'about',
-      link: '/about'
+      link: '/about',
+      icon: <Info_logo />,
+      tooltip: 'About'
     }
   ];
 
@@ -194,7 +207,6 @@ const Home = () => {
             step={step_callback}
             restart={restart_callback}
             clear_breakpoints={clear_breakpoints}
-            toggle_theme={toggle_theme}
             drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
           />
