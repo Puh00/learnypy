@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { ReactComponent as Theme_logo } from 'src/assets/brightness.svg';
 import { ReactComponent as Home_logo } from 'src/assets/home.svg';
+import { ReactComponent as DarkMode_logo } from 'src/assets/moon.svg';
+import { ReactComponent as LightMode_logo } from 'src/assets/sun.svg';
 import Header from 'src/components/Header';
 import styles from 'src/pages/About.module.css';
 
@@ -10,9 +11,11 @@ const About = () => {
   const navItems = [
     {
       name: 'toggle-theme',
-      icon: <Theme_logo />,
+      icon: document.body.classList.contains('dark') ? <LightMode_logo /> : <DarkMode_logo />,
       link: '',
-      tooltip: 'Toggle between light and dark mode',
+      tooltip: document.body.classList.contains('dark')
+        ? 'Toggle to light mode'
+        : 'Toggle to dark mode',
       onclick: () => {
         document.body.classList.toggle('dark');
       }

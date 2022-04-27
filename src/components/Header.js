@@ -11,35 +11,18 @@ const Header = ({ navItems }) => {
       </Link>
 
       <div className={styles['Nav-menu']}>
-        {navItems.map((item, index, arr) => {
+        {navItems.map((item, index) => {
           let link;
-          // determine when to add a '|' to separate the navigation items,
-          // yes this just copies from CodingBat...
-          if (index === arr.length - 1) {
-            link = (
-              <Link
-                className={styles['Nav-item']}
-                to={item.link}
-                data-toggle="tooltip"
-                title={item.tooltip}
-                onClick={item.onclick}>
-                {item.icon}
-              </Link>
-            );
-          } else {
-            link = (
-              <>
-                <Link
-                  className={styles['Nav-item']}
-                  to={item.link}
-                  data-toggle="tooltip"
-                  title={item.tooltip}
-                  onClick={item.onclick}>
-                  {item.icon}
-                </Link>
-              </>
-            );
-          }
+          link = (
+            <Link
+              className={styles['Nav-item']}
+              to={item.link}
+              data-toggle="tooltip"
+              title={item.tooltip}
+              onClick={item.onclick}>
+              {item.icon}
+            </Link>
+          );
           return (
             <div className={styles['Nav-button']} key={index}>
               {link}

@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 
-import { ReactComponent as Theme_logo } from 'src/assets/brightness.svg';
 import { ReactComponent as Info_logo } from 'src/assets/info.svg';
+import { ReactComponent as DarkMode_logo } from 'src/assets/moon.svg';
+import { ReactComponent as LightMode_logo } from 'src/assets/sun.svg';
 import Header from 'src/components/Header';
 import CodeBox from 'src/features/code-box/CodeBox';
 import ControlPanel from 'src/features/code-box/ControlPanel';
@@ -181,9 +182,11 @@ const Home = () => {
   const navItems = [
     {
       name: 'toggle-theme',
-      icon: <Theme_logo />,
+      icon: document.body.classList.contains('dark') ? <LightMode_logo /> : <DarkMode_logo />,
       link: '',
-      tooltip: 'Toggle between light and dark mode',
+      tooltip: document.body.classList.contains('dark')
+        ? 'Toggle to light mode'
+        : 'Toggle to dark mode',
       onclick: () => {
         toggle_theme();
       }
