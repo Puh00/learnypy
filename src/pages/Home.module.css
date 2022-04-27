@@ -45,7 +45,6 @@
   position: relative;
   min-height: 90%;
   width: calc(60% - 10px);
-  overflow: hidden;
   flex: 1;
   z-index: 0;
 }
@@ -73,20 +72,20 @@
   }
 
   .Code-box {
-    height: 60vh;
+    height: min(60vh, 160px);
     width: 80vw;
     flex: 0 1 auto;
     order: 2;
   }
 
   .Output-box {
-    height: 40vh;
+    height: min(40vh, 120px);
     width: 80vw;
     order: 4;
   }
 
   .Visual-box {
-    height: 80vh;
+    height: min(80vh, 200px);
     width: 80vw;
     flex: 0 1 auto;
     order: 3;
