@@ -12,7 +12,7 @@ const OutputBox = ({ output, output_box_ref }) => {
         setHighlight(true);
         setTimeout(() => {
           setHighlight(false);
-        }, 2000);
+        }, 1000);
       }
     } else {
       setHighlight(false);
