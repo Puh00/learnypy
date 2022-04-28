@@ -2,24 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { ReactComponent as Home_logo } from 'src/assets/home.svg';
-import { ReactComponent as DarkMode_logo } from 'src/assets/moon.svg';
-import { ReactComponent as LightMode_logo } from 'src/assets/sun.svg';
 import Header from 'src/components/Header';
 import styles from 'src/pages/About.module.css';
 
 const About = () => {
   const navItems = [
-    {
-      name: 'toggle-theme',
-      icon: document.body.classList.contains('dark') ? <LightMode_logo /> : <DarkMode_logo />,
-      link: '',
-      tooltip: document.body.classList.contains('dark')
-        ? 'Toggle to light mode'
-        : 'Toggle to dark mode',
-      onclick: () => {
-        document.body.classList.toggle('dark');
-      }
-    },
     {
       name: 'home',
       icon: <Home_logo />,
@@ -34,7 +21,12 @@ const About = () => {
 
   return (
     <div className={styles.Page}>
-      <Header navItems={navItems} />
+      <Header
+        navItems={navItems}
+        toggle={() => {
+          document.body.classList.toggle('dark');
+        }}
+      />
       <div className={styles.Content}>
         <h1 className={styles.heading_title}>About {appName}</h1>
         <p>

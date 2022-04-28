@@ -1,8 +1,6 @@
 import React, { useRef, useState } from 'react';
 
 import { ReactComponent as Info_logo } from 'src/assets/info.svg';
-import { ReactComponent as DarkMode_logo } from 'src/assets/moon.svg';
-import { ReactComponent as LightMode_logo } from 'src/assets/sun.svg';
 import Header from 'src/components/Header';
 import CodeBox from 'src/features/code-box/CodeBox';
 import ControlPanel from 'src/features/code-box/ControlPanel';
@@ -181,17 +179,6 @@ const Home = () => {
 
   const navItems = [
     {
-      name: 'toggle-theme',
-      icon: document.body.classList.contains('dark') ? <LightMode_logo /> : <DarkMode_logo />,
-      link: '',
-      tooltip: document.body.classList.contains('dark')
-        ? 'Toggle to light mode'
-        : 'Toggle to dark mode',
-      onclick: () => {
-        toggle_theme();
-      }
-    },
-    {
       name: 'about',
       link: '/about',
       icon: <Info_logo />,
@@ -201,7 +188,12 @@ const Home = () => {
 
   return (
     <div className={styles.Page}>
-      <Header navItems={navItems} />
+      <Header
+        navItems={navItems}
+        toggle={() => {
+          toggle_theme();
+        }}
+      />
       <div className={styles.Container}>
         <div className={styles['Control-panel']}>
           <ControlPanel
