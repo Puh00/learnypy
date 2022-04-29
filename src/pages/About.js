@@ -63,8 +63,8 @@ const About = () => {
         <h2 className={styles.Title}>Known limitations</h2>
         <h3 className={styles.SubTitle}> Caused by the app </h3>
         <ul>
-          <li>Only Python is supported</li>
-          <li>Turtle graphics are not supported</li>
+          <li>Only Python is supported.</li>
+          <li>Python libraries with visualision (other than prints) are not supported.</li>
           <li>
             The supported datatypes (for visualisation) are: integers, floats, doubles, strings,
             characters, booleans, tuples, user-defined classes, lists, sets and dictionaries.
@@ -72,10 +72,10 @@ const About = () => {
         </ul>
         <h3 className={styles.SubTitle}> Caused by Skulpt </h3>
         <ul>
-          <li>Too many iterations will make the website very slow</li>
-          <li>Only supports Python 3.7.3 grammar</li>
+          <li>Many iterations will make the website slow.</li>
+          <li>Only Python 3.7.3 grammar is supported.</li>
           <li>
-            Very few Python libraries are supported. See the{' '}
+            A few Python libraries are supported. See the{' '}
             <a href="https://github.com/skulpt/skulpt" target="_blank" rel="noreferrer">
               Skulpt repo
             </a>{' '}
