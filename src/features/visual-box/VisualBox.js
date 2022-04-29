@@ -43,14 +43,6 @@ const VisualBox = ({ data, share_methods }) => {
         ele.innerHTML = '';
         return;
       }
-      if (ele.id === 'graph0') {
-        ele.childNodes.forEach((node) => {
-          if (node.tagName === 'title') {
-            node.innerHTML = 'Graph';
-          }
-        });
-        return;
-      }
 
       ele.childNodes.forEach((node) => {
         removeTitle(node);
@@ -76,7 +68,7 @@ const VisualBox = ({ data, share_methods }) => {
             }
           });
 
-        // remove title tebeenxts from all <title> tags, to prevent tooltips
+        // remove title texts from all <title> tags, to prevent tooltips
         // after the graph has been rendered, this is a kinda scuffed...
         removeTitle(container.current.childNodes[0]);
       });
