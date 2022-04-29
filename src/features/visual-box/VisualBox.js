@@ -75,13 +75,8 @@ const VisualBox = ({ data, share_methods }) => {
   }, []);
 
   return (
-    <div
-      className={`${styles.Container} ${border.Border}`}
-      tabIndex={0}
-      data-toggle="tooltip"
-      title="Graph"
-      aria-label={ariaLabel}>
-      <div ref={container} id="graph-body" data-toggle="tooltip" title="Graph"></div>
+    <div className={`${styles.Container} ${border.Border}`} aria-label={ariaLabel}>
+      <div ref={container} id="graph-body"></div>
       <Button
         className={styles.Button}
         onClick={resetGraphZoom}
