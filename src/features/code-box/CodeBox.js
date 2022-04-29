@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
 import raw from 'raw.macro';
 
@@ -31,6 +31,8 @@ const CodeBox = ({
   const [editor, setEditor] = useState(null);
   const [prevBreakpoints, setPrevBreakpoints] = useState(() => []);
 
+  const prev_line = useRef(null);
+
   let logo = error ? 'help' : 'marker-node';
   const marker_logo = raw(`../../assets/${logo}.svg`);
 
@@ -54,12 +56,10 @@ const CodeBox = ({
 
   const set_highlighted_row = (_editor) => {
     // remove previous highlighted line and line marker
-    if (!error) {
-      for (let i = 0; i < _editor.lineCount(); i++) {
-        _editor.removeLineClass(i, 'wrap', styles['Line-highlight']);
-        _editor.removeLineClass(i, 'wrap', styles['Error-Line-highlight']);
-        _editor.setGutterMarker(i, 'lineMarker', null);
-      }
+    if (!error && prev_line.current) {
+      _editor.removeLineClass(prev_line.current, 'wrap', styles['Line-highlight']);
+      _editor.removeLineClass(prev_line.current, 'wrap', styles['Error-Line-highlight']);
+      _editor.setGutterMarker(prev_line.current, 'lineMarker', null);
     }
 
     if (line >= 0) {
@@ -67,6 +67,9 @@ const CodeBox = ({
       _editor.addLineClass(line, 'wrap', styles[error ? 'Error-Line-highlight' : 'Line-highlight']);
       _editor.setGutterMarker(line, 'lineMarker', marker_node());
       _editor.scrollIntoView(line);
+      // update line for next rerender
+      prev_line.current = _editor.getLineHandle(line);
+
       if (error) {
         setLine(-1);
       }
