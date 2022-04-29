@@ -226,8 +226,12 @@ const retrieve_object_id = (
     // '===' returns true only if the objects have the same reference
     if (
       obj.js_object === js_object ||
-      (obj.info.type === 'integer' && obj.value === js_object.v && js_object.tp$name != 'float') ||
-      (obj.info.type === 'float' && obj.value === js_object.v && js_object.tp$name != 'integer')
+      (obj.info.type === 'integer' &&
+        obj.value === js_object.v &&
+        js_object.tp$name === obj.js_object.tp$name) ||
+      (obj.info.type === 'float' &&
+        obj.value === js_object.v &&
+        js_object.tp$name === obj.js_object.tp$name)
     )
       return obj.id;
   }
