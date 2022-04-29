@@ -9,7 +9,8 @@
 
 .Inner {
   position: relative;
-  height: auto;
+  display: inline-block;
+  min-width: 100%;
   min-height: 100%;
 }
 
