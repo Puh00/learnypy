@@ -127,6 +127,7 @@ class Skulpt {
    */
   restart(prog, callback, run) {
     // enable step_mode at the beginning to avoid executing this program
+    this.debugger = this.create_debugger();
     this.debugger.enable_step_mode();
 
     // configure Sk with settings i'm not even sure what they do
