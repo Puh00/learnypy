@@ -160,6 +160,7 @@ class Skulpt {
     }
 
     // disable step_mode since we just restarted
+    this.init_breakpoints();
     this.debugger.disable_step_mode();
   }
 
