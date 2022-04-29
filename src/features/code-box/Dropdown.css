@@ -16,13 +16,43 @@
 }
 
 .dropdown-menu {
+  max-height: 60vh;
   padding: 0px !important;
   box-shadow: var(--shadow);
   color: var(--dark) !important;
   /* border: 2px solid var(--dark); */
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  overflow: auto;
 }
 
 .dropdown p {
-  padding-top: 0.35rem;
+  display: inline;
+}
+
+/* Extra small devices (phones, 500px and down) */
+@media only screen and (max-width: 500px) {
+  .dropdown p {
+    display: none;
+  }
+}
+
+/* Extra small devices (phones, 500px and up) */
+@media only screen and (min-width: 500px) {
+  .dropdown p {
+    display: inline;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .dropdown p {
+    display: none;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .dropdown p {
+    display: inline;
+  }
 }
