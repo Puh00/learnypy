@@ -74,13 +74,7 @@ const About = () => {
         <ul>
           <li>Many iterations will make the website slow.</li>
           <li>Only Python 3.7.3 grammar is supported.</li>
-          <li>
-            A few Python libraries are supported. See the{' '}
-            <a href="https://github.com/skulpt/skulpt" target="_blank" rel="noreferrer">
-              Skulpt repo
-            </a>{' '}
-            for more information.
-          </li>
+          <li>A few Python libraries are supported.</li>
         </ul>
         <h2 className={styles.Title}>Special Thanks</h2>
         <h3 className={styles.SubTitle}> Skulpt </h3>
