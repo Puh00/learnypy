@@ -43,7 +43,7 @@ body.dark{
 }
 
 /* if !important is not on then the react-bootstrap components won't be affected */
-*:focus {outline:3px solid var(--outline) !important; outline-offset: 0px !important; transition: .1s; }
+*:focus {outline:3px solid var(--outline) !important; outline-offset: 0px !important;}
 
 /* Small devices (portrait tablets and large phones, 768px and down) */
 @media only screen and (max-width: 768px) {

@@ -19,7 +19,7 @@
 
 .Btn:hover{
     background-color: var(--hover) !important;
-    transition: .4s;
+    /* transition: .4s; */
 }
 
 .Btn:focus{
