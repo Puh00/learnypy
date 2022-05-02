@@ -130,7 +130,11 @@ const CodeBox = ({
   }, [breakpoints]);
 
   return (
-    <div className={`${styles.Container}`}>
+    <div
+      className={`${styles.Container}`}
+      aria-label="Code Editor"
+      data-toggle="tooltip"
+      title="Code Editor">
       <CodeMirror
         className={isStepping ? 'read-only' : ''}
         value={code}

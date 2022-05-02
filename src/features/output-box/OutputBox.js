@@ -24,6 +24,8 @@ const OutputBox = ({ output, output_box_ref }) => {
       className={`${styles.Container} ${border.Border}`}
       data-testid="output-box"
       aria-label="Output"
+      data-toggle="tooltip"
+      title="Output"
       ref={output_box_ref}
       tabIndex={0}>
       <div className={`${styles.Inner}`}>

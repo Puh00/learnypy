@@ -68,7 +68,7 @@ const VisualBox = ({ data, share_methods }) => {
             }
           });
 
-        // remove title tebeenxts from all <title> tags, to prevent tooltips
+        // remove title texts from all <title> tags, to prevent tooltips
         // after the graph has been rendered, this is a kinda scuffed...
         removeTitle(container.current.childNodes[0]);
       });
@@ -76,7 +76,7 @@ const VisualBox = ({ data, share_methods }) => {
 
   return (
     <div className={`${styles.Container} ${border.Border}`} aria-label={ariaLabel}>
-      <div ref={container} id="graph-body"></div>
+      <div ref={container} id="graph-body" title="Graph"></div>
       <Button
         className={styles.Button}
         onClick={resetGraphZoom}
