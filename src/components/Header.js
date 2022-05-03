@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ReactComponent as DarkMode_logo } from 'src/assets/moon.svg';
@@ -6,6 +6,8 @@ import { ReactComponent as LightMode_logo } from 'src/assets/sun.svg';
 import styles from 'src/components/Header.module.css';
 
 const Header = ({ navItems, toggle }) => {
+  const [checked, setChecked] = useState(document.body.classList.contains('dark'));
+
   return (
     <header className={styles.Header}>
       <Link className={styles['Home-logo']} to="/">
@@ -18,8 +20,12 @@ const Header = ({ navItems, toggle }) => {
             type="checkbox"
             className={styles['Toggle']}
             id="checkbox"
-            onChange={() => toggle()}
-            checked={document.body.classList.contains('dark')}
+            onChange={() => {
+              toggle();
+              // force rerender to update state
+              setChecked(document.body.classList.contains('dark'));
+            }}
+            checked={checked}
           />
           <label htmlFor="checkbox" className={styles['Toggle-label']}>
             <DarkMode_logo className={styles['Moon']} />
@@ -27,11 +33,7 @@ const Header = ({ navItems, toggle }) => {
             <div
               className={styles['Toggle-ball']}
               data-toggle="tooltip"
-              title={
-                document.body.classList.contains('dark')
-                  ? 'Toggle to light mode'
-                  : 'Toggle to dark mode'
-              }
+              title={checked ? 'Toggle to light mode' : 'Toggle to dark mode'}
             />
           </label>
           {navItems.map((item, index) => {
