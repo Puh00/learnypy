@@ -198,3 +198,40 @@ print(a)`;
 
   expect(outputBox.textContent).toEqual(expected);
 });
+
+test('can run the code after error is fixed directly', async () => {
+  render(<App />);
+
+  const codebox = screen.getByRole('textbox');
+  const outputBox = screen.getByTestId('output-box');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+
+  let code = `
+a = 1
+b == 2
+a = b
+print(a)`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+  userEvent.click(runButton);
+  await sleep(50);
+
+  let expected = "NameError: name 'b' is not defined on line 3";
+  expect(outputBox.textContent).toEqual(expected);
+
+  // fix the code, should be able to run directly
+  code = `
+a = 1
+b = 2
+a = b
+print(a)`;
+
+  userEvent.clear(codebox);
+  userEvent.type(codebox, code);
+  userEvent.click(runButton);
+  await sleep(50);
+
+  expected = '2\n';
+  expect(outputBox.textContent).toEqual(expected);
+});
