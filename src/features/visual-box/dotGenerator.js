@@ -7,6 +7,8 @@ let var_col;
 let immutable_col;
 let indexable_col;
 
+const graph_tooltip = 'Graph';
+
 let nodes; // To represent variables and objects
 let edges; // To represent references
 
@@ -81,8 +83,9 @@ const generate_dot = (data, colors) => {
         '];\n';
     }
   });
+
   let res =
-    'digraph structs { bgcolor=transparent\nnode [shape=box] [fontname="Arial"] [fontcolor=' +
+    `digraph structs { bgcolor=transparent\n tooltip=${graph_tooltip} node [shape=box] [fontname="Arial"] [fontcolor=` +
     colors[0] +
     '] \n' +
     nodes +

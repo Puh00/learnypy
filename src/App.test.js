@@ -198,3 +198,41 @@ print(a)`;
 
   expect(outputBox.textContent).toEqual(expected);
 });
+
+test('changing code examples from a class while stepping', async () => {
+  render(<App />);
+
+  const outputBox = screen.getByTestId('output-box');
+  const runButton = screen.getByTitle('Run code (until next breakpoint)');
+  const stepButton = screen.getByTitle('Run next line');
+  const dropDownButton = screen.getByTitle('Code Examples');
+
+  userEvent.click(dropDownButton);
+  await global.sleep(50);
+
+  const linkedListExample = screen.getByText('Linked list');
+  userEvent.click(linkedListExample);
+  await global.sleep(50);
+
+  // step 4 times
+  for (let i = 0; i < 4; i++) {
+    userEvent.click(stepButton);
+    await global.sleep(50);
+  }
+
+  expect(outputBox.textContent).toEqual('');
+
+  userEvent.click(dropDownButton);
+  await global.sleep(50);
+
+  const aliasingExample = screen.getByText('Aliasing');
+  userEvent.click(aliasingExample);
+  await global.sleep(50);
+
+  expect(outputBox.textContent).toEqual('');
+
+  userEvent.click(runButton);
+  await global.sleep(50);
+
+  expect(outputBox.textContent).toEqual('[3]\n[3]\n[3]\nTrue\nFalse\n');
+});
