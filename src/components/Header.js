@@ -26,6 +26,10 @@ const Header = ({ navItems, toggle }) => {
               setChecked(document.body.classList.contains('dark'));
             }}
             checked={checked}
+            onKeyDown={(e) => {
+              // Possible to toggle with Enter (Space is standard)
+              if (e.key == 'Enter') toggle();
+            }}
           />
           <label htmlFor="checkbox" className={styles['Toggle-label']}>
             <DarkMode_logo className={styles['Moon']} />

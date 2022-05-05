@@ -16,6 +16,7 @@ body{
   --lockedCodeboxBackground: #e6e6e6;
   --lockedCodeboxGutters: #dedede;
   --link: #006fe6;
+  --errorLineHighlight: #ff5c5c;
 
   height: 100%;
   margin: 0;
@@ -40,6 +41,7 @@ body.dark{
       --lockedCodeboxBackground: #21263b;
       --lockedCodeboxGutters: #21263b;
       --link: #8DA6CE;
+      --errorLineHighlight: #612626;
 }
 
 /* if !important is not on then the react-bootstrap components won't be affected */

@@ -27,7 +27,7 @@
   right: 0;
 }
 
-.Button:disabled{
+.Button:disabled {
   visibility: hidden;
 }
 
@@ -37,6 +37,6 @@
   stroke: var(--dark) !important;
 }
 
-.Button:hover{
+.Button:hover {
   background-color: var(--hover) !important;
 }

@@ -79,12 +79,17 @@
 
 .Sun{
   color: var(--header);
+  padding: 1px;
 }
 
 .Moon{
   color: var(--header);
+  padding: 1px;
 }
 
+.Toggle:focus + .Toggle-label{
+  outline:3px solid var(--outline) !important; outline-offset: 2px !important;
+}
 
 .Nav-button{
   border-radius: 100%;
