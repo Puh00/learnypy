@@ -105,7 +105,6 @@ const Home = () => {
     const bp_lines = shared_methods.current.breakpoints_to_lines(breakpoints);
     // update breakpoints only when running the program
     skulpt.update_breakpoints(bp_lines);
-
     // hack for stopping at the first row of the code if the condition is satisfied
     const first_row = first_row_of_code();
     if (!locked && bp_lines.includes(first_row)) {
@@ -114,6 +113,7 @@ const Home = () => {
     }
 
     clear_visuals();
+    setError(false);
     setLocked(true);
     skulpt.run(prog, callback);
 
@@ -165,9 +165,11 @@ const Home = () => {
       setLocked(false);
     },
     error: (e) => {
+      // secretly restart the program whenever there is an error
+      skulpt.restart('');
+      skulpt.outf(e);
       setGlobals({ objects: [], variables: [] });
       setLocals({ objects: [], variables: [] });
-      skulpt.outf(e);
       setLocked(false);
       setError(true);
     }
