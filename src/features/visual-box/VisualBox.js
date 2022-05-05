@@ -23,7 +23,7 @@ const VisualBox = ({ data, colors, share_methods }) => {
     const dot = generate_dot(data, colors);
     setGraph(dot);
     setAriaLabel(set_text(data.objects, data.variables));
-  }, [data]);
+  }, [data, colors]);
 
   useEffect(() => {
     graphviz(`#graph-body`)
