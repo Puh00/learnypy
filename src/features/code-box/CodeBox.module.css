@@ -3,7 +3,7 @@
 }
 
 .Error-Line-highlight{
-  background-color: #ff5c5c;
+  background-color: var(--errorLineHighlight);
 }
 
 .Container {
