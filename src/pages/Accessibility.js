@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ReactComponent as Home_logo } from 'src/assets/home.svg';
+import { ReactComponent as Info_logo } from 'src/assets/info.svg';
 import Header from 'src/components/Header';
 import styles from 'src/pages/About.module.css';
 
@@ -7,12 +9,10 @@ const Accessibility = () => {
   const navItems = [
     {
       name: 'home',
+      icon: <Home_logo />,
       link: '/'
     },
-    {
-      name: 'about',
-      link: '/about'
-    }
+    { name: 'about', icon: <Info_logo />, link: '/about' }
   ];
 
   const appName = 'LearnPy';
