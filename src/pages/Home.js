@@ -28,7 +28,7 @@ const Home = () => {
   const skulpt = Skulpt.instance();
 
   let latest_output = '';
-  document.title = 'LearnPy';
+  document.title = 'LearnyPy';
 
   // ===========================================================
   // =========================UTILITIES=========================

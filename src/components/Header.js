@@ -7,7 +7,7 @@ const Header = ({ navItems }) => {
   return (
     <header className={styles.Header}>
       <Link className={styles['Home-logo']} to="/">
-        LearnPy
+        LearnyPy
       </Link>
 
       <div className={styles['Nav-menu']}>
