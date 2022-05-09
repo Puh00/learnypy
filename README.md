@@ -5,12 +5,12 @@
 <br />
 <div align="center">
   <!-- logo area
-  <a href="https://github.com/Puh00/learnpy">
+  <a href="https://github.com/Puh00/learnypy">
     <img src="public/images/python-chutor-logo.png" alt="Logo" width="240" height="255">
   </a>
   -->
 
-  <h1 align="center">LearnPy</h1>
+  <h1 align="center">LearnyPy</h1>
     
   <!-- PROJECT SHIELDS -->
   <!--
@@ -34,11 +34,11 @@
     A serverless tool for teaching the dynamic memory model of Python.
     <br />
     <br />
-    <a href="https://python-chutor.netlify.app/">View website</a>
+    <a href="https://learnypy.netlify.app/">View website</a>
     ·
-    <a href="https://github.com/Puh00/python-chutor/issues">Report Bug</a>
+    <a href="https://github.com/Puh00/learnypy/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Puh00/python-chutor/issues">Request Feature</a>
+    <a href="https://github.com/Puh00/learnypy/issues">Request Feature</a>
   </p>
 </div>
 
@@ -69,9 +69,9 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://python-chutor.netlify.app/)
+[![Product Name Screen Shot][product-screenshot]](https://learnypy.netlify.app/)
 
-LearnPy is a free site providing a Python visualisation tool with the aim of helping novice programmers to understand the concept of
+LearnyPy is a free site providing a Python visualisation tool with the aim of helping novice programmers to understand the concept of
 references in Python. It offers simple graph visualisation of the relations between objects and variables. The solution is based on vanilla JavaScript which means no server is used, and is thereby offering a user experience with less risk for lag and no server-side errors.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -107,7 +107,7 @@ You will need to the lastest version of [npm](https://www.npmjs.com/) to be able
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/Puh00/python-chutor.git
+   git clone https://github.com/Puh00/learnypy.git
    ```
 2. Install NPM packages and start the local server
    ```sh
@@ -169,5 +169,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 -->
 
 [netlify-shield]: https://api.netlify.com/api/v1/badges/bf597ae6-0527-4836-a675-6455e3daa1c2/deploy-status
-[netlify-url]: https://app.netlify.com/sites/python-chutor/deploys
+[netlify-url]: https://app.netlify.com/sites/learnypy/deploys
 [product-screenshot]: public/images/website-screenshot.png
