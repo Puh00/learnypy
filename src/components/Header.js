@@ -5,7 +5,14 @@ import { ReactComponent as DarkMode_logo } from 'src/assets/moon.svg';
 import { ReactComponent as LightMode_logo } from 'src/assets/sun.svg';
 import styles from 'src/components/Header.module.css';
 
-const Header = ({ navItems, toggle }) => {
+const Header = ({
+  navItems,
+  toggle = () => {
+    // Standard toggle dark/light mode
+    document.body.classList.toggle('dark');
+    //Possible to provide custom function if needed
+  }
+}) => {
   const [checked, setChecked] = useState(document.body.classList.contains('dark'));
 
   return (

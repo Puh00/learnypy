@@ -81,7 +81,7 @@ mylist.traverse_list()`
   }
 ];
 
-function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref }) {
+const DropdownLocal = ({ logo, setCode, restart, drop_down_menu_ref }) => {
   return (
     <Dropdown as={ButtonGroup} align="end">
       <Dropdown.Toggle
@@ -112,6 +112,6 @@ function DropdownLocal({ logo, setCode, restart, drop_down_menu_ref }) {
       </Dropdown.Menu>
     </Dropdown>
   );
-}
+};
 
 export default DropdownLocal;

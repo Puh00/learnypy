@@ -149,7 +149,6 @@ const Home = () => {
     document.body.classList.toggle('dark');
     setTheme(document.body.classList.contains('dark') ? 'blackboard' : 'neat');
     setGraph_colors(document.body.classList.contains('dark') ? dark_graph : light_graph);
-    //TODO: Update graph so new colors are applied
   };
 
   skulpt.configure({

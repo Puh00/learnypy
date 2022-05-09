@@ -14,11 +14,6 @@ const About = () => {
     }
   ];
 
-  const toggle_theme = () => {
-    document.body.classList.toggle('dark');
-    console.log(document.body.classList.contains('dark'));
-  };
-
   const appName = 'LearnPy';
   let title = 'About | ';
   title = title.concat(appName);
@@ -26,12 +21,7 @@ const About = () => {
 
   return (
     <div className={styles.Page}>
-      <Header
-        navItems={navItems}
-        toggle={() => {
-          toggle_theme();
-        }}
-      />
+      <Header navItems={navItems} />
       <div className={styles.Content}>
         <h1 className={styles.heading_title}>About {appName}</h1>
         <p>
