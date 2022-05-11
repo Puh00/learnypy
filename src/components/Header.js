@@ -9,12 +9,18 @@ import styles from 'src/components/Header.module.css';
 const Header = ({
   navItems,
   toggle = () => {
-    // Standard toggle dark/light mode
-    document.body.classList.toggle('dark');
     //Possible to provide custom function if needed
   }
 }) => {
   const [checked, setChecked] = useState(document.body.classList.contains('dark'));
+
+  const handleToggle = () => {
+    // Standard toggle dark/light mode
+    document.body.classList.toggle('dark');
+    setChecked(document.body.classList.contains('dark'));
+    //Provided custom toggle function
+    toggle();
+  };
 
   return (
     <header className={styles.Header}>
@@ -28,15 +34,11 @@ const Header = ({
             type="checkbox"
             className={styles['Toggle']}
             id="checkbox"
-            onChange={() => {
-              toggle();
-              // force rerender to update state
-              setChecked(document.body.classList.contains('dark'));
-            }}
+            onClick={handleToggle}
             checked={checked}
             onKeyDown={(e) => {
               // Possible to toggle with Enter (Space is standard)
-              if (e.key == 'Enter') toggle();
+              if (e.key == 'Enter') handleToggle();
             }}
           />
           <label htmlFor="checkbox" className={styles['Toggle-label']}>

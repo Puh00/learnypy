@@ -146,7 +146,6 @@ const Home = () => {
   // ===========================================================
 
   const toggle_theme = () => {
-    document.body.classList.toggle('dark');
     setTheme(document.body.classList.contains('dark') ? 'blackboard' : 'neat');
     setGraph_colors(document.body.classList.contains('dark') ? dark_graph : light_graph);
   };
