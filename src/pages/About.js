@@ -14,7 +14,7 @@ const About = () => {
     }
   ];
 
-  const appName = 'LearnPy';
+  const appName = 'LearnyPy';
   let title = 'About | ';
   title = title.concat(appName);
   document.title = title;
@@ -41,10 +41,7 @@ const About = () => {
         </p>
         <p>
           The source code of this project can be found at{' '}
-          <a
-            href="https://github.com/Puh00/DynamicMemModelWebsite"
-            target="_blank"
-            rel="noreferrer">
+          <a href="https://github.com/Puh00/learnypy" target="_blank" rel="noreferrer">
             GitHub
           </a>
           .

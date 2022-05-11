@@ -15,7 +15,7 @@ const Accessibility = () => {
     { name: 'about', icon: <Info_logo />, link: '/about' }
   ];
 
-  const appName = 'LearnPy';
+  const appName = 'LearnyPy';
   let title = 'Accessibility | ';
   title = title.concat(appName);
   document.title = title;
@@ -27,8 +27,8 @@ const Accessibility = () => {
         <h1 className={styles.heading_title}>Accessibility of {appName}</h1>
         <p>
           We want as many people as possible to be able to use it, and this document describes how{' '}
-          <a href="python-chutor.netlify.app/" target="_blank" rel="noreferrer">
-            python-chutor.netlify.app/
+          <a href="learnypy.netlify.app/" target="_blank" rel="noreferrer">
+            learnypy.netlify.app/
           </a>{' '}
           complies with the accessibility regulations, any known accessibility issues, and how you
           can report problems so that we can fix them.
@@ -42,7 +42,7 @@ const Accessibility = () => {
         <p>
           If you need content from this website that is not accessible for you, but is not within
           the scope of the accessibility regulations as described below, please report it to the{' '}
-          <a href="https://github.com/Puh00/python-chutor/issues" target="_blank" rel="noreferrer">
+          <a href="https://github.com/Puh00/learnypy/issues" target="_blank" rel="noreferrer">
             issues page
           </a>
           .
@@ -52,7 +52,7 @@ const Accessibility = () => {
           We’re always looking to improve the accessibility of this website. If you find any
           problems that aren’t listed on this page or if we’re not meeting the requirements of the
           accessibility regulations, let us know about the problem by reporting it to the{' '}
-          <a href="https://github.com/Puh00/python-chutor/issues" target="_blank" rel="noreferrer">
+          <a href="https://github.com/Puh00/learnypy/issues" target="_blank" rel="noreferrer">
             issues page
           </a>
           .
