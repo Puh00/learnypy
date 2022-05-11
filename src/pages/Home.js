@@ -172,7 +172,7 @@ const Home = () => {
   // ===========================================================
 
   useEffect(() => {
-    if (!cookies.code) setCode('a=1\nb=1\nc=b');
+    if (!cookies.code.trim()) setCode('a=1\nb=1\nc=b');
   }, []);
 
   const navItems = [
