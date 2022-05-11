@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { ReactComponent as LearnyPy } from 'src/assets/LearnyPy_dark2.svg';
 import { ReactComponent as DarkMode_logo } from 'src/assets/moon.svg';
 import { ReactComponent as LightMode_logo } from 'src/assets/sun.svg';
 import styles from 'src/components/Header.module.css';
@@ -18,7 +19,7 @@ const Header = ({
   return (
     <header className={styles.Header}>
       <Link className={styles['Home-logo']} to="/">
-        LearnPy
+        <LearnyPy className={styles['LearnyPy-logo']} />
       </Link>
 
       <div className={styles['Right']}>

@@ -1,22 +1,19 @@
 .Header {
   background-color: var(--background);
   display: flex;
+  margin-left: 12px;
+  margin-right: 12px;
 
   flex-direction: row;
   align-items: stretch;
   justify-content: space-between;
 }
 
-.Home-logo {
-  margin: 16px;
+.LearnyPy-logo {
   color: var(--header);
-
-  text-decoration: none;
-  font-size: 1.5em;
-  font-weight: bolder;
 }
 
-.Home-logo:hover {
+.LearnyPy-logo:hover {
   color: var(--navItemHover);
 }
 
@@ -132,7 +129,8 @@
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .Home-logo {
-    margin: 0;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   .Nav-menu {
@@ -143,7 +141,8 @@
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
   .Home-logo {
-    margin: 0;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   .Nav-menu {
@@ -154,7 +153,8 @@
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
   .Home-logo {
-    margin: 8px;
+    margin-top: 8px;
+    margin-left: 8px;
   }
 
   .Nav-menu {
@@ -165,7 +165,8 @@
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
   .Home-logo {
-    margin: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
   }
 
   .Nav-menu {
@@ -176,7 +177,8 @@
 /* Large devices (laptops/desktops, 1200 and up) */
 @media only screen and (min-width: 1200px) {
   .Home-logo {
-    margin: 12px;
+    margin-top: 12px;
+    margin-left: 12px;
   }
 
   .Nav-menu {
