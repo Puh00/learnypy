@@ -17,7 +17,8 @@ const ControlPanel = ({
   restart,
   clear_breakpoints,
   setCode,
-  drop_down_menu_ref
+  drop_down_menu_ref,
+  no_breakpoints
 }) => {
   return (
     <ButtonGroup className={`${styles.Btng}`}>
@@ -47,6 +48,7 @@ const ControlPanel = ({
           logo={<Stop_logo />}
         />
         <Button
+          disabled={no_breakpoints()}
           onClick={() => {
             clear_breakpoints();
           }}
