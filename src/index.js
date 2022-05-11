@@ -1,4 +1,5 @@
 import React from 'react';
+import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom';
 
 import App from 'src/App';
@@ -8,7 +9,9 @@ import 'src/index.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <CookiesProvider>
+      <App />
+    </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 import Header from 'src/components/Header';
 import CodeBox from 'src/features/code-box/CodeBox';
@@ -13,12 +14,14 @@ const Home = () => {
   // eslint-disable-next-line unused-imports/no-unused-vars
   const [locals, setLocals] = useState({ objects: [], variables: [] });
   const [output, setOutput] = useState({ text: '' });
-  const [code, setCode] = useState('a=1\nb=1\nc=b');
   const [line, setLine] = useState(-1);
   const [locked, setLocked] = useState(false);
   // breakpoints is a list of Line objects from codemirror because of we need the side effects
   const [breakpoints, setBreakpoints] = useState([]);
   const [error, setError] = useState(false);
+
+  // get the cookies with a dependency on 'code'
+  const [cookies, setCookie] = useCookies(['code']);
 
   const drop_down_menu_ref = useRef(null);
   const output_box_ref = useRef(null);
@@ -47,7 +50,7 @@ const Home = () => {
       return row.trim().length === 0 || row.trim().startsWith('#');
     };
 
-    const rows = code.split('\n');
+    const rows = cookies.code.split('\n');
 
     for (let i = 0; i < rows.length; i++) {
       if (!isSkippableLine(rows[i])) return i;
@@ -74,6 +77,11 @@ const Home = () => {
         shared_methods.current[method] = methods[method];
       }
     }
+  };
+
+  const setCode = (code) => {
+    // set a cookie for the code which expires after 1 day
+    setCookie('code', code, { path: '/', maxAge: 60 * 60 * 24 });
   };
 
   // ===========================================================
@@ -163,6 +171,10 @@ const Home = () => {
   // ===========================OTHER===========================
   // ===========================================================
 
+  useEffect(() => {
+    if (!cookies.code) setCode('a=1\nb=1\nc=b');
+  }, []);
+
   const navItems = [
     {
       name: 'about',
@@ -176,7 +188,7 @@ const Home = () => {
       <div className={styles.Container}>
         <div className={styles['Control-panel']}>
           <ControlPanel
-            code={code}
+            code={cookies.code}
             runit={run_callback}
             step={step_callback}
             restart={restart_callback}
@@ -189,7 +201,7 @@ const Home = () => {
           <CodeBox
             line={line}
             setLine={setLine}
-            code={code}
+            code={cookies.code}
             setCode={setCode}
             error={error}
             setError={setError}
