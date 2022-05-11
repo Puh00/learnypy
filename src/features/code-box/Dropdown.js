@@ -7,7 +7,6 @@ const code_examples = [
   {
     name: 'Aliasing',
     code: `# --- Code example: Aliasing ---
-
 a=[]
 b=a
 b.append(3)
@@ -25,13 +24,12 @@ print(a is c or b is c)`
   {
     name: 'Nested functions',
     code:
-      '# --- Code example: Nested functions ---\n\ndef test():\n  print(2)\n  another_test()\n  print(4)\n\ndef another_test():' +
+      '# --- Code example: Nested functions ---\ndef test():\n  print(2)\n  another_test()\n  print(4)\n\ndef another_test():' +
       '\n  print(3)\n\nprint(1)\ntest()\nprint(5)'
   },
   {
     name: 'Mutables vs immutables',
     code: `# --- Code example: Mutables vs immutables ---
-
 a=["bye"]
 b=a
     
@@ -44,7 +42,6 @@ d=2`
   {
     name: 'Classes',
     code: `# --- Code example: Classes ---
-
 class Dog:
   def __init__(self, name, age, bark):
     self.name = name
@@ -63,7 +60,6 @@ dog2.say_hi()`
   {
     name: 'Linked list',
     code: `# --- Code example: Linked list ---
-
 class Node:
   def __init__(self, data):
     self.data = data
