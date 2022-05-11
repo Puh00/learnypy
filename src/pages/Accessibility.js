@@ -108,7 +108,9 @@ const Accessibility = () => {
         <p>
           We have performed a self-assessment (internal testing) of some parts of {appName}. The
           test included using screen readers, color contrast analyzer, and navigating the page
-          without mouse or keypad.
+          without mouse or keypad. It should be noted that we did not test on all internet browsers
+          nor operating systems. As such there might be undiscovered problems from the environments
+          that we have not covered in our testing.
         </p>
         <p>The website was published on TODO</p>
         <p>The statement was last updated on 2022-05-06.</p>
