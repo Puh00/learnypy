@@ -10,12 +10,17 @@
   border-color: var(--dark);
   border-style: solid;
   border-radius: 5px;
-  background-color: white;
+  background-color: var(--components);
+  color: var(--dark);
   overflow: auto;
 }
 
 a {
-  color: #006fe6;
+  color: var(--link);
+}
+
+a:hover{
+  color: var(--link);
 }
 
 li,
@@ -74,7 +79,7 @@ dl {
     margin-right: calc(2vw + 10px);
     margin-top: 2vh;
     padding: 12px;
-    box-shadow: blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px,
+    box-shadow: blue 0px 0px 0px 2px inset, var(--components) 10px -10px 0px -3px,
       rgb(31, 193, 27) 10px -10px;
   }
 }
@@ -86,8 +91,8 @@ dl {
     margin-right: calc(2vw + 20px);
     margin-top: 4vh;
     padding: 16px;
-    box-shadow: blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px,
-      rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px,
+    box-shadow: blue 0px 0px 0px 2px inset, var(--components) 10px -10px 0px -3px,
+      rgb(31, 193, 27) 10px -10px, var(--components) 20px -20px 0px -3px,
       rgb(255, 217, 19) 20px -20px;
   }
 }
@@ -99,9 +104,9 @@ dl {
     margin-right: calc(2vw + 30px);
     margin-top: 5vh;
     padding: 24px;
-    box-shadow: blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px,
-      rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px,
-      rgb(255, 217, 19) 20px -20px, rgb(255, 255, 255) 30px -30px 0px -3px,
+    box-shadow: blue 0px 0px 0px 2px inset, var(--components) 10px -10px 0px -3px,
+      rgb(31, 193, 27) 10px -10px, var(--components) 20px -20px 0px -3px,
+      rgb(255, 217, 19) 20px -20px, var(--components) 30px -30px 0px -3px,
       rgb(255, 156, 85) 30px -30px;
   }
 }
@@ -113,10 +118,10 @@ dl {
     margin-right: calc(2vw + 40px);
     margin-top: 6vh;
     padding: 32px;
-    box-shadow: blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px,
-      rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px,
-      rgb(255, 217, 19) 20px -20px, rgb(255, 255, 255) 30px -30px 0px -3px,
-      rgb(255, 156, 85) 30px -30px, rgb(255, 255, 255) 40px -40px 0px -3px,
+    box-shadow: blue 0px 0px 0px 2px inset, var(--components) 10px -10px 0px -3px,
+      rgb(31, 193, 27) 10px -10px, var(--components) 20px -20px 0px -3px,
+      rgb(255, 217, 19) 20px -20px, var(--components) 30px -30px 0px -3px,
+      rgb(255, 156, 85) 30px -30px, var(--components) 40px -40px 0px -3px,
       rgb(255, 85, 85) 40px -40px;
   }
 }

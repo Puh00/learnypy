@@ -3,6 +3,7 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
+  background-color: var(--components);
 }
 
 .Container div svg {
@@ -16,13 +17,10 @@
 }
 
 .Button {
-  border-left: 2px solid var(--dark) !important;
-  border-bottom: 2px solid var(--dark) !important;
+  border: 0px;
   border-radius: 0px;
   border-bottom-left-radius: 5px;
-  color: var(--dark) !important;
   background-color: var(--components) !important;
-  box-shadow: var(--shadow);
 
   position: absolute;
   top: 0;
@@ -36,6 +34,7 @@
 .Button * {
   width: 100%;
   height: 100%;
+  stroke: var(--dark) !important;
 }
 
 .Button:hover {

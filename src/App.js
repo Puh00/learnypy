@@ -6,6 +6,7 @@ import Accessibility from 'src/pages/Accessibility';
 import Home from 'src/pages/Home';
 
 import 'src/App.css';
+import 'src/Scrollbar.css';
 
 function App() {
   return (
