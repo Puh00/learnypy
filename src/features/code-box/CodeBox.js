@@ -145,6 +145,7 @@ const CodeBox = ({
             return { addNew: false };
           },
           lineWrapping: true,
+          screenReaderLabel: code,
           lint: true,
           mode: 'python',
           lineNumbers: true,
