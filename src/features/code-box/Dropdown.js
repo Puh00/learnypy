@@ -85,9 +85,9 @@ mylist.traverse_list()`
   }
 ];
 
-const DropdownLocal = ({ logo, setCode, restart, drop_down_menu_ref, button_border }) => {
+const DropdownLocal = ({ logo, setCode, restart, drop_down_menu_ref }) => {
   return (
-    <Dropdown style={button_border} as={ButtonGroup} align="end">
+    <Dropdown as={ButtonGroup} align="end">
       <Dropdown.Toggle
         data-toggle="tooltip"
         title="Code Examples"

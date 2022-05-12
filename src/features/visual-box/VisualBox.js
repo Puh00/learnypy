@@ -6,9 +6,10 @@ import Button from 'src/components/Button';
 import border from 'src/features/Border.module.css';
 import set_text from 'src/features/visual-box//textGenerator';
 import styles from 'src/features/visual-box//VisualBox.module.css';
-import generate_dot from 'src/features/visual-box/dotGenerator';
 
-const VisualBox = ({ data, share_methods }) => {
+import generate_dot from './dotGenerator';
+
+const VisualBox = ({ data, colors, share_methods }) => {
   const [graph, setGraph] = useState({ dot: 'graph {}' });
   const [ariaLabel, setAriaLabel] = useState('');
   const [zoomedIn, setZoomedIn] = useState(false);
@@ -20,10 +21,10 @@ const VisualBox = ({ data, share_methods }) => {
   };
 
   useEffect(() => {
-    const dot = generate_dot(data);
+    const dot = generate_dot(data, colors);
     setGraph(dot);
     setAriaLabel(set_text(data.objects, data.variables));
-  }, [data]);
+  }, [data, colors]);
 
   useEffect(() => {
     graphviz(`#graph-body`)
