@@ -1,4 +1,5 @@
-import { React, useState } from 'react';
+import { React, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 
 import { ReactComponent as LearnyPy } from 'src/assets/LearnyPy_dark2.svg';
@@ -12,15 +13,29 @@ const Header = ({
     //Possible to provide custom function if needed
   }
 }) => {
-  const [checked, setChecked] = useState(document.body.classList.contains('dark'));
+  const [cookies, setCookie] = useCookies(['darktheme']);
 
   const handleToggle = () => {
     // Standard toggle dark/light mode
     document.body.classList.toggle('dark');
-    setChecked(document.body.classList.contains('dark'));
+    // set a cookie for the darktheme that expires after 1 day
+    setCookie(
+      'darktheme',
+      { checked: document.body.classList.contains('dark') },
+      {
+        maxAge: 60 * 60 * 24,
+        sameSite: 'lax'
+      }
+    );
     //Provided custom toggle function
     toggle();
   };
+
+  useEffect(() => {
+    if (cookies?.darktheme?.checked && !document.body.classList.contains('dark')) {
+      handleToggle();
+    }
+  }, []);
 
   return (
     <header className={styles.Header}>
@@ -35,7 +50,7 @@ const Header = ({
             className={styles['Toggle']}
             id="checkbox"
             onClick={handleToggle}
-            checked={checked}
+            checked={cookies?.darktheme?.checked}
             onKeyDown={(e) => {
               // Possible to toggle with Enter (Space is standard)
               if (e.key == 'Enter') handleToggle();
@@ -47,7 +62,7 @@ const Header = ({
             <div
               className={styles['Toggle-ball']}
               data-toggle="tooltip"
-              title={checked ? 'Toggle to light mode' : 'Toggle to dark mode'}
+              title={cookies?.darktheme?.checked ? 'Toggle to light mode' : 'Toggle to dark mode'}
             />
           </label>
           {navItems.map((item, index) => {
