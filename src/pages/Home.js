@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 
+import { ReactComponent as Info_logo } from 'src/assets/info.svg';
 import Header from 'src/components/Header';
 import CodeBox from 'src/features/code-box/CodeBox';
 import ControlPanel from 'src/features/code-box/ControlPanel';
@@ -18,6 +19,14 @@ const Home = () => {
   const [locked, setLocked] = useState(false);
   // breakpoints is a list of Line objects from codemirror because of we need the side effects
   const [breakpoints, setBreakpoints] = useState([]);
+  const [theme, setTheme] = useState(
+    document.body.classList.contains('dark') ? 'blackboard' : 'neat'
+  );
+  const light_graph = ['gray27', 'paleturquoise2', 'darkseagreen2', 'slategray1'];
+  const dark_graph = ['gray80', 'midnightblue', 'darkgreen', 'darkslategray'];
+  const [graph_colors, setGraph_colors] = useState(
+    document.body.classList.contains('dark') ? dark_graph : light_graph
+  );
   const [error, setError] = useState(false);
 
   const drop_down_menu_ref = useRef(null);
@@ -136,6 +145,11 @@ const Home = () => {
   // ===================SKULPT CONFIGURATIONS===================
   // ===========================================================
 
+  const toggle_theme = () => {
+    setTheme(document.body.classList.contains('dark') ? 'blackboard' : 'neat');
+    setGraph_colors(document.body.classList.contains('dark') ? dark_graph : light_graph);
+  };
+
   skulpt.configure({
     outf: (text) => {
       latest_output = latest_output + text;
@@ -166,13 +180,20 @@ const Home = () => {
   const navItems = [
     {
       name: 'about',
-      link: '/about'
+      link: '/about',
+      icon: <Info_logo />,
+      tooltip: 'About'
     }
   ];
 
   return (
     <div className={styles.Page}>
-      <Header navItems={navItems} />
+      <Header
+        navItems={navItems}
+        toggle={() => {
+          toggle_theme();
+        }}
+      />
       <div className={styles.Container}>
         <div className={styles['Control-panel']}>
           <ControlPanel
@@ -194,6 +215,7 @@ const Home = () => {
             error={error}
             setError={setError}
             breakpoints={breakpoints}
+            theme={theme}
             setBreakpoints={setBreakpoints}
             isStepping={locked}
             share_methods={share_methods}
@@ -205,7 +227,7 @@ const Home = () => {
           <OutputBox output={output} output_box_ref={output_box_ref} />
         </div>
         <div className={styles['Visual-box']} tabIndex={0}>
-          <VisualBox data={globals} share_methods={share_methods} />
+          <VisualBox data={globals} colors={graph_colors} share_methods={share_methods} />
         </div>
       </div>
     </div>

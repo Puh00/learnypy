@@ -7,16 +7,17 @@
   left: 0;
   right: 0;
   height: 100%;
-  border: 2px solid black;
+  border: 2px solid var(--border);
   border-radius: 5px;
+  box-shadow: var(--shadow);
 }
 
 .read-only .CodeMirror {
-  background-color: #e6e6e6;
+  background-color: var(--lockedCodeboxBackground);
 }
 
 .read-only .CodeMirror .CodeMirror-gutters {
-  background-color: #dedede;
+  background-color: var(--lockedCodeboxGutters);
 }
 
 .cm-number {
@@ -48,6 +49,6 @@
 }
 
 .CodeMirror-focused {
-  outline: 3px solid blue;
+  outline: 3px solid var(--outline);
   outline-offset: 0px;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { ReactComponent as Home_logo } from 'src/assets/home.svg';
 import Header from 'src/components/Header';
 import styles from 'src/pages/About.module.css';
 
@@ -8,11 +9,8 @@ const About = () => {
   const navItems = [
     {
       name: 'home',
+      icon: <Home_logo />,
       link: '/'
-    },
-    {
-      name: 'about',
-      link: '/about'
     }
   ];
 

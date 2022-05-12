@@ -1,0 +1,85 @@
+
+/* Customized scrollbar so it adapts to dark/light mode */
+
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 5px;
+	background-color: var(--components);
+}
+
+::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: var(--components);
+}
+
+::-webkit-scrollbar-thumb
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  border-radius: 5px;
+	background-color: var(--background);
+}
+
+/* Buttons */
+::-webkit-scrollbar-button
+{
+  background-color:  var(--components);
+  background-repeat: no-repeat;
+  background-size: 7px;
+  background-position: center;
+  height: 17px;
+  width: 17px;
+}
+
+::-webkit-scrollbar-button:hover
+{
+  background-color: var(--hover);
+}
+
+/* Up */
+::-webkit-scrollbar-button:vertical:decrement
+{
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23505050'><polygon points='50,30 100,80 0,80'/></svg>");
+}
+
+::-webkit-scrollbar-button:vertical:decrement:active
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+}
+
+/* Down */
+::-webkit-scrollbar-button:vertical:increment
+{
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23505050'><polygon points='0,15 100,15 50,75'/></svg>");
+}
+
+::-webkit-scrollbar-button:vertical:increment:active
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  
+}
+
+/* Left */
+::-webkit-scrollbar-button:horizontal:decrement
+{
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23505050'><polygon points='15,50 75,100 75,0'/></svg>");
+}
+
+::-webkit-scrollbar-button:horizontal:decrement:active
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+}
+
+
+/* Right */
+::-webkit-scrollbar-button:horizontal:increment
+{
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23505050'><polygon points='15,0 15,100 75,50'/></svg>");
+}
+
+::-webkit-scrollbar-button:horizontal:increment:active
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+}
+

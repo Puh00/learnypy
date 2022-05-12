@@ -1,9 +1,15 @@
 .Container {
   width: 100%;
   height: 100%;
+
+  padding: 5px;
   white-space: pre-line;
   overflow: auto;
-  background-color: white;
+  background-color: var(--components);
+  color: var(--dark);
+
+  white-space: pre-line;
+  overflow: auto;
   position: relative;
 }
 
@@ -35,4 +41,5 @@
 .FadeIn {
   opacity: 0.25;
   transition: opacity 0.5s;
+
 }
