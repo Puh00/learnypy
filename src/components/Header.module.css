@@ -1,46 +1,136 @@
 .Header {
   background-color: var(--background);
   display: flex;
+  margin-left: 12px;
+  margin-right: 12px;
 
   flex-direction: row;
   align-items: stretch;
   justify-content: space-between;
 }
 
-.Home-logo {
-  margin: 12px;
-  color: var(--dark);
+.LearnyPy-logo {
+  color: var(--header);
+}
 
-  text-decoration: none;
-  font-size: 1.5em;
-  font-weight: bolder;
+.LearnyPy-logo:hover {
+  color: var(--navItemHover);
+}
+
+.Right{
+  margin-right: 16px;
+  margin-top: 8px;
+  display: flex;
+  flex-basis: 20%;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .Nav-menu {
-  margin-right: 16px;
-  margin-top: 16px;
-
+  margin-left: 8px;
   display: flex;
   flex-direction: row;
+  align-items: center;
+}
+
+.Toggle{
+  opacity: 0;
+}
+
+.Toggle-label{
+  width: 48px;
+  height: 24px;
+  margin-top: 5px;
+  margin-right: 12px;
+  background-color: var(--background);
+  border: 2px solid var(--header);
+  display: flex;
+  border-radius:50px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  transform: scale(1.4);
+}
+
+.Toggle-label:hover{
+  background-color: var(--hover);
+  transition: .4s;
+  cursor: pointer;
+}
+
+.Toggle-ball{
+  width: 18px;
+  height: 18px;
+  background-color: var(--header);
+  position: absolute;
+  /* box-shadow: var(--shadow); */
+  top: 1px;
+  left: 2px;
+  border-radius: 50%;
+  transition: transform 0.3s ease-out;
+}
+
+.Toggle:checked + .Toggle-label .Toggle-ball{
+  transform: translateX(22px);
+}
+
+.Sun{
+  color: var(--header);
+  padding: 1px;
+}
+
+.Moon{
+  color: var(--header);
+  padding: 1px;
+}
+
+.Toggle:focus + .Toggle-label{
+  outline:3px solid var(--outline) !important; outline-offset: 2px !important;
+}
+
+.Nav-button{
+  border-radius: 100%;
+  margin-left: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  display: flex;  
+}
+
+.Nav-item:focus{
+  border: none;
+  border-radius: 100%;
+  box-shadow: 0 0 0 3px var(--outline);
+  outline: none !important;
+}
+
+.Nav-button:last-child{
+  margin-right: 0px;
+}
+
+.Nav-button:hover {
+  background-color: var(--hover);
+  cursor: pointer;
+  transition: .4s;
 }
 
 .Nav-item {
   margin-left: 5px;
   margin-right: 5px;
-  color: var(--dark);
-
-  text-decoration: none;
-  font-weight: 600;
+  color: var(--header);
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
 }
 
-.Nav-item:hover {
-  color: black;
+.Nav-item:hover{
+  color: var(--header);
 }
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .Home-logo {
-    margin: 0;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   .Nav-menu {
@@ -51,7 +141,8 @@
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
   .Home-logo {
-    margin: 0;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   .Nav-menu {
@@ -62,7 +153,8 @@
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
   .Home-logo {
-    margin: 8px;
+    margin-top: 8px;
+    margin-left: 8px;
   }
 
   .Nav-menu {
@@ -73,7 +165,8 @@
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
   .Home-logo {
-    margin: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
   }
 
   .Nav-menu {
@@ -84,7 +177,8 @@
 /* Large devices (laptops/desktops, 1200 and up) */
 @media only screen and (min-width: 1200px) {
   .Home-logo {
-    margin: 12px;
+    margin-top: 12px;
+    margin-left: 12px;
   }
 
   .Nav-menu {
