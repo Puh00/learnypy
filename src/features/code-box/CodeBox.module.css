@@ -3,7 +3,7 @@
 }
 
 .Error-Line-highlight{
-  background-color: #ff5c5c;
+  background-color: var(--errorLineHighlight);
 }
 
 .Container {
@@ -19,11 +19,11 @@
   color: var(--dark);
 }
 
-.breakpoint-node {
-  color: #dc3545;
+.breakpoint-node{
+  color: var(--red);
 }
 
 .breakpoint-node:hover {
   cursor: pointer;
-  color: rgb(255, 139, 139);
+  color: var(--redHover);
 }

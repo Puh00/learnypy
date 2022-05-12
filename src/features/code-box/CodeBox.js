@@ -10,6 +10,7 @@ import 'codemirror/addon/edit/closebrackets';
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/neat.css';
+import 'codemirror/theme/blackboard.css';
 import 'src/features/code-box/CodeBox.css';
 
 const breakpoint_logo = raw('../../assets/breakpoint-node.svg');
@@ -22,6 +23,7 @@ const CodeBox = ({
   error,
   setError,
   breakpoints,
+  theme,
   setBreakpoints,
   isStepping,
   share_methods,
@@ -143,11 +145,12 @@ const CodeBox = ({
             return { addNew: false };
           },
           lineWrapping: true,
+          screenReaderLabel: code,
           lint: true,
           mode: 'python',
           lineNumbers: true,
           readOnly: isStepping ? 'nocursor' : false,
-          theme: 'neat',
+          theme: theme,
           autoCloseBrackets: true,
           autoCloseTags: true,
           gutters: ['breakpoints', 'lineMarker', 'CodeMirror-linenumbers']
