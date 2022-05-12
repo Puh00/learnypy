@@ -23,7 +23,7 @@ const OutputBox = ({ output, output_box_ref }) => {
     <div
       className={`${styles.Container} ${border.Border}`}
       data-testid="output-box"
-      aria-label="Output"
+      aria-label={output.text}
       data-toggle="tooltip"
       title="Output"
       ref={output_box_ref}
