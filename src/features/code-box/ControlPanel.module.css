@@ -34,8 +34,9 @@
 .Btng :disabled:hover {
   background-color: var(--components) !important;
 }
+
 .Btng :disabled {
-  opacity: 0.3;
+  opacity: 1;
 }
 
 .BtngLeft {
