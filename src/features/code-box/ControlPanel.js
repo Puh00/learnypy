@@ -9,7 +9,8 @@ import { ReactComponent as Play_logo } from 'src/assets/play.svg';
 import { ReactComponent as Stop_logo } from 'src/assets/stop.svg';
 import Button from 'src/components/Button';
 import styles from 'src/features/code-box/ControlPanel.module.css';
-import DropdownLocal from 'src/features/code-box/Dropdown';
+
+import DropdownLocal from './Dropdown';
 
 const ControlPanel = ({
   code,
@@ -28,7 +29,7 @@ const ControlPanel = ({
           onClick={() => {
             runit(code);
           }}
-          className={styles.Container}
+          className={`${styles.Btn} ${styles.BtnLeft}`}
           tooltip="Run code (until next breakpoint)"
           logo={<Play_logo />}
         />
@@ -36,7 +37,7 @@ const ControlPanel = ({
           onClick={() => {
             step(code);
           }}
-          className={styles.Container}
+          className={`${styles.Btn} ${styles.BtnLeft}`}
           tooltip="Run next line"
           logo={<Next_logo />}
         />
@@ -44,7 +45,7 @@ const ControlPanel = ({
           onClick={() => {
             restart(code);
           }}
-          className={styles.Container}
+          className={`${styles.Btn} ${styles.BtnLeft}`}
           tooltip="Stop execution"
           logo={<Stop_logo />}
         />
@@ -53,7 +54,7 @@ const ControlPanel = ({
           onClick={() => {
             clear_breakpoints();
           }}
-          className={styles.Container}
+          className={`${styles.Btn} ${styles.BtnLeft}`}
           tooltip="Clear all breakpoints"
           logo={
             no_breakpoints() ? <Clear_breakpoints__disabled_logo /> : <Clear_breakpoints_logo />
@@ -62,6 +63,7 @@ const ControlPanel = ({
       </ButtonGroup>
       <ButtonGroup className={`${styles.BtngRight}`}>
         <DropdownLocal
+          className={`${styles.Btn}`}
           logo={<Menu_logo />}
           setCode={setCode}
           restart={(code) => {

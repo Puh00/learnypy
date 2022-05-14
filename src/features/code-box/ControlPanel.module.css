@@ -1,30 +1,49 @@
-.Container {
+/* Buttons */
+.Btn {
   color: var(--dark) !important;
   background-color: var(--components) !important;
-  border-right: 2px solid !important;
   border-top: 0px solid !important;
   border-bottom: 0px solid !important;
-  border-left: 0px solid !important;
   margin-left: 0px !important;
 }
 
-.Container:hover {
-  background-color: var(--hover) !important;
+.BtnLeft {
+  border-right: 2px solid var(--border) !important;
+  border-left: 0px solid !important;
 }
 
-.Container:focus {
-  border-right: white !important;
+.BtnRight {
+  border-left: 2px solid var(--border) !important;
+  border-right: 0px solid !important;
+}
+
+.Btn:hover {
+  background-color: var(--hover) !important;
+  /* transition: .4s; */
+}
+
+.Btn:focus {
   z-index: 2 !important;
+}
+
+.BtnLeft:focus {
+  border-right: var(--components) !important;
   margin-right: 2px !important;
 }
 
+.BtnRight:focus {
+  border-left: var(--components) !important;
+  margin-left: 2px !important;
+}
+
+/* Button Groups */
+
 .Btng {
-  border: 2px solid;
+  border: 2px solid var(--border);
   border-radius: 4px;
-  border-color: var(--dark);
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   background-color: var(--components);
   box-shadow: var(--shadow);
 
@@ -50,5 +69,5 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  flex-basis: 100%;
+  flex-basis: content;
 }
