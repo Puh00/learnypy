@@ -17,12 +17,20 @@ const OutputBox = ({ output, output_box_ref }) => {
     } else {
       setHighlight(false);
     }
+
+    //scroll-bar
+    if (output.text.length === 0) {
+      document.getElementById('output-box').style.overflow = 'hidden';
+    } else {
+      document.getElementById('output-box').style.overflow = 'auto';
+    }
   }, [output]);
 
   return (
     <div
       className={`${styles.Container} ${border.Border}`}
       data-testid="output-box"
+      id="output-box"
       aria-label={output.text}
       data-toggle="tooltip"
       title="Output"
