@@ -1,66 +1,73 @@
 /* Buttons */
-.Btn{
-    color: var(--dark) !important;
-    background-color: var(--components) !important;
-    border-top: 0px solid !important;
-    border-bottom: 0px solid !important;
-    margin-left: 0px !important;
+.Btn {
+  color: var(--dark) !important;
+  background-color: var(--components) !important;
+  border-top: 0px solid !important;
+  border-bottom: 0px solid !important;
+  margin-left: 0px !important;
 }
 
-.BtnLeft{
-    border-right: 2px solid var(--border) !important;
-    border-left: 0px solid !important;
+.BtnLeft {
+  border-right: 2px solid var(--border) !important;
+  border-left: 0px solid !important;
 }
 
-.BtnRight{
-    border-left: 2px solid var(--border) !important;
-    border-right: 0px solid !important;
+.BtnRight {
+  border-left: 2px solid var(--border) !important;
+  border-right: 0px solid !important;
 }
 
-.Btn:hover{
-    background-color: var(--hover) !important;
-    /* transition: .4s; */
+.Btn:hover {
+  background-color: var(--hover) !important;
+  /* transition: .4s; */
 }
 
-.Btn:focus{
-    z-index: 2 !important;
+.Btn:focus {
+  z-index: 2 !important;
 }
 
-.BtnLeft:focus{
-    border-right: var(--components) !important;
-    margin-right: 2px !important;
+.BtnLeft:focus {
+  border-right: var(--components) !important;
+  margin-right: 2px !important;
 }
 
-.BtnRight:focus{
-    border-left: var(--components) !important;
-    margin-left: 2px !important;
+.BtnRight:focus {
+  border-left: var(--components) !important;
+  margin-left: 2px !important;
 }
 
 /* Button Groups */
 
-.Btng{
-    border: 2px solid var(--border);
-    border-radius: 4px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: var(--components);
-    box-shadow: var(--shadow);
+.Btng {
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: var(--components);
+  box-shadow: var(--shadow);
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
+}
+.Btng :disabled:hover {
+  background-color: var(--components) !important;
 }
 
-.BtngLeft{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-basis: contents;
+.Btng :disabled {
+  opacity: 1;
 }
 
-.BtngRight{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    flex-basis: content;
+.BtngLeft {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-basis: contents;
+}
+
+.BtngRight {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-basis: content;
 }
