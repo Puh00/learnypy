@@ -80,20 +80,31 @@ const Accessibility = () => {
           , due to the non-compliances listed below.
         </p>
         <h2 className={styles.Title}>Non-accessible content</h2>
-        <p>The content described below is, in one way or another, not fully accessible.</p>
+        <p>The content described below is either not tested or deemed not fully accessible.</p>
         <ul>
-          <li>TODO</li>
-          <li>...</li>
-          <li>...</li>
+          <li>
+            Color is sometimes used as the only way of conveying information (WCAG 2.1, criteria
+            1.4.1)
+          </li>
+          <li>
+            We can not ensure that there will be no loss of content or functionality after modifying
+            text properties (WCAG 2.1, criteria 1.4.12)
+          </li>
+          <li>Some functionality are not available from a keyboard (WCAG 2.1, criteria 2.1.1)</li>
+          <li>
+            There is currently only one way to locate to the accessibility page (WCAG 2.1, criteria
+            2.4.5)
+          </li>
         </ul>
         <h2 className={styles.Title}>How we tested this website</h2>
         <p>
-          We have performed a self-assessment (internal testing) of some parts of {appName}. The
-          test included using screen readers, navigating the page without mouse or keypad and color
-          contrast analyze.
+          We have performed a self-assessment (internal testing) of some parts of {appName}. It
+          should be noted that we did not test on all internet browsers nor operating systems. As
+          such there might be undiscovered problems from the environments that we have not covered
+          in our testing.
         </p>
         <p>The website was published on TODO</p>
-        <p>The statement was last updated on TODO</p>
+        <p>The statement was last updated on 2022-05-17.</p>
       </div>
     </div>
   );
