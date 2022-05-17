@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { graphviz } from 'd3-graphviz';
 
+import { ReactComponent as Question_mark_logo } from 'src/assets/question_mark.svg';
 import { ReactComponent as Reset_zoom_logo } from 'src/assets/reset.svg';
 import Button from 'src/components/Button';
 import border from 'src/features/Border.module.css';
-import set_text from 'src/features/visual-box//textGenerator';
-import styles from 'src/features/visual-box//VisualBox.module.css';
+import set_text from 'src/features/visual-box/textGenerator';
+import styles from 'src/features/visual-box/VisualBox.module.css';
 
 import generate_dot from './dotGenerator';
 
-const VisualBox = ({ data, colors, share_methods }) => {
+const VisualBox = ({ data, colors, share_methods, show_modal }) => {
   const [graph, setGraph] = useState({ dot: 'graph {}' });
   const [ariaLabel, setAriaLabel] = useState('');
   const [zoomedIn, setZoomedIn] = useState(false);
@@ -77,9 +78,15 @@ const VisualBox = ({ data, colors, share_methods }) => {
 
   return (
     <div className={`${styles.Container} ${border.Border}`} aria-label={ariaLabel}>
-      <div ref={container} id="graph-body" title="Graph"></div>
+      <div ref={container} id="graph-body" title="Graph" />
       <Button
-        className={styles.Button}
+        className={`${styles.Button} ${styles['Top-left']}`}
+        onClick={show_modal}
+        logo={<Question_mark_logo />}
+        tooltip="Legend for graph elements"
+      />
+      <Button
+        className={`${styles.Button} ${styles['Top-right']}`}
         onClick={resetGraphZoom}
         logo={<Reset_zoom_logo />}
         tooltip="Reset zoom and panning"

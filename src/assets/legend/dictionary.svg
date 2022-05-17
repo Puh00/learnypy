@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="279.32 141.91 30.869 30.799" xmlns="http://www.w3.org/2000/svg" xmlnsbx="https://boxy-svg.com">
+  <path style="stroke: rgb(0, 0, 0); fill: rgb(239, 100, 99); stroke-dasharray: 30px;" d="M 419.532 154 L 269.532 149" transform="matrix(0, 0, 0, 0, 0, 0)"/>
+  <rect x="281.151" y="143.399" width="27.596" height="27.424" style="fill: rgb(198, 226, 255); stroke: rgb(69, 69, 69);"/>
+  <text style="fill: rgb(69, 69, 69); font-family: Arial, sans-serif; font-size: 4px; font-style: italic; white-space: pre;" x="286.249" y="151.005">dictionary</text>
+  <text style="fill: rgb(69, 69, 69); font-family: Arial, sans-serif; font-size: 4px; white-space: pre;" x="287.747" y="156.798">{size: n}</text>
+  <rect x="281.17" y="162.882" width="8.796" height="7.884" style="fill: rgb(198, 226, 255); stroke: rgb(69, 69, 69);" bxorigin="0.5 0.331025"/>
+  <rect x="290.389" y="162.885" width="8.952" height="7.942" style="fill: rgb(198, 226, 255); stroke: rgb(69, 69, 69);" bxorigin="0.5 0.32284"/>
+  <rect x="299.804" y="162.884" width="8.9" height="7.942" style="fill: rgb(198, 226, 255); stroke: rgb(69, 69, 69);" bxorigin="0.5 0.32284"/>
+  <text style="fill: rgb(69, 69, 69); font-family: Arial, sans-serif; font-size: 3px; white-space: pre;" x="282.372" y="167.723">key1</text>
+  <text style="fill: rgb(69, 69, 69); font-family: Arial, sans-serif; font-size: 4px; white-space: pre;" x="293.069" y="167.774">...</text>
+  <text style="fill: rgb(69, 69, 69); font-family: Arial, sans-serif; font-size: 3px; white-space: pre;" x="301.01" y="167.745">keyn</text>
+</svg>

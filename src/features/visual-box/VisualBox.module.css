@@ -19,9 +19,19 @@
 .Button {
   border: 0px;
   border-radius: 0px;
-  border-bottom-left-radius: 5px;
   background-color: var(--components) !important;
 
+}
+
+.Top-left {
+  border-bottom-right-radius: 5px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.Top-right {
+  border-bottom-left-radius: 5px;
   position: absolute;
   top: 0;
   right: 0;

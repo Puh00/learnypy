@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="278.68 141.039 26.673 18.793" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <view id="view-1" viewBox="292.908 168.77 0.103 0.722">
+      <title>View 1</title>
+    </view>
+  </defs>
+  <path style="stroke: rgb(0, 0, 0); fill: rgb(239, 100, 99); stroke-dasharray: 30px;" d="M 419.532 154 L 269.532 149" transform="matrix(0, 0, 0, 0, 0, 0)"/>
+  <rect x="283.11" y="144.429" width="18.564" height="11.551" style="stroke-linejoin: round; fill: rgb(179, 237, 184); stroke: rgb(69, 69, 69);" rx="4.022" ry="4.022"/>
+</svg>
