@@ -80,40 +80,31 @@ const Accessibility = () => {
           , due to the non-compliances listed below.
         </p>
         <h2 className={styles.Title}>Non-accessible content</h2>
-        <p>The content described below is, in one way or another, not fully accessible.</p>
+        <p>The content described below is either not tested or deemed not fully accessible.</p>
         <ul>
           <li>
-            Color is not used as the only visual means of conveying information, indicating an
-            action, prompting a response, or distinguishing a visual element (WCAG 2.1, criteria
+            Color is sometimes used as the only way of conveying information (WCAG 2.1, criteria
             1.4.1)
           </li>
           <li>
-            In content implemented using markup languages that support the following text style
-            properties, no loss of content or functionality occurs by setting all of the following
-            and by changing no other style property (WCAG 2.1, criteria 1.4.12):
-            <ul>
-              <li>Line height (line spacing) to at least 1.5 times the font size.</li>
-              <li>Spacing following paragraphs to at least 2 times the font size.</li>
-              <li>Letter spacing (tracking) to at least 0.12 times the font size.</li>
-              <li>Word spacing to at least 0.16 times the font size.</li>
-            </ul>
+            We can not ensure that there will be no loss of content or functionality after modifying
+            text properties (WCAG 2.1, criteria 1.4.12)
           </li>
-          <li>Make all functionality available from a keyboard (WCAG 2.1, criteria 2.1.1)</li>
+          <li>Some functionality are not available from a keyboard (WCAG 2.1, criteria 2.1.1)</li>
           <li>
-            More than one way is available to locate a Web page within a set of Web pages except
-            where the Web Page is the result of, or a step in, a process (WCAG 2.1, criteria 2.4.5)
+            There is currently only one way to locate to the accessibility page (WCAG 2.1, criteria
+            2.4.5)
           </li>
         </ul>
         <h2 className={styles.Title}>How we tested this website</h2>
         <p>
-          We have performed a self-assessment (internal testing) of some parts of {appName}. The
-          test included using screen readers, color contrast analyzer, and navigating the page
-          without mouse or keypad. It should be noted that we did not test on all internet browsers
-          nor operating systems. As such there might be undiscovered problems from the environments
-          that we have not covered in our testing.
+          We have performed a self-assessment (internal testing) of some parts of {appName}. It
+          should be noted that we did not test on all internet browsers nor operating systems. As
+          such there might be undiscovered problems from the environments that we have not covered
+          in our testing.
         </p>
         <p>The website was published on TODO</p>
-        <p>The statement was last updated on 2022-05-06.</p>
+        <p>The statement was last updated on 2022-05-17.</p>
       </div>
     </div>
   );
