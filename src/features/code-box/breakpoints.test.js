@@ -365,7 +365,7 @@ test('changing code examples from a class while on a breakpoint', async () => {
   await global.sleep(50);
 
   // insert a breakpoint in the class constructor
-  set_breakpoints([3]);
+  set_breakpoints([4]);
 
   userEvent.click(runButton);
   await global.sleep(50);
