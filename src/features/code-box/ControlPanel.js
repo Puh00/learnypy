@@ -4,6 +4,7 @@ import { ButtonGroup } from 'react-bootstrap';
 import { ReactComponent as Next_logo } from 'src/assets/arrow-right.svg';
 import { ReactComponent as Menu_logo } from 'src/assets/chevron-down.svg';
 import { ReactComponent as Clear_breakpoints_logo } from 'src/assets/clear-breakpoints.svg';
+import { ReactComponent as Clear_breakpoints__disabled_logo } from 'src/assets/clear-breakpoints-disabled.svg';
 import { ReactComponent as Play_logo } from 'src/assets/play.svg';
 import { ReactComponent as Stop_logo } from 'src/assets/stop.svg';
 import Button from 'src/components/Button';
@@ -18,7 +19,8 @@ const ControlPanel = ({
   restart,
   clear_breakpoints,
   setCode,
-  drop_down_menu_ref
+  drop_down_menu_ref,
+  no_breakpoints
 }) => {
   return (
     <ButtonGroup className={`${styles.Btng}`}>
@@ -48,12 +50,15 @@ const ControlPanel = ({
           logo={<Stop_logo />}
         />
         <Button
+          disabled={no_breakpoints()}
           onClick={() => {
             clear_breakpoints();
           }}
           className={`${styles.Btn} ${styles.BtnLeft}`}
           tooltip="Clear all breakpoints"
-          logo={<Clear_breakpoints_logo />}
+          logo={
+            no_breakpoints() ? <Clear_breakpoints__disabled_logo /> : <Clear_breakpoints_logo />
+          }
         />
       </ButtonGroup>
       <ButtonGroup className={`${styles.BtngRight}`}>

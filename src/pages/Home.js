@@ -141,6 +141,10 @@ const Home = () => {
     skulpt.step(prog, callback);
   };
 
+  const no_breakpoints = () => {
+    return breakpoints.length === 0 ? true : false;
+  };
+
   // ===========================================================
   // ===================SKULPT CONFIGURATIONS===================
   // ===========================================================
@@ -204,6 +208,7 @@ const Home = () => {
             clear_breakpoints={clear_breakpoints}
             drop_down_menu_ref={drop_down_menu_ref}
             setCode={setCode}
+            no_breakpoints={no_breakpoints}
           />
         </div>
         <div className={styles['Code-box']}>
