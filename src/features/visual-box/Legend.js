@@ -1,5 +1,7 @@
+import { useContext } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
+import { AppContext } from 'src/App';
 import { ReactComponent as Class } from 'src/assets/legend/class.svg';
 import { ReactComponent as Class_dark } from 'src/assets/legend/class_dark.svg';
 import { ReactComponent as Dictionary } from 'src/assets/legend/dictionary.svg';
@@ -21,8 +23,8 @@ import styles from 'src/features/visual-box/Legend.module.css';
 
 const svg_size = { width: 100, height: 100 };
 
-// ### TODO: let App.js host the dark mode state ###
 const Legend = ({ show, setShow }) => {
+  const { darkMode } = useContext(AppContext);
   const handleClose = () => setShow(false);
 
   return (
@@ -33,7 +35,7 @@ const Legend = ({ show, setShow }) => {
       <Modal.Body className={styles.modal}>
         <ul>
           <li>
-            {document.body.classList.contains('dark') ? (
+            {darkMode ? (
               <Variable_dark style={svg_size} title="Ellipse" />
             ) : (
               <Variable style={svg_size} title="Ellipse" />
@@ -41,7 +43,7 @@ const Legend = ({ show, setShow }) => {
             Variable
           </li>
           <li>
-            {document.body.classList.contains('dark') ? (
+            {darkMode ? (
               <Object_dark style={svg_size} title="Rectangle" />
             ) : (
               <Object style={svg_size} title="Rectangle" />
@@ -49,7 +51,7 @@ const Legend = ({ show, setShow }) => {
             Object
           </li>
           <li>
-            {document.body.classList.contains('dark') ? (
+            {darkMode ? (
               <Reference_dark style={svg_size} title="Arrow" />
             ) : (
               <Reference style={svg_size} title="Arrow" />
@@ -61,7 +63,7 @@ const Legend = ({ show, setShow }) => {
             Old Reference
           </li>
           <li>
-            {document.body.classList.contains('dark') ? (
+            {darkMode ? (
               <List_dark style={svg_size} title="List element" />
             ) : (
               <List style={svg_size} title="List element" />
@@ -69,7 +71,7 @@ const Legend = ({ show, setShow }) => {
             List
           </li>
           <li>
-            {document.body.classList.contains('dark') ? (
+            {darkMode ? (
               <Tuple_dark style={svg_size} title="Tuple element" />
             ) : (
               <Tuple style={svg_size} title="Tuple element" />
@@ -77,7 +79,7 @@ const Legend = ({ show, setShow }) => {
             Tuple
           </li>
           <li>
-            {document.body.classList.contains('dark') ? (
+            {darkMode ? (
               <Dictionary_dark style={svg_size} title="Dictionary element" />
             ) : (
               <Dictionary style={svg_size} title="Dictionary element" />
@@ -85,7 +87,7 @@ const Legend = ({ show, setShow }) => {
             Dictionary
           </li>
           <li>
-            {document.body.classList.contains('dark') ? (
+            {darkMode ? (
               <Class_dark style={svg_size} title="Class element" />
             ) : (
               <Class style={svg_size} title="Class element" />
@@ -93,7 +95,7 @@ const Legend = ({ show, setShow }) => {
             Class
           </li>
           <li>
-            {document.body.classList.contains('dark') ? (
+            {darkMode ? (
               <Set_dark style={svg_size} title="Set element" />
             ) : (
               <Set style={svg_size} title="Set element" />
