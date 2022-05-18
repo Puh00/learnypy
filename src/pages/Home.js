@@ -23,15 +23,6 @@ const Home = () => {
   const [error, setError] = useState(false);
   const [show, setShow] = useState(false);
 
-  const [theme, setTheme] = useState(
-    document.body.classList.contains('dark') ? 'blackboard' : 'neat'
-  );
-  const light_graph = ['gray27', 'paleturquoise2', 'darkseagreen2', 'slategray1'];
-  const dark_graph = ['gray80', 'midnightblue', 'darkgreen', 'darkslategray'];
-  const [graph_colors, setGraph_colors] = useState(
-    document.body.classList.contains('dark') ? dark_graph : light_graph
-  );
-
   const drop_down_menu_ref = useRef(null);
   const output_box_ref = useRef(null);
   // create a mutatable ref so that it won't be reinitialised every rerender
@@ -152,11 +143,6 @@ const Home = () => {
   // ===================SKULPT CONFIGURATIONS===================
   // ===========================================================
 
-  const toggle_theme = () => {
-    setTheme(document.body.classList.contains('dark') ? 'blackboard' : 'neat');
-    setGraph_colors(document.body.classList.contains('dark') ? dark_graph : light_graph);
-  };
-
   skulpt.configure({
     outf: (text) => {
       latest_output = latest_output + text;
@@ -195,12 +181,7 @@ const Home = () => {
 
   return (
     <div className={styles.Page}>
-      <Header
-        navItems={navItems}
-        toggle={() => {
-          toggle_theme();
-        }}
-      />
+      <Header navItems={navItems} />
       <Legend show={show} setShow={setShow} />
       <div className={styles.Container}>
         <div className={styles['Control-panel']}>
@@ -224,7 +205,6 @@ const Home = () => {
             error={error}
             setError={setError}
             breakpoints={breakpoints}
-            theme={theme}
             setBreakpoints={setBreakpoints}
             isStepping={locked}
             share_methods={share_methods}
@@ -238,7 +218,6 @@ const Home = () => {
         <div className={styles['Visual-box']} tabIndex={0}>
           <VisualBox
             data={globals}
-            colors={graph_colors}
             share_methods={share_methods}
             show_modal={() => setShow(true)}
           />

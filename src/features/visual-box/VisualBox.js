@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { graphviz } from 'd3-graphviz';
 
+import { AppContext } from 'src/App';
 import { ReactComponent as Question_mark_logo } from 'src/assets/question_mark.svg';
 import { ReactComponent as Reset_zoom_logo } from 'src/assets/reset.svg';
 import Button from 'src/components/Button';
@@ -10,11 +11,16 @@ import styles from 'src/features/visual-box/VisualBox.module.css';
 
 import generate_dot from './dotGenerator';
 
-const VisualBox = ({ data, colors, share_methods, show_modal }) => {
+const VisualBox = ({ data, share_methods, show_modal }) => {
+  const { darkMode } = useContext(AppContext);
+
   const [graph, setGraph] = useState({ dot: 'graph {}' });
   const [ariaLabel, setAriaLabel] = useState('');
   const [zoomedIn, setZoomedIn] = useState(false);
   const container = useRef(null);
+
+  const light_graph = ['gray27', 'paleturquoise2', 'darkseagreen2', 'slategray1'];
+  const dark_graph = ['gray80', 'midnightblue', 'darkgreen', 'darkslategray'];
 
   const resetGraphZoom = () => {
     graphviz(`#graph-body`).resetZoom();
@@ -22,10 +28,11 @@ const VisualBox = ({ data, colors, share_methods, show_modal }) => {
   };
 
   useEffect(() => {
+    const colors = darkMode ? dark_graph : light_graph;
     const dot = generate_dot(data, colors);
     setGraph(dot);
     setAriaLabel(set_text(data.objects, data.variables));
-  }, [data, colors]);
+  }, [data, darkMode]);
 
   useEffect(() => {
     graphviz(`#graph-body`)
