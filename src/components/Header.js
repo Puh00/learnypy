@@ -16,7 +16,6 @@ const Header = ({ navItems }) => {
       <Link className={styles['Home-logo']} to="/">
         <LearnyPy className={styles['LearnyPy-logo']} />
       </Link>
-
       <div className={styles['Right']}>
         <div className={styles['Nav-menu']}>
           <input
@@ -24,7 +23,7 @@ const Header = ({ navItems }) => {
             className={styles['Toggle']}
             id="checkbox"
             onClick={handleToggle}
-            checked={darkMode}
+            defaultChecked={darkMode}
             onKeyDown={(e) => {
               // Possible to toggle with Enter (Space is standard)
               if (e.key == 'Enter') handleToggle();
