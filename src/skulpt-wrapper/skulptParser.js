@@ -31,7 +31,8 @@ const fetch_class_names = (entries) => {
  * @param {Array} filter Irrelevant python attributes that are filtered out
  * @returns Variables and objects from {other}
  */
-const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__package__']) => {
+const parse_objects = (other, filter = ['kwlist']) => {
+  const dunder_pattern = /^(__[a-zA-Z0-9_.-]*__)$/;
   const variables = [];
   const objects = [];
 
@@ -46,10 +47,12 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
     for (const [key, value] of skulpt_entries) {
       // skip if it's an Python attribute: function, class (which is signified by 'type') or import ('module')
       if (
+        dunder_pattern.test(key) ||
         filter.includes(key) ||
-        ['function', 'type', 'module'].includes(Object.getPrototypeOf(value).tp$name)
-      )
+        ['function', 'type', 'module', 'kwlist'].includes(Object.getPrototypeOf(value).tp$name)
+      ) {
         continue;
+      }
 
       variables.push({
         name: key,
@@ -125,7 +128,9 @@ const create_object = (objects, js_object, class_names) => {
       'constructor'
     ];
     // Instance variables
-    const values = parse_dictionary_values(Object.values(js_object.$d.entries));
+    const values = parse_dictionary_values(
+      Object.values(js_object.$d ? js_object.$d.entries : js_object.entries)
+    );
 
     const instance_variables_names = new Set();
     values.forEach((v) => instance_variables_names.add(v.key));
