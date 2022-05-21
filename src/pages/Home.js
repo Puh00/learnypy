@@ -95,10 +95,10 @@ const Home = () => {
     setLocals(locals);
   };
 
-  const restart_callback = (prog, run = false) => {
+  const restart_callback = async (prog = code) => {
     setLocked(false);
     setError(false);
-    skulpt.restart(prog, clear_visuals, run);
+    skulpt.restart(prog, clear_visuals, false);
   };
 
   const run_callback = (prog) => {
@@ -232,7 +232,12 @@ const Home = () => {
           <OutputBox output={output} output_box_ref={output_box_ref} />
         </div>
         <div className={styles['Visual-box']} tabIndex={0}>
-          <VisualBox data={globals} colors={graph_colors} share_methods={share_methods} />
+          <VisualBox
+            data={globals}
+            colors={graph_colors}
+            share_methods={share_methods}
+            restart={restart_callback}
+          />
         </div>
       </div>
     </div>

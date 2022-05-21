@@ -59,6 +59,13 @@ const generate_dot = (data, colors) => {
       set_collection_object(o, '{', '}');
     } else {
       // immutables
+      if (!o.value) {
+        // if we want more detailed error message
+        const error = new Error('Parse Exception');
+        error.object = o;
+        error.code = `Value is undefined`;
+        throw error;
+      }
       let label = o.value.toString();
       if (o.info.type === 'string') {
         label = '"&#34;' + label + '&#34;"';
