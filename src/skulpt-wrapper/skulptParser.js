@@ -108,20 +108,8 @@ const create_object = (objects, js_object, class_names) => {
    * @returns The parsed values from the class
    */
   const parse_class_values = (js_object) => {
+    const dunder_pattern = /^(__[a-zA-Z0-9_.-]*__)$/;
     const irrelevant_skulpt_attributes = [
-      'tp$name',
-      'ob$type',
-      '__init__',
-      '__module__',
-      'hp$type',
-      '$r',
-      'tp$setattr',
-      'tp$str',
-      'tp$length',
-      'tp$call',
-      'tp$getitem',
-      'tp$setitem',
-      'tp$getattr',
       // The name 'constructor' seems to be reserved in Skulpt which only appears
       // when inheritance is used. If a user-defined function in a class is named
       // 'constructor' then it will be named 'constructor_$rw$' instead
@@ -140,9 +128,12 @@ const create_object = (objects, js_object, class_names) => {
       if (
         // Skip if an instance variable is shadowing the class variable
         instance_variables_names.has(key) ||
+        // skulpt attributes
         irrelevant_skulpt_attributes.includes(key) ||
+        key.includes('$') ||
+        dunder_pattern.test(key) ||
         // Skip functions declared inside of a class
-        Object.getPrototypeOf(value).tp$name == 'function'
+        value instanceof window.Sk.builtin.func
       )
         continue;
 
@@ -159,7 +150,7 @@ const create_object = (objects, js_object, class_names) => {
   let obj = {
     id: uuidv4(),
     value: null,
-    info: js_object?.hp$type // check if it's class or not
+    info: js_object?.__class__ // check if it's class or not
       ? {
           type: 'class',
           class_name: js_object.tp$name
