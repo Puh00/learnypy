@@ -95,7 +95,7 @@ const Home = () => {
     setLocals(locals);
   };
 
-  const restart_callback = async (prog = code) => {
+  const restart_callback = (prog = code) => {
     setLocked(false);
     setError(false);
     skulpt.restart(prog, clear_visuals, false);

@@ -150,14 +150,15 @@ const create_object = (objects, js_object, class_names) => {
   let obj = {
     id: uuidv4(),
     value: null,
-    info: js_object?.__class__ // check if it's class or not
-      ? {
-          type: 'class',
-          class_name: js_object.tp$name
-        }
-      : {
-          type: retrieve_full_type_name(js_object.tp$name)
-        },
+    info:
+      class_names.includes(js_object.tp$name) || js_object?.hp$type // check if it's class or not
+        ? {
+            type: 'class',
+            class_name: js_object.tp$name
+          }
+        : {
+            type: retrieve_full_type_name(js_object.tp$name)
+          },
     js_object: js_object
   };
   objects.push(obj);
