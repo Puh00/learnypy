@@ -48,7 +48,7 @@ const Legend = ({ show, setShow }) => {
             ) : (
               <Object style={svg_size} title="Rectangle" />
             )}
-            Object
+            Integers, Floats, Strings, Booleans and NoneTypes
           </li>
           <li>
             {darkMode ? (
