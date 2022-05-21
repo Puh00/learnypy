@@ -70,6 +70,7 @@ const About = () => {
           <li>Many iterations will make the website slow.</li>
           <li>Only Python 3.7.3 grammar is supported.</li>
           <li>A few Python libraries are supported.</li>
+          <li>Debugger is unable to suspend correctly when importing Python modules.</li>
         </ul>
         <h2 className={styles.Title}>Special Thanks</h2>
         <h3 className={styles.SubTitle}> Skulpt </h3>
