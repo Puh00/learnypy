@@ -31,7 +31,8 @@ const fetch_class_names = (entries) => {
  * @param {Array} filter Irrelevant python attributes that are filtered out
  * @returns Variables and objects from {other}
  */
-const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__package__']) => {
+const parse_objects = (other, filter = ['kwlist']) => {
+  const dunder_pattern = /^(__[a-zA-Z0-9_.-]*__)$/;
   const variables = [];
   const objects = [];
 
@@ -46,10 +47,12 @@ const parse_objects = (other, filter = ['__doc__', '__file__', '__name__', '__pa
     for (const [key, value] of skulpt_entries) {
       // skip if it's an Python attribute: function, class (which is signified by 'type') or import ('module')
       if (
+        dunder_pattern.test(key) ||
         filter.includes(key) ||
-        ['function', 'type', 'module'].includes(Object.getPrototypeOf(value).tp$name)
-      )
+        ['function', 'type', 'module', 'kwlist'].includes(Object.getPrototypeOf(value).tp$name)
+      ) {
         continue;
+      }
 
       variables.push({
         name: key,
@@ -105,27 +108,17 @@ const create_object = (objects, js_object, class_names) => {
    * @returns The parsed values from the class
    */
   const parse_class_values = (js_object) => {
+    const dunder_pattern = /^(__[a-zA-Z0-9_.-]*__)$/;
     const irrelevant_skulpt_attributes = [
-      'tp$name',
-      'ob$type',
-      '__init__',
-      '__module__',
-      'hp$type',
-      '$r',
-      'tp$setattr',
-      'tp$str',
-      'tp$length',
-      'tp$call',
-      'tp$getitem',
-      'tp$setitem',
-      'tp$getattr',
       // The name 'constructor' seems to be reserved in Skulpt which only appears
       // when inheritance is used. If a user-defined function in a class is named
       // 'constructor' then it will be named 'constructor_$rw$' instead
       'constructor'
     ];
     // Instance variables
-    const values = parse_dictionary_values(Object.values(js_object.$d.entries));
+    const values = parse_dictionary_values(
+      Object.values(js_object.$d ? js_object.$d.entries : js_object.entries)
+    );
 
     const instance_variables_names = new Set();
     values.forEach((v) => instance_variables_names.add(v.key));
@@ -135,9 +128,12 @@ const create_object = (objects, js_object, class_names) => {
       if (
         // Skip if an instance variable is shadowing the class variable
         instance_variables_names.has(key) ||
+        // skulpt attributes
         irrelevant_skulpt_attributes.includes(key) ||
+        key.includes('$') ||
+        dunder_pattern.test(key) ||
         // Skip functions declared inside of a class
-        Object.getPrototypeOf(value).tp$name == 'function'
+        value instanceof window.Sk.builtin.func
       )
         continue;
 
@@ -154,14 +150,15 @@ const create_object = (objects, js_object, class_names) => {
   let obj = {
     id: uuidv4(),
     value: null,
-    info: js_object?.hp$type // check if it's class or not
-      ? {
-          type: 'class',
-          class_name: js_object.tp$name
-        }
-      : {
-          type: retrieve_full_type_name(js_object.tp$name)
-        },
+    info:
+      class_names.includes(js_object.tp$name) || js_object?.hp$type // check if it's class or not
+        ? {
+            type: 'class',
+            class_name: js_object.tp$name
+          }
+        : {
+            type: retrieve_full_type_name(js_object.tp$name)
+          },
     js_object: js_object
   };
   objects.push(obj);
