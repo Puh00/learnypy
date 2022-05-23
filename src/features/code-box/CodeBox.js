@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2-react-17';
 import raw from 'raw.macro';
 
+import { AppContext } from 'src/App';
 import styles from 'src/features/code-box/CodeBox.module.css';
 
 import 'codemirror/mode/python/python';
@@ -23,16 +24,15 @@ const CodeBox = ({
   error,
   setError,
   breakpoints,
-  theme,
   setBreakpoints,
   isStepping,
   share_methods,
   drop_down_menu_ref,
   output_box_ref
 }) => {
+  const { darkMode } = useContext(AppContext);
   const [editor, setEditor] = useState(null);
   const [prevBreakpoints, setPrevBreakpoints] = useState(() => []);
-
   const prev_line = useRef(null);
 
   let logo = error ? 'help' : 'marker-node';
@@ -150,7 +150,7 @@ const CodeBox = ({
           mode: 'python',
           lineNumbers: true,
           readOnly: isStepping ? 'nocursor' : false,
-          theme: theme,
+          theme: darkMode ? 'blackboard' : 'neat',
           autoCloseBrackets: true,
           autoCloseTags: true,
           gutters: ['breakpoints', 'lineMarker', 'CodeMirror-linenumbers']

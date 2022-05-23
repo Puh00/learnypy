@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="277.442 141.039 27.911 27.25" xmlns="http://www.w3.org/2000/svg" xmlnsbx="https://boxy-svg.com">
+  <path style="stroke: rgb(0, 0, 0); fill: rgb(239, 100, 99); stroke-dasharray: 30px;" d="M 419.532 154 L 269.532 149" transform="matrix(0, 0, 0, 0, 0, 0)"/>
+  <rect x="281.151" y="143.399" width="20.936" height="21.968" style="fill: rgb(198, 226, 253); stroke: rgb(69, 69, 69);"/>
+  <text style="fill: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 4px; font-style: italic; white-space: pre;" x="287.705" y="149.095">tuple</text>
+  <text style="fill: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 4px; white-space: pre;" x="284.657" y="153.918">[size: n]</text>
+  <rect x="281.159" y="157.429" width="6.806" height="7.884" style="fill: rgb(198, 226, 253); stroke: rgb(69, 69, 69);" bxorigin="0.5 0.331025"/>
+  <rect x="287.979" y="157.436" width="6.806" height="7.942" style="fill: rgb(198, 226, 253); stroke: rgb(69, 69, 69);" bxorigin="0.5 0.32284"/>
+  <rect x="295.158" y="157.428" width="6.806" height="7.942" style="fill: rgb(198, 226, 253); stroke: rgb(69, 69, 69);" bxorigin="0.5 0.32284"/>
+  <text style="fill: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 4px; white-space: pre;" x="283.255" y="162.282">0</text>
+  <text style="fill: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 4px; white-space: pre;" x="289.718" y="162.329">...</text>
+  <text style="fill: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 4px; white-space: pre;" x="297.345" y="162.561">n</text>
+</svg>
