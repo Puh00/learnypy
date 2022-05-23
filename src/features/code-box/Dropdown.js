@@ -12,14 +12,7 @@ b=a
 b.append(3)
 c=[3]
 c.append(4)
-c.remove(4)
-
-print(a)  
-print(b)  
-print(c)  
-
-print(a is b)
-print(a is c or b is c)`
+c.remove(4)`
   },
   {
     name: 'Nested functions',
@@ -34,7 +27,7 @@ a=["bye"]
 b=a
     
 c=1
-d=1
+d=c
     
 b[0]="hello"
 d=2`
