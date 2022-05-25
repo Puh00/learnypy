@@ -103,8 +103,8 @@ const Accessibility = () => {
           such there might be undiscovered problems from the environments that we have not covered
           in our testing.
         </p>
-        <p>The website was published on TODO</p>
-        <p>The statement was last updated on 2022-05-17.</p>
+        <p>The website was published on 2022-05-24.</p>
+        <p>The statement was last updated on 2022-05-24.</p>
       </div>
     </div>
   );

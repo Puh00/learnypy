@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import App from 'src/App';
+import { App } from 'src/App';
 import set_text from 'src/features/visual-box/textGenerator';
 
 // mock these components since the imported libraries seem to break everything...

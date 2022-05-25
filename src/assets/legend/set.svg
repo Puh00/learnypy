@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="279.32 141.91 30.299 19.815" xmlns="http://www.w3.org/2000/svg">
+  <path style="stroke: rgb(0, 0, 0); fill: rgb(239, 100, 99); stroke-dasharray: 30px;" d="M 419.532 154 L 269.532 149" transform="matrix(0, 0, 0, 0, 0, 0)"/>
+  <rect x="281.151" y="143.399" width="26.457" height="16.278" style="fill: rgb(198, 226, 255); stroke: rgb(69, 69, 69);"/>
+  <text style="fill: rgb(69, 69, 69); font-family: Arial, sans-serif; font-size: 4px; font-style: italic; white-space: pre;" x="291.132" y="149.703">set</text>
+  <text style="fill: rgb(69, 69, 69); font-family: Arial, sans-serif; font-size: 4px; white-space: pre;" x="286.933" y="154.927">{size: n}</text>
+</svg>

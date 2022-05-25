@@ -1,33 +1,21 @@
-import { React, useState } from 'react';
+import { React, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
+import { AppContext } from 'src/App';
 import { ReactComponent as LearnyPy } from 'src/assets/LearnyPy_dark2.svg';
 import { ReactComponent as DarkMode_logo } from 'src/assets/moon.svg';
 import { ReactComponent as LightMode_logo } from 'src/assets/sun.svg';
 import styles from 'src/components/Header.module.css';
 
-const Header = ({
-  navItems,
-  toggle = () => {
-    //Possible to provide custom function if needed
-  }
-}) => {
-  const [checked, setChecked] = useState(document.body.classList.contains('dark'));
-
-  const handleToggle = () => {
-    // Standard toggle dark/light mode
-    document.body.classList.toggle('dark');
-    setChecked(document.body.classList.contains('dark'));
-    //Provided custom toggle function
-    toggle();
-  };
+const Header = ({ navItems }) => {
+  const { darkMode, setDarkMode } = useContext(AppContext);
+  const handleToggle = () => setDarkMode(!darkMode);
 
   return (
     <header className={styles.Header}>
       <Link className={styles['Home-logo']} to="/">
         <LearnyPy className={styles['LearnyPy-logo']} />
       </Link>
-
       <div className={styles['Right']}>
         <div className={styles['Nav-menu']}>
           <input
@@ -35,7 +23,7 @@ const Header = ({
             className={styles['Toggle']}
             id="checkbox"
             onClick={handleToggle}
-            checked={checked}
+            defaultChecked={darkMode}
             onKeyDown={(e) => {
               // Possible to toggle with Enter (Space is standard)
               if (e.key == 'Enter') handleToggle();
@@ -47,7 +35,7 @@ const Header = ({
             <div
               className={styles['Toggle-ball']}
               data-toggle="tooltip"
-              title={checked ? 'Toggle to light mode' : 'Toggle to dark mode'}
+              title={darkMode ? 'Toggle to light mode' : 'Toggle to dark mode'}
             />
           </label>
           {navItems.map((item, index) => {
