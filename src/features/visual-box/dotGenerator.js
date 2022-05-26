@@ -52,11 +52,11 @@ const generate_dot = (data, colors) => {
   data.objects.forEach((o) => {
     const object_tooltip = o.info.type;
     if (o.info.type === 'tuple') {
-      set_collection_object(o, '(', ')');
+      set_collection_object(o, '(', ')', immutable_col);
     } else if (o.info.type === 'list') {
-      set_collection_object(o, '[', ']');
+      set_collection_object(o, '[', ']', indexable_col);
     } else if (['dictionary', 'set', 'class'].includes(o.info.type)) {
-      set_collection_object(o, '{', '}');
+      set_collection_object(o, '{', '}', indexable_col);
     } else {
       // immutables
       let label = o.value.toString();
@@ -98,7 +98,7 @@ const generate_dot = (data, colors) => {
 };
 
 // Used for tuple, list, dict, set and class
-const set_collection_object = (o, start_bracket, end_bracket) => {
+const set_collection_object = (o, start_bracket, end_bracket, color) => {
   const get_node_description = () =>
     o.info.type == 'class'
       ? o.info.class_name + '<BR/><I>' + o.info.type + '</I>'
@@ -119,12 +119,12 @@ const set_collection_object = (o, start_bracket, end_bracket) => {
     'tooltip= "' +
     node_tooltip +
     '" label=<\n<TABLE BGCOLOR="' +
-    indexable_col +
+    color +
     '" COLOR="' +
     line_col +
     '" BORDER="0" CELLBORDER="1" CELLPADDING="5" CELLSPACING="0">' +
     '\n\t<TR>\n\t\t<TD PORT="base" BGCOLOR="' +
-    indexable_col +
+    color +
     '" COLSPAN="' +
     o.value.length +
     '">' +
